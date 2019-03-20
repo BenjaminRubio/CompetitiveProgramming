@@ -1,0 +1,5 @@
+
+## Ignora inputs, outputs y binarios
+
+*.txt
+*.out
