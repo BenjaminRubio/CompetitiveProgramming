@@ -19,7 +19,7 @@ void calcMaxArea() {
             }
         }
     }
-}
+}   
 
 int main() {
     while (true) {

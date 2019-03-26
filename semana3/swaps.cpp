@@ -1,54 +1,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int N, B;
-vector<int> population;
-int highPop {0};
+int N;
+int num;
+vector<int> numbers;
+vector<int> orderedNumbers;
+int counter {0};
 
-bool isPossible(int m) {
-    int ballots {0};
-    for (int i = 0; i < population.size(); i++) {
-        ballots += (population[i] / m);
-        if (population[i] % m) {
-            ballots += 1;
+void countSwaps(bool swapped) {
+    if (numbers == orderedNumbers) {
+        if (!swapped) {
+            return;
+        }
+        counter++;
+        return;
+    }
+    for (int i = 0; i < numbers.size() - 1; i++) {
+        if (numbers[i + 1] < numbers[i]) {
+            num = numbers[i];
+            numbers[i] = numbers[i + 1];
+            numbers[i + 1] = num;
+            countSwaps(true);
+            numbers[i + 1] = numbers[i];
+            numbers[i] = num;
         }
     }
-    if (ballots > B) {
-        return false;
-    }
-    return true;
-}
-
-int distribute() {
-    int low = 0;
-    int high = highPop;
-    int midPoint;
-    while(low < high) {
-        midPoint = low + (high - low) / 2;
-        if (isPossible(midPoint)) {
-            high = midPoint;
-        } else {
-            low = midPoint + 1;
-        }
-    }
-    return low;
 }
 
 int main() {
+    int j = 1;
     while (true) {
-        cin >> N >> B;
-        if (N == -1) {
+        cin >> N;
+        if (!N) {
             break;
         }
         for (int i = 0; i < N; i++) {
-            int pop;
-            cin >> pop;
-            population.push_back(pop);
-            if (pop > highPop) {
-                highPop = pop;
-            }
+            cin >> num;
+            numbers.push_back(num);
+            orderedNumbers.push_back(num);
         }
-        cout << distribute() << '\n';
-        population = {};
+        sort(orderedNumbers.begin(), orderedNumbers.end());
+        countSwaps(false);
+        cout << "There are " << counter << " swap maps for input data set " << j << ".\n";
+        counter = 0;
+        numbers.clear();
+        orderedNumbers.clear();
+        j++;
     }
 }

@@ -9,8 +9,8 @@ char SUITS[4] = {'C', 'D', 'H', 'S'};
 char VALUES[13] = {'A', '2', '3', '4', '5', '6', '7', '8', '9', '1', 'J', 'Q', 'K'};
 
 pair<int, int> position(string c) {
-    if (c.size() == 10) {
-        c = c[0] + c[2];
+    if (c.size() == 3) {
+        c.erase(1, 1);
     }
     pair<int, int> r;
     for (int j = 0; j < 13; j++) {
@@ -31,33 +31,21 @@ pair<int, int> position(string c) {
 bool checkOrder() {
     pair<int, int> firstPair = position(result[0]);
     pair<int, int> resultPair = position(result[1]);
-    set<pair<int, int>> s;
+    map<pair<int, int>, int> s;
     for (int i = 2; i < 5; i++) {
-        s.insert(position(result[i]));
+        s[position(result[i])] = i - 1;
     }
     int i = 1;
-    bool first = true;
     vector<int> orders;
     for (auto it = s.begin(); it != s.end(); it++) {
-        for (int j = 2; j < 5; j++) {
-            if (position(result[j]).first == it->first && position(result[j]).second == it->second) {
-                if (first) {
-                    resultPair.second += j - 1;
-                    first = false;
-                    break;
-                } else {
-                    orders.push_back(i);
-                    break;
-                }
-            }
-        }
-        i++;
+        orders.push_back(it->second);
     }
-    if (orders[0] > orders[1]) {
-        resultPair.second += 3;
+    resultPair.first += orders[0];
+    if (orders[1] > orders[2]) {
+        resultPair.first += 3;
     }
-    resultPair.second %= 13;
-    return (resultPair == firstPair);
+    resultPair.first %= 13;
+    return (resultPair.first == firstPair.first && resultPair.second == firstPair.second);
 }
 
 bool assist(int mask, int index) {
@@ -66,7 +54,7 @@ bool assist(int mask, int index) {
     }
     for (int i = 0, b = 1; i < 5; i++, b <<= 1) {
         if (!(b & mask)) {
-            result[i] = cards[i];
+            result[index] = cards[i];
             if (assist(mask | b, index + 1)) {
                 return true;
             }
