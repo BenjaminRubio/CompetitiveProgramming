@@ -2,12 +2,16 @@
 using namespace std;
 
 int N;
-int num;
 vector<int> numbers;
 vector<int> orderedNumbers;
 int counter {0};
 
 void countSwaps(bool swapped) {
+    // cout << "[ ";
+    // for (int i = 0; i < numbers.size(); i++) {
+    //     cout << numbers[i] << ' ';
+    // }
+    // cout << "]\n";
     if (numbers == orderedNumbers) {
         if (!swapped) {
             return;
@@ -17,7 +21,7 @@ void countSwaps(bool swapped) {
     }
     for (int i = 0; i < numbers.size() - 1; i++) {
         if (numbers[i + 1] < numbers[i]) {
-            num = numbers[i];
+            int num = numbers[i];
             numbers[i] = numbers[i + 1];
             numbers[i + 1] = num;
             countSwaps(true);
@@ -35,6 +39,7 @@ int main() {
             break;
         }
         for (int i = 0; i < N; i++) {
+            int num;
             cin >> num;
             numbers.push_back(num);
             orderedNumbers.push_back(num);
