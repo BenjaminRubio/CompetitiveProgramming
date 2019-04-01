@@ -33,23 +33,24 @@ int consumeToBill(int consume) {
     return bill;
 }
 
-bool isPossible() {
-    
-}
-
 int binarySearch() {
     int first = 0;
     int last = A;
     while (first < last) {
-        int mid = first + (last - first) / 2;
-        //if 
-    }   
+        int mid = (first + last) / 2;
+        int consume1 = billToConsume(mid);
+        int consume2 = billToConsume(A) - consume1;
+        if (consumeToBill(consume2) - consumeToBill(consume1) <= B) {
+            last = mid;
+        } else {
+            first = mid + 1;
+        }
+    }
+    return first;
 }
 
 int main() {
     while (true) {
-        cout << consumeToBill(10123) << '\n';
-        cout << billToConsume(consumeToBill(10123)) << '\n';
         cin >> A >> B;
         if (A == 0) {
             break;
