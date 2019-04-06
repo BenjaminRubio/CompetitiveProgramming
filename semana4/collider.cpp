@@ -8,31 +8,26 @@ double len {0};
 vector<vector<double>> dataSet;
 
 // https://www.geeksforgeeks.org/bit-tricks-competitive-programming/
-int log2(int x) 
-{ 
-    int res = 0; 
-    while (x >>= 1) 
-        res++; 
-    return res; 
+int log2(int x) {
+    int res = 0;
+    while (x >>= 1) {
+        res++;
+    }
+    return res;
 }
 
 bool collides(double time) {
-    double pos1 {-1};
-    double pos2 {-1};
+    double currentPositive;
+    bool done = false;
     for (int i = 0; i < N; i++) {
         double newPos = dataSet[i][0] + dataSet[i][1] * time;
         if (dataSet[i][1] > 0) {
-            if (pos1 == -1 || newPos > pos1) {
-                pos1 = newPos;
+            if (!done || newPos > currentPositive) {
+                currentPositive = newPos;
+                done = true;
             }
-            pos2 = -1;
-        } else if (pos1 != -1) {
-            if (pos2 == -1 || newPos < pos2) {
-                pos2 = newPos;
-                if (pos2 <= pos1) {
-                    return true;
-                }
-            }
+        } else if (done && newPos <= currentPositive) {
+            return true;
         }
     }
     return false;
