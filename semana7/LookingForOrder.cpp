@@ -4,32 +4,63 @@ using namespace std;
 int x, y, n;
 pair<int, int> bag;
 vector<pair<int, int>> coords;
-int memo[24][2][(1 << 24) - 1];
+int memo[1 << 24];
+map<int, pair<int, int>> parent;
 
-int time(int i, int j, int m) {
-    pair<int, int> coord1 = coords[i];
-    if (!m) return memo[i][j][m] = coord1.first * coord1.first + coord1.second * coord1.second;
-    if (j == 2) {
-        return memo[i][j][m] = coord1.first * coord1.first + coord1.second * coord1.second + time(0, 0, m);
-    }
+int time(int m) {
+    if (!m) return memo[m] = 0;
+    if (memo[m] != -1) return memo[m];
     int result = INT_MAX;
-    for (int b = 1; b < n; b++) {
-        if (m & (1 << b)) {
-            pair<int, int> coord2 = coords[b];
-            int distance = (coord1.first - coord2.first) * (coord1.first - coord2.first);
-            distance += (coord1.second - coord2.second) * (coord1.second - coord2.second);
-            result = min(result, time(b, j + 1, m ^ (1 << b)) + distance);
+    int t;
+    for (int i = 0; i < n; i++) {
+        if (m & (1 << i)) {
+            int m_ = m ^ (1 << i);
+            pair<int, int> coord1 = coords[i];
+            int distance = coord1.first * coord1.first + coord1.second * coord1.second;
+            t = time(m_) + 2 * distance;
+            if (result > t) {
+                result = t;
+                parent[m] = {i + 1, 0};
+            }
+            for (int j = i + 1; j < n; j++) {
+                if (m_ & (1 << j)) {
+                    pair<int, int> coord2 = coords[j];
+                    distance += (coord1.first - coord2.first) * (coord1.first - coord2.first) + 
+                                (coord1.second - coord2.second) * (coord1.second - coord2.second);
+                    distance += coord2.first * coord2.first + coord2.second * coord2.second;
+                    t = time(m_ ^ (1 << j)) + distance;
+                    if (result > t) {
+                        result = t;
+                        parent[m] = {i + 1, j + 1};
+                    }
+                }
+            }
         }
     }
-    return memo[i][j][m] = result;
+    return memo[m] = result;
 }
 
 int main() {
+    memset(memo, -1, sizeof memo);
     cin >> x >> y >> n;
     bag = {x, y};
-    coords.push_back({0, 0});
     for (int i = 0; i < n; i++) {
         cin >> x >> y;
-        coords.push_back({x, y});
+        coords.push_back({x - bag.first, y - bag.second});
+    }
+    int m = (1 << n) - 1;
+    cout << time(m) << '\n';
+    int i, j;
+    cout << 0 << ' ';
+    while (m) {
+        i = parent[m].first;
+        j = parent[m].second;
+        cout << i << ' ';
+        m = m ^ (1 << (i - 1));
+        if (j) {
+            cout << j << ' ';
+            m = m ^ (1 << (j - 1));
+        }
+        cout << 0 << ' ';
     }
 }
