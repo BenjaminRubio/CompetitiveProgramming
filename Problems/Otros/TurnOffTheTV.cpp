@@ -29,7 +29,7 @@ typedef vector<vp> wgraph;
 //cout.setf(ios::fixed); cout.precision(4);
 
 #define debugx(x) cerr << #x << ": " << x << endl
-#define debugv(v)  //        \
+#define debugv(v)  //       \
     cerr << #v << ":";    \
     for (auto e : v)      \
         cerr << " " << e; \
@@ -52,6 +52,70 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
+int n, l, r;
+set<pair<par, int>> events;
+set<int> tvs, tvs_on;
+
 int main()
 {
+    cin >> n;
+
+    rep(i, n)
+    {
+        cin >> l >> r;
+        events.insert({{l, 0}, i + 1});
+        events.insert({{r, 1}, i + 1});
+        tvs.insert(i + 1);
+    }
+
+    int time = -1;
+    int type = 0;
+    bool saque = false;
+
+    for (auto e : events)
+    {
+        int t = e.first.first;
+        int p = e.first.second;
+        int index = e.second;
+
+        if (time < t)
+        {
+
+            if (tvs_on.size() == 1 && (time != t - 1 || !saque))
+                tvs.erase(*tvs_on.begin());
+            if (p == 0)
+                tvs_on.insert(index);
+            if (p == 1)
+            {
+                if (tvs_on.size() == 1)
+                    tvs.erase(*tvs_on.begin());
+                tvs_on.erase(index);
+            }
+        }
+        else
+        {
+            if (p > type)
+            {
+                if (tvs_on.size() == 1)
+                    tvs.erase(*tvs_on.begin());
+                tvs_on.erase(index);
+            }
+            else
+            {
+                if (p == 0)
+                    tvs_on.insert(index);
+                else
+                    tvs_on.erase(index);
+            }
+        }
+
+        time = t;
+        type = p;
+        saque = p;
+    }
+
+    if (!tvs.empty())
+        cout << *tvs.begin() << '\n';
+    else
+        cout << -1 << '\n';
 }
