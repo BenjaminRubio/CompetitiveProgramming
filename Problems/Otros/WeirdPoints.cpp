@@ -4,7 +4,7 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<int, int> par;
-typedef vector<ll> vi;
+typedef vector<int> vi;
 typedef vector<par> vp;
 typedef vector<vi> graph;
 typedef vector<vp> wgraph;
@@ -52,40 +52,57 @@ typedef vector<vp> wgraph;
 
 // definicion de Fenwick Tree sacada de cp-algorithms.
 
-struct FenwickTree
+template <class T>
+class FenwickTree2D
 {
-    vector<ll> bit; // binary indexed tree
-    int n;
+    vector<vector<T>> t;
+    int n, m;
 
-    FenwickTree(int n)
+public:
+    FenwickTree2D() {}
+
+    FenwickTree2D(int n, int m)
     {
-        this->n = n + 1;
-        bit.assign(n + 1, 0);
+        t.assign(n, vector<T>(m, 0));
+        this->n = n;
+        this->m = m;
     }
 
-    ll sum(int idx)
+    void add(int r, int c, T value)
     {
-        ll ret = 0;
-        for (; idx > 0; idx -= (idx & -idx))
-            ret += bit[idx];
-        return ret;
+        for (int i = r; i < n; i |= i + 1)
+            for (int j = c; j < m; j |= j + 1)
+                t[i][j] += value;
     }
 
-    void add(int idx, ll delta)
+    // sum[(0, 0), (r, c)]
+    T sum(int r, int c)
     {
-        for (; idx < n; idx += (idx & -idx))
-            bit[idx] += delta;
+        T res = 0;
+        for (int i = r; i >= 0; i = (i & (i + 1)) - 1)
+            for (int j = c; j >= 0; j = (j & (j + 1)) - 1)
+                res += t[i][j];
+        return res;
     }
 
-    void range_add(int l, int r, ll val)
+    // sum[(r1, c1), (r2, c2)]
+    T sum(int r1, int c1, int r2, int c2)
     {
-        add(l, val);
-        add(r + 1, -val);
+        return sum(r2, c2) - sum(r1 - 1, c2) - sum(r2, c1 - 1) + sum(r1 - 1, c1 - 1);
+    }
+
+    T get(int r, int c)
+    {
+        return sum(r, c, r, c);
+    }
+
+    void set(int r, int c, T value)
+    {
+        add(r, c, -get(t, r, c) + value);
     }
 };
 
-int n, m, u, v, p;
-ll c, k;
+int T, n, m;
 char t;
 
 int main()
@@ -94,21 +111,11 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    cin >> n >> m >> c;
-    FenwickTree ft(n);
+    cin >> T;
 
-    rep(i, m)
+    rep(k, T)
     {
-        cin >> t;
-        if (t == 'S')
-        {
-            cin >> u >> v >> k;
-            ft.range_add(u, v, k);
-        }
-        if (t == 'Q')
-        {
-            cin >> p;
-            cout << ft.sum(p) + c << '\n';
-        }
+        cin >> n >> m;
+        FenwickTree2D<int> ft(n, m);
     }
 }
