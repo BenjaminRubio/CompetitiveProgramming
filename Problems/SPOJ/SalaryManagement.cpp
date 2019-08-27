@@ -52,6 +52,8 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
+// Lazy Segment Tree obtenido de apuntes Ignacio Hermosilla.
+
 template <class t>
 class STL
 {
@@ -120,7 +122,7 @@ class STL
         }
     }
 
-  public:
+public:
     STL(vector<ll> &v)
     {
         arr = v;
@@ -140,7 +142,6 @@ class STL
         update(a, b, value, 0, 0, n - 1);
     }
 };
-
 
 struct RSQ
 {
@@ -170,55 +171,79 @@ struct RmQ
     }
 };
 
-int T, n, q, parent, salary;
-wgraph g;
-vi order;
+int T, n, q, parent, t, c, v;
+ll salary;
+vector<vector<pair<int, ll>>> g;
+vi visited;
+vector<ll> order;
+vector<par> ranges;
 
-void dfs()
+//dfs modificado de apuntes Pablo Messina.
+
+void dfs(int u)
 {
-    int n = g.size();
-    vi visited(n, 1);
-    stack<par> s;
+    visited[u] = 1;
 
-    s.emplace(make_pair(0, 0));
-    visited[0] = 0;
-
-    while (not s.empty())
+    for (auto v : g[u])
     {
-        par u = s.top();
-        s.pop();
-
-        order.pb(u.second);
-
-        for (par v : g[u.first])
-            if (visited[v.first])
-            {
-                s.emplace(v);
-                visited[v.first] = 0;
-            }
+        if (!visited[v.first])
+        {
+            order.pb(v.second);
+            ranges[v.first].first = t;
+            t++;
+            dfs(v.first);
+            ranges[v.first].second = t - 1;
+        }
     }
 }
 
 int main()
 {
-
-    ios::sync_with_stdio(0); cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
     cin >> T;
 
     rep(k, T)
     {
         cin >> n >> q;
+
         g.assign(n + 1, {});
+        ranges.assign(n + 1, par({0, 0}));
+        visited.assign(n + 1, 0);
+        t = 0;
+
         rep(i, n)
         {
             cin >> parent >> salary;
             g[parent].pb(make_pair(i + 1, salary));
         }
 
-        dfs();
+        dfs(0);
 
         STL<RSQ> st_sum(order);
         STL<RmQ> st_min(order);
+
+        cout << "Case " << k + 1 << ":\n";
+
+        rep(i, q)
+        {
+            cin >> c >> v;
+            if (c == 1)
+            {
+                cout << st_sum.query(ranges[v].first, ranges[v].second) << '\n';
+            }
+            if (c == 2)
+            {
+                salary = min(st_min.query(ranges[v].first, ranges[v].second), (ll)1000);
+                st_min.update(ranges[v].first, ranges[v].second, salary);
+                st_sum.update(ranges[v].first, ranges[v].second, salary);
+            }
+        }
+
+        g.clear();
+        order.clear();
+        ranges.clear();
+        visited.clear();
     }
 }
