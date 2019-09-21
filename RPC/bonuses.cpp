@@ -75,9 +75,8 @@ struct FenwickTree
 
     void update(int i, int v)
     {
-        int s = query(i, i);
         for (; i < FT.size(); i += i & (-i))
-            FT[i] += v - s;
+            FT[i] += v;
     }
 
     //Queries puntuales, Updates por rango
@@ -153,6 +152,7 @@ int main()
     multipliers[0] = s;
 
     FenwickTree ft(order.size());
+    id = 1;
 
     rep(i, n)
     {
@@ -160,22 +160,18 @@ int main()
         a = queries[i].second.first;
         b = queries[i].second.second;
 
-        cerr << "linea " << t << '\n';
-        rep(j, order.size())
-                cerr
-            << ft.query(j + 1) << '\n';
-
         if (t == 1)
         {
-            int in = ft.query(ranges[a - 1].first + 1);
-            ft.update(ranges[a - 1].first + 1, ranges[a - 1].first + 1, 0);
-            multipliers[a - 1] = s;
+            int in = ft.query(ranges[id].first + 1);
+            ft.update(ranges[id].first + 1, ranges[id].first + 1, -in);
+            multipliers[id] = s;
+            id++;
         }
         if (t == 2)
         {
             int in = ft.query(ranges[a - 1].first + 1);
             paid[a - 1] += in * multipliers[a - 1];
-            ft.update(ranges[a - 1].first + 1, ranges[a - 1].first + 1, 0);
+            ft.update(ranges[a - 1].first + 1, ranges[a - 1].first + 1, -in);
             multipliers[a - 1] = b;
         }
         if (t == 3)
@@ -184,7 +180,7 @@ int main()
         {
             int in = ft.query(ranges[a - 1].first + 1);
             paid[a - 1] += in * multipliers[a - 1];
-            ft.update(ranges[a - 1].first + 1, ranges[a - 1].first + 1, 0);
+            ft.update(ranges[a - 1].first + 1, ranges[a - 1].first + 1, -in);
             cout << paid[a - 1] << '\n';
         }
     }

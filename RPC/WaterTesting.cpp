@@ -52,73 +52,46 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
-struct FenwickTree
+// Calculo de Area apuntes pablo messina.
+
+const int N = 100001;
+struct Point
 {
-    vector<int> FT;
-    FenwickTree(int N)
-    {
-        FT.resize(N + 1, 0);
-    }
-
-    int query(int i)
-    {
-        int ans = 0;
-        for (; i; i -= i & (-i))
-            ans += FT[i];
-        return ans;
-    }
-
-    int query(int i, int j)
-    {
-        return query(j) - query(i - 1);
-    }
-
-    void update(int i, int v)
-    {
-        for (; i < FT.size(); i += i & (-i))
-            FT[i] += v;
-    }
-
-    //Queries puntuales, Updates por rango
-    void update(int i, int j, int v)
-    {
-        update(i, v);
-        update(j + 1, -v);
-    }
+    int x, y;
 };
+Point P[N];
+int n, x, y;
 
-int n;
+double area(int n)
+{
+    int A = 0;
+    for (int i = n - 1, j = 0; j < n; i = j++)
+        A += (P[i].x + P[j].x) * (P[j].y - P[i].y);
+    return fabs(A * 0.5);
+}
 
 int main()
 {
     cin >> n;
 
-    FenwickTree ft(n);
-
-    ft.update(4, 5, 5);
-
     rep(i, n)
     {
-        cout << ft.query(i + 1) << ' ';
+        cin >> x >> y;
+        P[i] = {x, y};
     }
 
-    cout << '\n';
+    double a = area(n);
 
-    ft.update(5, 5, -4);
-
-    rep(i, n)
+    ll b = 0;
+    rep(i, n - 1)
     {
-        cout << ft.query(i + 1) << ' ';
+        x = abs(P[i].x - P[i + 1].x);
+        y = abs(P[i].y - P[i + 1].y);
+        b += gcd(x, y);
     }
+    x = abs(P[n - 1].x - P[0].x);
+    y = abs(P[n - 1].y - P[0].y);
+    b += gcd(x, y);
 
-    cout << '\n';
-
-    cout << ft.query(5) << '\n';
-
-    rep(i, n)
-    {
-        cout << ft.query(i + 1) << ' ';
-    }
-
-    cout << '\n';
+    cout << a - (double)b / 2.0 + 1.0 << '\n';
 }
