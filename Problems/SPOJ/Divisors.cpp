@@ -12,7 +12,7 @@ typedef vector<vp> wgraph;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define repx(i, a, b) for (int i = a; i < (int)b; i++)
-#define invrep(i, a, b) for (int i = a; i > (int)b; i--)
+#define invrep(i, b, a) for (int i = b; i >= a; --i)
 
 #define pb push_back
 #define pf push_front
@@ -21,8 +21,8 @@ typedef vector<vp> wgraph;
 
 #define umap unordered_map
 
-#define lg(x) (31 - __buitlin_clz(x))
-#define lgg(x) (63 - __buitlin_clzll(x))
+#define lg(x) (31 - __builtin_clz(x))
+#define lgg(x) (63 - __builtin_clzll(x))
 #define gcd __gcd
 
 //ios::sync_with_stdio(0); cin.tie(0);
@@ -52,70 +52,75 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
-int n, k, r, d_;
-graph d;
-graph DP;
-
-int dp(int id, int b)
-{
-    // cerr << "IN: " << id << ' ' << b << '\n';
-    if (id >= n)
-    {
-        int m = 0;
-        rep(i, 7)
-        {
-            if (d[id - 1][i])
-                m = i;
-        }
-        return m + 1;
-    }
-
-    if (DP[id][b] != -1)
-        return DP[id][b];
-
-    int ans = 1e9;
-    rep(i, 7)
-    {
-        // cerr << "i: " << i << '\n';
-        bool able = true;
-        rep(j, 7)
-        {
-            // cerr << "j: " << j << ' ' << ((b >> (2 * (i + j))) & 3) << '\n';
-            if (d[id][j] && ((b >> (2 * (i + j))) & 3) == k)
-                able = false;
-        }
-        // cerr << "able: " << able << '\n';
-        if (able)
-        {
-            int b_ = 0;
-            rep(j, 7)
-            {
-                if (d[id][j])
-                    b_ |= (((b >> (2 * (i + j))) & 3) + 1) << (2 * j);
-                else
-                    b_ |= ((b >> (2 * (i + j))) & 3) << (2 * j);
-            }
-            ans = min(ans, i + dp(id + 1, b_));
-        }
-    }
-    return DP[id][b] = ans;
-}
+const int MAXNUM = 10000;
+vector<bool> is_prime(MAXNUM + 1, true);
+graph divisors(MAXNUM + 1, vi());
+vi counters;
+set<int> sets_divisors[100000];
+int T, n, x, c;
+string op;
 
 int main()
 {
-    cin >> n >> k;
-    d.assign(n, vi(7, 0));
-    rep(i, n)
+    ios::sync_with_stdio(0); cin.tie(0);
+    repx(i, 2, MAXNUM + 1)
     {
-        cin >> r;
-        d[i][0] = 1;
-        rep(j, r - 1)
-        {
-            cin >> d_;
-            d[i][d_ - 1] = 1;
-        }
+        if (is_prime[i]) for (int j = i + i; j <= MAXNUM; j += i)
+            is_prime[j] = false;
+        else for (int j = i; j <= MAXNUM; j += i)
+            divisors[j].pb(i);
     }
-    DP.assign(n, vi(1 << 21, -1));
 
-    cout << dp(0, 0) << '\n';
+    cin >> T;
+    rep(t, T)
+    {
+        counters.assign(MAXNUM + 1, 0);
+
+        cin >> n;
+
+        c = 0;
+        rep(i, n)
+        {
+            cin >> op;
+            if (op == "UPD")
+            {
+                cin >> op >> x;
+                if (op == "ADD")
+                {
+                    c++;
+                    for (int d : divisors[x])
+                    {
+                        sets_divisors[counters[d]].insert(d);
+                        counters[d]++;
+                    }
+                }
+                if (op == "REM")
+                {
+                    c--;
+                    for (int d : divisors[x])
+                    {
+                        counters[d]--;
+                        sets_divisors[counters[d]].erase(d);
+                    }
+                }
+            }
+            else
+            {
+                if (c > 0)
+                {
+                    cout << 1 << ' ';
+                    for (int d : sets_divisors[c - 1])
+                        cout << d << ' ';
+                    cout << '\n';
+                }
+                else
+                {
+                    cout << "-1\n";
+                }
+            }
+        }
+
+        rep(i, c)
+            sets_divisors[i].clear();
+    }
 }

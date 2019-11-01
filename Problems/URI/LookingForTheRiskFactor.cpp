@@ -52,70 +52,85 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
-int n, k, r, d_;
-graph d;
-graph DP;
+const int MAX_NUM = 1e5;
+int q, n, k;
+vi rem, max_prime, primes;
+graph order;
 
-int dp(int id, int b)
+int binsearch(int ind, int n)
 {
-    // cerr << "IN: " << id << ' ' << b << '\n';
-    if (id >= n)
+    int i = 0;
+    int j = order[ind].size();
+    while (i < j)
     {
-        int m = 0;
-        rep(i, 7)
-        {
-            if (d[id - 1][i])
-                m = i;
-        }
-        return m + 1;
+        int m = (i + j) >> 1;
+        if (order[ind][m] > n)
+            j = m;
+        else
+            i = m + 1;
     }
-
-    if (DP[id][b] != -1)
-        return DP[id][b];
-
-    int ans = 1e9;
-    rep(i, 7)
-    {
-        // cerr << "i: " << i << '\n';
-        bool able = true;
-        rep(j, 7)
-        {
-            // cerr << "j: " << j << ' ' << ((b >> (2 * (i + j))) & 3) << '\n';
-            if (d[id][j] && ((b >> (2 * (i + j))) & 3) == k)
-                able = false;
-        }
-        // cerr << "able: " << able << '\n';
-        if (able)
-        {
-            int b_ = 0;
-            rep(j, 7)
-            {
-                if (d[id][j])
-                    b_ |= (((b >> (2 * (i + j))) & 3) + 1) << (2 * j);
-                else
-                    b_ |= ((b >> (2 * (i + j))) & 3) << (2 * j);
-            }
-            ans = min(ans, i + dp(id + 1, b_));
-        }
-    }
-    return DP[id][b] = ans;
+    return i;
 }
 
 int main()
 {
-    cin >> n >> k;
-    d.assign(n, vi(7, 0));
-    rep(i, n)
-    {
-        cin >> r;
-        d[i][0] = 1;
-        rep(j, r - 1)
-        {
-            cin >> d_;
-            d[i][d_ - 1] = 1;
-        }
-    }
-    DP.assign(n, vi(1 << 21, -1));
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    cout << dp(0, 0) << '\n';
+    max_prime.assign(MAX_NUM + 1, 0);
+    primes.assign(MAX_NUM + 1, -1);
+    rem.assign(MAX_NUM + 1, -1);
+    int limit = floor(sqrt(MAX_NUM));
+    repx(i, 2, limit + 1) if (max_prime[i] == 0) for (int j = i * i; j <= MAX_NUM; j += i)
+    {
+        max_prime[j] = i;
+        if (rem[j] == -1)
+            n = j / i;
+        else
+            n = rem[j] / i;
+        while (n % i == 0)
+            n /= i;
+        rem[j] = n;
+    }
+
+    int n_primes = 0;
+
+    repx(i, 2, MAX_NUM + 1)
+    {
+        primes[i] = n_primes - 1;
+        if (max_prime[i] == 0)
+            primes[i] = n_primes++;
+    }
+
+    order.resize(n_primes + 1);
+
+    repx(i, 2, MAX_NUM + 1)
+    {
+        if (max_prime[i] == 0)
+            max_prime[i] = i;
+        max_prime[i] = max(max_prime[i], rem[i]);
+        // cerr << max_prime[i] << ' ' << primes[max_prime[i]] << '\n';
+        order[primes[max_prime[i]]].pb(i);
+    }
+
+    cin >> q;
+    rep(i, q)
+    {
+        cin >> n >> k;
+
+        if (k >= n)
+        {
+            cout << n - 1 << '\n';
+            continue;
+        }
+
+        int ans = 0;
+        int prime_k = primes[k];
+        rep(j, prime_k + 1)
+        {
+            ans += binsearch(j, n);
+        }
+
+        cout << ans << '\n';
+    }
 }

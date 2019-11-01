@@ -52,70 +52,55 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
-int n, k, r, d_;
-graph d;
-graph DP;
+const int MAX_NUM = 1e9;
+int T, m, n;
+vector<bool> is_prime;
+vector<int> primes;
 
-int dp(int id, int b)
-{
-    // cerr << "IN: " << id << ' ' << b << '\n';
-    if (id >= n)
+void cout_primes(int m, int n) {
+    const int S = 10000;
+    vector<char> block(S);
+    // cerr << m / S << '\n';
+    for (int k = (m / S); k * S <= n; k++)
     {
-        int m = 0;
-        rep(i, 7)
-        {
-            if (d[id - 1][i])
-                m = i;
+        fill(block.begin(), block.end(), true);
+        int start = k * S;
+        for (int p : primes) {
+            int start_idx = (start + p - 1) / p;
+            int j = max(start_idx, p) * p - start;
+            for (; j < S; j += p)
+                block[j] = false;
         }
-        return m + 1;
-    }
-
-    if (DP[id][b] != -1)
-        return DP[id][b];
-
-    int ans = 1e9;
-    rep(i, 7)
-    {
-        // cerr << "i: " << i << '\n';
-        bool able = true;
-        rep(j, 7)
-        {
-            // cerr << "j: " << j << ' ' << ((b >> (2 * (i + j))) & 3) << '\n';
-            if (d[id][j] && ((b >> (2 * (i + j))) & 3) == k)
-                able = false;
-        }
-        // cerr << "able: " << able << '\n';
-        if (able)
-        {
-            int b_ = 0;
-            rep(j, 7)
-            {
-                if (d[id][j])
-                    b_ |= (((b >> (2 * (i + j))) & 3) + 1) << (2 * j);
-                else
-                    b_ |= ((b >> (2 * (i + j))) & 3) << (2 * j);
-            }
-            ans = min(ans, i + dp(id + 1, b_));
+        if (k == 0)
+            block[0] = block[1] = false;
+        for (int i = 0; i < S && start + i <= n; i++) {
+            if (start + i >= m && block[i])
+                cout << start + i << '\n';
         }
     }
-    return DP[id][b] = ans;
+    cout << '\n';
 }
 
 int main()
 {
-    cin >> n >> k;
-    d.assign(n, vi(7, 0));
-    rep(i, n)
+    ios::sync_with_stdio(0); cin.tie(0);
+
+    is_prime.assign(MAX_NUM, true);
+    int limit = floor(sqrt(MAX_NUM));
+    repx(i, 2, limit + 1)
     {
-        cin >> r;
-        d[i][0] = 1;
-        rep(j, r - 1)
+        if (is_prime[i])
         {
-            cin >> d_;
-            d[i][d_ - 1] = 1;
+            primes.pb(i);
+            for (int j = i * i; j <= limit; j += i)
+                is_prime[j] = false;
         }
     }
-    DP.assign(n, vi(1 << 21, -1));
 
-    cout << dp(0, 0) << '\n';
+    cin >> T;
+    rep(t, T)
+    {
+        cin >> m >> n;
+        cout_primes(m, n);
+    }
 }

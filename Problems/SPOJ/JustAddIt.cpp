@@ -52,70 +52,40 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
-int n, k, r, d_;
-graph d;
-graph DP;
+const int MOD = 1e7 + 7;
+int n, k;
 
-int dp(int id, int b)
+ll binary_exp(ll a, ll b)
 {
-    // cerr << "IN: " << id << ' ' << b << '\n';
-    if (id >= n)
+    a %= MOD;
+    ll res = 1;
+    while (b > 0)
     {
-        int m = 0;
-        rep(i, 7)
-        {
-            if (d[id - 1][i])
-                m = i;
-        }
-        return m + 1;
+        if (b & 1)
+            res = (res * a) % MOD;
+        a = (a * a) % MOD;
+        b >>= 1;
     }
+    return res;
+}
 
-    if (DP[id][b] != -1)
-        return DP[id][b];
-
-    int ans = 1e9;
-    rep(i, 7)
-    {
-        // cerr << "i: " << i << '\n';
-        bool able = true;
-        rep(j, 7)
-        {
-            // cerr << "j: " << j << ' ' << ((b >> (2 * (i + j))) & 3) << '\n';
-            if (d[id][j] && ((b >> (2 * (i + j))) & 3) == k)
-                able = false;
-        }
-        // cerr << "able: " << able << '\n';
-        if (able)
-        {
-            int b_ = 0;
-            rep(j, 7)
-            {
-                if (d[id][j])
-                    b_ |= (((b >> (2 * (i + j))) & 3) + 1) << (2 * j);
-                else
-                    b_ |= ((b >> (2 * (i + j))) & 3) << (2 * j);
-            }
-            ans = min(ans, i + dp(id + 1, b_));
-        }
-    }
-    return DP[id][b] = ans;
+ll z(int n, int k)
+{
+    ll ans = 0;
+    ans = (ans + 2 * binary_exp(n - 1, k)) % MOD;
+    ans = (ans + 2 * binary_exp(n - 1, n - 1)) % MOD;
+    ans = (ans + binary_exp(n, k)) % MOD;
+    ans = (ans + binary_exp(n, n)) % MOD;
+    return ans;
 }
 
 int main()
 {
-    cin >> n >> k;
-    d.assign(n, vi(7, 0));
-    rep(i, n)
+    while (cin >> n >> k)
     {
-        cin >> r;
-        d[i][0] = 1;
-        rep(j, r - 1)
-        {
-            cin >> d_;
-            d[i][d_ - 1] = 1;
-        }
-    }
-    DP.assign(n, vi(1 << 21, -1));
+        if (n == 0 && k == 0)
+            break;
 
-    cout << dp(0, 0) << '\n';
+        cout << z(n, k) << '\n';
+    }
 }

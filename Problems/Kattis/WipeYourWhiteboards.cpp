@@ -52,70 +52,37 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
-int n, k, r, d_;
-graph d;
-graph DP;
-
-int dp(int id, int b)
+ll gcdext(ll a, ll b, ll &x, ll &y)
 {
-    // cerr << "IN: " << id << ' ' << b << '\n';
-    if (id >= n)
+    ll r2, x2, y2, r1, x1, y1, r0, x0, y0, q;
+    r2 = a, x2 = 1, y2 = 0;
+    r1 = b, x1 = 0, y1 = 1;
+    while (r1)
     {
-        int m = 0;
-        rep(i, 7)
-        {
-            if (d[id - 1][i])
-                m = i;
-        }
-        return m + 1;
+        q = r2 / r1;
+        r0 = r2 % r1;
+        x0 = x2 - q * x1;
+        y0 = y2 - q * y1;
+        r2 = r1, x2 = x1, y2 = y1;
+        r1 = r0, x1 = x0, y1 = y0;
     }
-
-    if (DP[id][b] != -1)
-        return DP[id][b];
-
-    int ans = 1e9;
-    rep(i, 7)
-    {
-        // cerr << "i: " << i << '\n';
-        bool able = true;
-        rep(j, 7)
-        {
-            // cerr << "j: " << j << ' ' << ((b >> (2 * (i + j))) & 3) << '\n';
-            if (d[id][j] && ((b >> (2 * (i + j))) & 3) == k)
-                able = false;
-        }
-        // cerr << "able: " << able << '\n';
-        if (able)
-        {
-            int b_ = 0;
-            rep(j, 7)
-            {
-                if (d[id][j])
-                    b_ |= (((b >> (2 * (i + j))) & 3) + 1) << (2 * j);
-                else
-                    b_ |= ((b >> (2 * (i + j))) & 3) << (2 * j);
-            }
-            ans = min(ans, i + dp(id + 1, b_));
-        }
-    }
-    return DP[id][b] = ans;
+    ll g = r2;
+    x = x2, y = y2;
+    if (g < 0)
+        g = -g, x = -x, y = -y;
+    return g;
 }
+
+int T, r, s, q;
 
 int main()
 {
-    cin >> n >> k;
-    d.assign(n, vi(7, 0));
-    rep(i, n)
+    cin >> T;
+    rep(t, T)
     {
-        cin >> r;
-        d[i][0] = 1;
-        rep(j, r - 1)
-        {
-            cin >> d_;
-            d[i][d_ - 1] = 1;
-        }
+        cin >> r >> s >> q;
+        ll x, y;
+        ll g = gcdext(r, s, x, y);
+        cerr << x * (q / g) << ' ' << y * (q / g) << '\n';
     }
-    DP.assign(n, vi(1 << 21, -1));
-
-    cout << dp(0, 0) << '\n';
 }

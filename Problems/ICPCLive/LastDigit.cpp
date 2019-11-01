@@ -52,70 +52,77 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
-int n, k, r, d_;
-graph d;
-graph DP;
+const int MAX_NUM = 1e6;
+vector<bool> is_prime(MAX_NUM + 1, true);
+vector<int> primes;
+string in;
+vi counts;
 
-int dp(int id, int b)
+vi factorial_prime_factorization(int n)
 {
-    // cerr << "IN: " << id << ' ' << b << '\n';
-    if (id >= n)
+    vi prime2exp(MAX_NUM + 1, 0);
+    for (int p : primes)
     {
-        int m = 0;
-        rep(i, 7)
-        {
-            if (d[id - 1][i])
-                m = i;
-        }
-        return m + 1;
+        if (p > n)
+            break;
+        int e = 0;
+        int tmp = n;
+        while ((tmp /= p) > 0)
+            e += tmp;
+        prime2exp[p] = e;
     }
+    return prime2exp;
+}
 
-    if (DP[id][b] != -1)
-        return DP[id][b];
-
-    int ans = 1e9;
-    rep(i, 7)
+int binary_exp(int a, int b, int m)
+{
+    a %= m;
+    int res = 1;
+    while (b > 0)
     {
-        // cerr << "i: " << i << '\n';
-        bool able = true;
-        rep(j, 7)
-        {
-            // cerr << "j: " << j << ' ' << ((b >> (2 * (i + j))) & 3) << '\n';
-            if (d[id][j] && ((b >> (2 * (i + j))) & 3) == k)
-                able = false;
-        }
-        // cerr << "able: " << able << '\n';
-        if (able)
-        {
-            int b_ = 0;
-            rep(j, 7)
-            {
-                if (d[id][j])
-                    b_ |= (((b >> (2 * (i + j))) & 3) + 1) << (2 * j);
-                else
-                    b_ |= ((b >> (2 * (i + j))) & 3) << (2 * j);
-            }
-            ans = min(ans, i + dp(id + 1, b_));
-        }
+        if (b & 1)
+            res = (res * a) % m;
+        a = (a * a) % m;
+        b >>= 1;
     }
-    return DP[id][b] = ans;
+    return res;
 }
 
 int main()
 {
-    cin >> n >> k;
-    d.assign(n, vi(7, 0));
-    rep(i, n)
-    {
-        cin >> r;
-        d[i][0] = 1;
-        rep(j, r - 1)
-        {
-            cin >> d_;
-            d[i][d_ - 1] = 1;
-        }
-    }
-    DP.assign(n, vi(1 << 21, -1));
+    int limit = floor(sqrt(MAX_NUM));
+    repx(i, 2, limit + 1) if (is_prime[i]) for (int j = i * i; j <= MAX_NUM; j += i)
+        is_prime[j] = false;
+    repx(i, 2, MAX_NUM + 1) if (is_prime[i]) primes.push_back(i);
 
-    cout << dp(0, 0) << '\n';
+    while (cin >> in)
+    {
+        counts.assign(26, 0);
+        for (char l : in)
+            counts[l - 'a']++;
+
+        vi guide = factorial_prime_factorization(in.size());
+
+        rep(i, 26)
+        {
+            if (counts[i])
+            {
+                vi aux = factorial_prime_factorization(counts[i]);
+                for (int p : primes)
+                    guide[p] -= aux[p];
+            }
+        }
+        int min25 = min(guide[2], guide[5]);
+        guide[2] -= min25;
+        guide[5] -= min25;
+
+        int ans = 1;
+        for (int p : primes)
+        {
+            if (guide[p])
+                ans = (ans * binary_exp(p, guide[p], 10)) % 10;
+        }
+
+        cout << ans << '\n';
+    }
 }
