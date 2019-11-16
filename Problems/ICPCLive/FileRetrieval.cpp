@@ -52,11 +52,39 @@ typedef vector<vp> wgraph;
     }
 #define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
 
+struct SparseTable
+{
+    int n;
+    vector<ll> memo;
+    vector<ll> *arr;
+    SparseTable(vector<ll> &_arr)
+    {
+        arr = &_arr;
+        n = arr->size();
+        int maxlog = 31 - __builtin_clz(n);
+        memo.assign(n * (maxlog + 1), -1);
+    }
+    ll dp(int i, int e)
+    {
+        ll &ans = memo[e * n + i];
+        if (ans != -1)
+            return ans;
+        if (e == 0)
+            return ans = (*arr)[i];
+        return ans = dp(i, e - 1) | dp(i + (1 << (e - 1)), e - 1);
+    }
+    ll rbq(int l, int r)
+    {
+        int e = 31 - __builtin_clz(r - l + 1);
+        return dp(l, e) | dp(r - (1 << e) + 1, e);
+    }
+};
+
 struct SuffixArray
 {
     int n;
     vector<int> counts, rank, rank_tmp, sa, sa_tmp;
-    vector<int> lcp; // optional: only if lcp is needed
+    vector<int> lcp;
     inline int get_rank(int i) { return i < n ? rank[i] : 0; }
     void counting_sort(int maxv, int k)
     {
@@ -121,61 +149,77 @@ struct SuffixArray
     }
 };
 
-const ll MOD = 1e9 + 7;
-int pows[500010];
-int n, k, x, ind, aux;
-vi s, mapping, ind_t;
+int f;
+string file;
+vector<ll> indexes, indexes_st;
+vi s, l, r, sizes, mapping, lcp;
+stack<par> aux;
+set<ll> subsets;
 
 int main()
 {
-    pows[0] = 1;
-    repx(i, 1, 500010) pows[i] = (365 * pows[i - 1]) % MOD;
-
-    while (cin >> n)
+    while (cin >> f)
     {
-        aux = 0;
-        rep(i, n)
-        {
-            cin >> k;
-            aux += k;
-            ind_t.pb(aux);
-            rep(j, k) mapping.pb(i);
+        if (f == 0)
+            break;
 
-            rep(j, k)
-            {
-                cin >> x;
-                s.pb(x);
-            }
+        rep(i, f)
+        {
+            cin >> file;
+            rep(j, file.size()) s.pb(f + 1 + (file[j] - 'a'));
+            rep(j, file.size()) sizes.pb(file.size() - j);
+            rep(j, file.size() + 1) indexes.pb(1LL << i);
+            s.pb(i);
+            sizes.pb(0);
         }
 
         SuffixArray sa(s);
+        rep(i, sa.sa.size()) indexes_st.pb(indexes[sa.sa[i]]);
+        SparseTable st(indexes_st);
+        l.resize(sa.sa.size() + 1);
+        r.resize(sa.sa.size() + 1);
 
-        rep(i, sa.sa[i])
+        rep(i, sa.lcp.size()) lcp.pb(sa.lcp[i]);
+
+        mapping.resize(lcp.size());
+        rep(i, lcp.size())
+            mapping[sa.sa[i]] = lcp[i];
+
+        aux.push({-1, f});
+        repx(i, f, lcp.size())
         {
-            rep
+            while (aux.top().first >= lcp[i])
+                aux.pop();
+            l[i] = aux.top().second;
+            aux.push({lcp[i], i + 1});
         }
+        while (aux.empty() == false)
+            aux.pop();
 
-        // ll ans = 0;
-        // rep(i, sa.sa.size())  //for (int i = sa.sa.size() - 1; i >= 0; i--)
-        // {
-        //     ind = sa.sa[i];
-        //     k = mapping[ind];
-        //     if (ind < ind_t[k])
-        //     {
-        //         for (int j = ind_t[k] - 1; j >= ind; j--)
-        //         {
-        //             cerr << j << ' ' << s[j] << '\n';
-        //             ans = (s[j] + (365 * ans) % MOD) % MOD;
-        //         }
-        //         ind_t[k] = ind;
-        //     }
-        // }
-        // ans = (365 * ans) % MOD;
+        aux.push({-1, lcp.size()});
+        for (int i = lcp.size() - 1; i >= f; i--)
+        {
+            while (aux.top().first >= lcp[i])
+                aux.pop();
+            r[i] = aux.top().second;
+            aux.push({lcp[i], i});
+        }
+        while (aux.empty() == false)
+            aux.pop();
 
-        // cerr << ans << '\n';
+        repx(i, f, lcp.size()) if (lcp[i])
+            subsets.insert(st.rbq(l[i], r[i]));
 
+        repx(i, f, lcp.size())
+            if ((i == f || (i > f && lcp[i - 1] < sizes[sa.sa[i]])) && lcp[i] < sizes[sa.sa[i]])
+                subsets.insert(indexes_st[i]);
+    
+        cout << subsets.size() << '\n';
+        indexes.clear();
+        indexes_st.clear();
+        sizes.clear();
         s.clear();
-        mapping.clear();
-        ind_t.clear();
+        subsets.clear();
+        lcp.clear();
     }
 }
