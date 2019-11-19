@@ -62,8 +62,8 @@ int main()
 
         rep(i, n) repx(j, i + 1, n) repx(k, j + 1, n)
         {
-            if (intersects(segments[i], segments[j]) && 
-                intersects(segments[j], segments[k]) && 
+            if (intersects(segments[i], segments[j]) &&
+                intersects(segments[j], segments[k]) &&
                 intersects(segments[i], segments[k]))
                 count++;
         }
