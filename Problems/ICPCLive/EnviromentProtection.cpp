@@ -2,7 +2,6 @@
 using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-typedef vector<int> vi;
 
 double w, d, a, k;
 vector<double> p1, q1, p2, q2;
