@@ -57,7 +57,6 @@ int main()
     {
         while ((pol[i + 1] - pol[i]).cross(pol[j + 1] - pol[j]) >= 0)
             j++;
-        // cerr << i << ' ' << j << '\n';
         count -= choose(j - i - 1, 2);
     }
 
