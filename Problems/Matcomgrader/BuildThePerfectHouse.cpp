@@ -74,8 +74,8 @@ int main()
             while (a2 >= 0.5 * PI)
                 a2 -= 0.5 * PI;
 
-            events.insert({a1, 0});
-            events.insert({a2, 1});
+            events.insert({a1, 1});
+            events.insert({a2, 0});
 
             if (a2 < a1)
                 counter++;
@@ -86,9 +86,9 @@ int main()
         
         for (auto e : events)
         {
-            if (e.second == 0)
-                counter++;
             if (e.second == 1)
+                counter++;
+            if (e.second == 0)
                 counter--;
             if (counter >= N)
             {

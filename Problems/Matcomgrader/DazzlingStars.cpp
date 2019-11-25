@@ -55,15 +55,12 @@ int main()
         double left = aux.angle() + PI / 2;
         double right = aux.angle() - PI / 2;
         if (left >= 2 * PI)
-        {
             left -= 2 * PI;
-            c++;
-        }
         if (right < 0)
-        {
             right += 2 * PI;
+
+        if (left < right)
             c++;
-        }
 
         sweep.pb({left, 1});
         sweep.pb({right, 0});
