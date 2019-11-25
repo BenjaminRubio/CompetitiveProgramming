@@ -77,10 +77,9 @@ int main()
         return 0;
     }
 
-    pair<double, int> last = {-1, -1};
     for (auto e : sweep)
     {
-        if (e.second && e != last && c >= n_)
+        if (c >= n_)
         {
             cout << "Y\n";
             return 0;
@@ -89,7 +88,6 @@ int main()
             c--;
         else
             c++;
-        last = e;
     }
 
     cout << "N\n";
