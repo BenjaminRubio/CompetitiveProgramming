@@ -2,7 +2,7 @@
 using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-typedef long long ll;
+#define double long double
 
 const double PI = 3.14159265358979323846;
 
@@ -47,17 +47,13 @@ int main()
         double m = (rmin + rmax) * 0.5;
 
         set<pair<double, int>> events;
-        int counter = 0;
-
+        int c = 0;
         bool able = false;
-
+        int n = 0;
         rep(i, N)
         {
             if (plant[i].norm2() >= 2 * m * m)
-            {
-                counter++;
                 continue;
-            }
 
             if (plant[i].norm2() < m * m)
                 goto not_able;
@@ -74,27 +70,27 @@ int main()
             while (a2 >= 0.5 * PI)
                 a2 -= 0.5 * PI;
 
-            events.insert({a1, 1});
-            events.insert({a2, 0});
+            events.insert({a1, 0});
+            events.insert({a2, 1});
+            n++;
 
             if (a2 < a1)
-                counter++;
+                c++;
         }
 
-        if (counter >= N)
+        if (c == n)
             able = true;
         
         for (auto e : events)
         {
-            if (e.second == 1)
-                counter++;
-            if (e.second == 0)
-                counter--;
-            if (counter >= N)
-            {
-                able = true;
+            if (able)
                 break;
-            }
+            if (e.second == 0)
+                c++;
+            if (e.second == 1)
+                c--;
+            if (c == n)
+                able = true;
         }
 
     not_able:
