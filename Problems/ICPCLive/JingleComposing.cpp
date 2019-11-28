@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
-
 map<char, int> duration = {{'W', 64}, {'H', 32}, {'Q', 16}, {'E', 8}, {'S', 4}, {'T', 2}, {'X', 1}};
 string composition;
 
