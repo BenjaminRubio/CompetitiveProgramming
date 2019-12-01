@@ -18,9 +18,6 @@ struct node
 static int size(pnode p) { return p ? p->size : 0; }
 static Key key(pnode p) { return p ? p->key : 0; }
 static ll sum(pnode p) { return p ? p->sum : 0; }
-void push(pnode p)
-{
-}
 void pull(pnode p)
 {
     p->size = 1 + size(p->l) + size(p->r);
@@ -31,7 +28,6 @@ pnode merge(pnode l, pnode r)
 {
     if (!l || !r)
         return l ? l : r;
-    push(l), push(r);
     pnode t;
     if (l->prior < r->prior)
         l->r = merge(l->r, r), t = l;
@@ -45,7 +41,6 @@ void split(pnode t, Key key, pnode &l, pnode &r)
 {
     if (!t)
         return void(l = r = 0);
-    push(t);
     if (key < t->key)
         split(t->l, key, l, t->l), r = t;
     else
@@ -57,7 +52,6 @@ void erase(pnode &t, Key key)
 {
     if (!t)
         return;
-    push(t);
     if (key == t->key)
         t = merge(t->l, t->r);
     else if (key < t->key)
