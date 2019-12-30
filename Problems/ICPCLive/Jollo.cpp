@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
+
 int a, b, c, x, y;
 vector<pair<int, bool>> cards;
 vector<bool> check;
@@ -13,47 +15,61 @@ int main()
         if (a == 0)
             break;
 
-        check.assign(5, false);
-
-        cards[0] = {a, false};
-        cards[1] = {b, false};
-        cards[2] = {c, false};
-        cards[3] = {x, true};
-        cards[4] = {y, true};
-
-        sort(cards.begin(), cards.end());
-
-        int count = 0;
-        int ind;
-        for (int i = 0; i < 10; i++)
-        {
-            if ((count == 1 || count == 3) && !cards[i % 5].second)
-            {
-                count++;
-                check[i % 5] = true;
-            }
-            else if ((count == 0 || count == 2) && cards[i % 5].second)
-            {
-                count++;
-                check[i % 5] = true;
-            }
-            else if (count == 4 || !check[i % 5])
-            {
-                ind = i % 5;
-                break;
-            }
-        }
+        if (b > c)
+            swap(b, c);
+        if (a > c)
+            swap(a, c);
+        if (a > b)
+            swap(a, b);
+        if (x > y)
+            swap(x, y);
 
         bool done = false;
-        for (int i = 1; i <= 52; i++)
+        if ((x < a || x < b) && (y < b || y < c))
+            cout << -1 << '\n';
+        else if (x < b && c < y)
         {
-            if (!done && i > cards[ind].first && i != a && i != b && i != c && i != x && i != y)
+            repx(i, c + 1, 53) if (i != y)
             {
                 cout << i << '\n';
                 done = true;
+                break;
             }
+            if (!done)
+                cout << -1 << '\n';
         }
-        if (!done)
-            cout << -1 << '\n';
+        else if (b < x && x < c && c < y)
+        {
+            repx(i, b + 1, 53) if (i != x && i != c && i != y)
+            {
+                cout << i << '\n';
+                done = true;
+                break;
+            }
+            if (!done)
+                cout << -1 << '\n';
+        }
+        else if (x > c)
+        {
+            repx(i, 1, 53) if (i != a && i != b && i != c && i != x && i != y)
+            {
+                cout << i << '\n';
+                done = true;
+                break;
+            }
+            if (!done)
+                cout << -1 << '\n';
+        }
+        else
+        {
+            repx(i, b + 1, 53) if (i != b && i != c && i != x && i != y)
+            {
+                cout << i << '\n';
+                done = true;
+                break;
+            }
+            if (!done)
+                cout << -1 << '\n';
+        }
     }
 }
