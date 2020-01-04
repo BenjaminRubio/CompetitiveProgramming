@@ -106,7 +106,7 @@ int dp(int i, int b)
         if (b & b_)
         {
             assert(i != j);
-            ans = min(ans, cost[i][j] + dp(j, b & ~b_));
+            ans = min(ans, cost[i][j] + dp(j, b ^ b_));
         }
     }
     return DP[i][b] = ans;
