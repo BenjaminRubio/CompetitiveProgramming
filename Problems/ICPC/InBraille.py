@@ -12,7 +12,7 @@ while True:
 
     t = input().strip()
 
-    if (t == 'S'):
+    if t == 'S':
 
         s = input().strip()
         ans = []
