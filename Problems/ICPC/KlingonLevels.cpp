@@ -37,7 +37,7 @@ int main()
         }
 
         int m = 1e9;
-        rep(i, 100)
+        rep(i, 101)
             m = min(m, score(i + 1));
 
         cout << m << '\n';
