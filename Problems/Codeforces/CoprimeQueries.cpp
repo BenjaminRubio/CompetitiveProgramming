@@ -17,13 +17,9 @@ vector<int> nsq;
 
 int count_coprimes(int l, int r, int x)
 {
-	// cerr << '\n';
-	// cerr << l << ' ' << r << '\n';
-
 	int ans = 0;
 	for (int v : d[x])
 	{
-		// cerr << v << '\n';
 		int i, j;
 		int id = m[v];
 
@@ -56,10 +52,7 @@ int count_coprimes(int l, int r, int x)
 		j = low;
 
 		ans += mob[v] * (j - i + 1);
-		// cerr << "partial: " << ans << '\n';
 	}
-
-	// cerr << "ans: " << ans << '\n';
 
 	return ans;
 }
@@ -151,8 +144,6 @@ int main()
 		cin >> l >> r >> x;
 		l--; r--;
 
-		// cerr << "Query: x: " << x << "   l: " << l << "   r: " << r << '\n';
-
 		int low = 0;
 		int high = r - l + 1;
 		while (low < high)
@@ -164,8 +155,6 @@ int main()
 			else
 				low = mid + 1;
 		}
-
-		// cerr << "\nlow: " << low << "\n\n";
 
 		if (low == r - l + 1) cout << -1 << '\n';
 		else cout << r - low + 1 << '\n';
