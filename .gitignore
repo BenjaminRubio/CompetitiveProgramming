@@ -2,7 +2,8 @@
 ## Ignora inputs, outputs y binarios
 
 *.txt
-*.out
+in
+out
 .*
 test.cpp
 generate.py
