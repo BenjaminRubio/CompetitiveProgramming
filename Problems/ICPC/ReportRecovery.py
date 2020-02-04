@@ -1,61 +1,64 @@
 
+from pprint import pprint
+
 N = None
 P = None
 names = []
 numbers = []
 totals = None
-ix = None
+pos = None
 
-
-def check1(i):
-
+def check1(p, curr):
     s = 0
-    for j in range(N):
-        s += int(numbers[i][ix[i][j][0]:ix[i][j][1]])
-
-    if s != int(numbers[i][ix[i][N][0]:ix[i][N][1]]):
-        return False
-
-    return True
-
-
-def check2():
-
-    for j in range(N + 1):
-        s = 0
-        for i in range(P):
-            s += int(numbers[i][ix[i][j][0]:ix[i][j][1]])
-
-        if s != int(numbers[P][ix[P][j][0]:ix[P][j][1]]):
-            return False
-
-    return True
-
-
-def generate(i, p, l):
-    if i == P + 1:
-        return check2()
-
-    if l >= len(numbers[i]):
-        return False
-
-    if p == N:
-
-        ix[i][p] = [l, len(numbers[i])]
-        if numbers[i][l] != '0' or l == len(numbers[i]) - 1:
-            
-            if i == P or check1(i):
-                return generate(i + 1, 0, 0)
-        return False
-
-    for j in range(l, min(l + 3 + (i == P), len(numbers[i]), l + 10 * (not numbers[i][l] == '0') + 1)):
-        ix[i][p] = [l, j + 1]
-
-        if generate(i, p + 1, j + 1):
-            return True
-
+    l = 0
+    for i in curr[:-1]:
+        s += int(numbers[p][l : i])
+        l = i
+    if s == int(numbers[p][l : curr[-1]]):
+        return True
     return False
 
+def generate_pos(p, i, n, curr):
+    if n > N + 1:
+        return
+    if i == len(numbers[p]):
+        if n == N + 1:
+            if check1(p, curr.copy()):
+                pos[p].append(curr.copy())
+        return
+
+    for j in range(i, max(i + 1, int(numbers[p][i] != '0') * len(numbers[p]))):
+        curr.append(j + 1)
+        generate_pos(p, j + 1, n + 1, curr.copy())
+        curr = curr[:-1]
+
+def check2(curr):
+    l = [0 for _ in range(P + 1)]
+    for i in range(N + 1):
+        s = 0
+        for j in range(P):
+            s += int(numbers[j][l[j] : pos[j][curr[j]][i]])
+            l[j] = pos[j][curr[j]][i]
+        if s != int(numbers[-1][l[-1] : pos[-1][curr[-1]][i]]):
+            return False
+        l[-1] = pos[-1][curr[-1]][i]
+    return True
+
+def final(p, curr):
+    if p == P + 1:
+        if check2(curr.copy()):
+
+            print("gg")
+
+            return True
+        return False
+
+    for i in range(len(pos[p])):
+        curr.append(i)
+        if final(p + 1, curr.copy()):
+            return True
+        curr = curr[:-1]
+    return False
 
 if __name__ == "__main__":
 
@@ -87,21 +90,11 @@ if __name__ == "__main__":
 
         P = len(names) - 1
 
-        ix = [[[] for j in range(N + 1)] for i in range(P + 1)]
-
-        generate(0, 0, 0)
-
-        line = ''        
-        for j in range(N):
-            line += 'P' + str(j + 1) + ' '
-        line += "Totals"
-        print(line)
+        pos = [[] for i in range(P + 1)]
 
         for i in range(P + 1):
+            generate_pos(i, 0, 0, [])
 
-            line = names[i]
-            for j in range(N + 1):
-                line += ' '
-                line += numbers[i][ix[i][j][0]:ix[i][j][1]]
+        final(0, [])
 
-            print(line)
+        pprint(pos)
