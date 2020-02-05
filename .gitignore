@@ -4,6 +4,7 @@
 *.txt
 in
 out
+*.out
 .*
 test.cpp
 generate.py
