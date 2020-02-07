@@ -38,9 +38,7 @@ int main()
         {
             if (t < 0) t += P;
             if (t > P - 1) t -= P;
-
-            // cerr << "t: " << t + 1 << "  top: {" << top.ff << ", " << top.ss << "} " << '\n';
-
+            
             if (!done and top.ff == 12)
             {
                 d *= -1;
