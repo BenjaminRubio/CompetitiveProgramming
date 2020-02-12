@@ -9,44 +9,55 @@ vector<vector<bool>> visited;
 
 bool check(int i, int j)
 {
-    int x = i, y = j;
-    int u = 0;
-    while (x--)
-    {
-        if (m[x][y] != '*') break;
-        if (y and m[x][y - 1] == '*') return false;
-        if (y < W - 1 and m[x][y + 1] == '*') return false;
-        visited[x][y] = true;
-        u++;
-    }
+    if (j == 0 or j == W - 1) return false;
 
-    x = i, y = j;
+    int x = i, y = j;
+    if (x and m[x - 1][y] == '*') return false;
+
+    int u = 0;
+    bool pos = false;
+    while (x < H)
+    {
+        if (m[x][y] != '*') return false;
+        if (m[x][y - 1] == '*' and m[x][y + 1] == '*') { pos = true; break; }
+        if (m[x][y - 1] == '*' or m[x][y + 1] == '*') return false;
+        visited[x][y] = 1;
+        u++;
+        x++;
+    }
+    if (!pos or !u) return false;
+    visited[x][y] = 1;
+
+    x = i + u, y = j;
     int l = 0;
     while (y--)
     {
         if (m[x][y] != '*') break;
         if (x and m[x - 1][y] == '*') return false;
         if (x < H - 1 and m[x + 1][y] == '*') return false;
+        visited[x][y] = 1;
         l++;
     }
 
-    x = i, y = j;
+    x = i + u, y = j;
     int r = 0;
     while (++y < W)
     {
         if (m[x][y] != '*') break;
         if (x and m[x - 1][y] == '*') return false;
         if (x < H - 1 and m[x + 1][y] == '*') return false;
+        visited[x][y] = 1;
         r++;
     }
 
-    x = i, y = j;
+    x = i + u, y = j;
     int d = 0;
     while (++x < H)
     {
         if (m[x][y] != '*') break;
         if (y and m[x][y - 1] == '*') return false;
         if (y < W - 1 and m[x][y + 1] == '*') return false;
+        visited[x][y] = 1;
         d++;
     }
 
