@@ -36,9 +36,7 @@ bool barrier(int i, int j, int k, int l, int r, int u, int d)
 
 void dfs(int i, int j)
 {
-    // cout << i << ' ' << j << endl;
     v[i][j] = 1;
-    // cout << i << ' ' << j << endl;
 
     int l, r, u, d;
     if (i % 2 == 1 and j % 2 == 1) u = j / 2, d = j / 2, l = -1, r = 0;
@@ -51,21 +49,13 @@ void dfs(int i, int j)
         int x = i + dx[k];
         int y = j + dy[k];
 
-        // cout << k << endl;
-
         if (x >= 0 and y >= 0 and x < 2 * N and y < 2 * N + 1 and !v[x][y])
-        {
-            // cerr << i << ' ' << j << ' ' << k << ' ' << l << ' ' << r << ' ' << u << ' ' << d << endl;
             if (barrier(i, j, k, l, r, u, d)) dfs(x, y);
-        }
     }
 }
 
 int main()
 {
-    // ios::sync_with_stdio(0);
-    // cin.tie(0);
-
     while (cin >> N)
     {
         b.assign(2 * N - 1, vector<char>(N, '.'));
