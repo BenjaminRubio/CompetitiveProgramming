@@ -36,8 +36,9 @@ bool barrier(int i, int j, int k, int l, int r, int u, int d)
 
 void dfs(int i, int j)
 {
+    // cout << i << ' ' << j << endl;
     v[i][j] = 1;
-    // cerr << i << ' ' << j << endl;
+    // cout << i << ' ' << j << endl;
 
     int l, r, u, d;
     if (i % 2 == 1 and j % 2 == 1) u = j / 2, d = j / 2, l = -1, r = 0;
@@ -50,7 +51,7 @@ void dfs(int i, int j)
         int x = i + dx[k];
         int y = j + dy[k];
 
-        // cout << k << '\n';
+        // cout << k << endl;
 
         if (x >= 0 and y >= 0 and x < 2 * N and y < 2 * N + 1 and !v[x][y])
         {
@@ -68,7 +69,16 @@ int main()
     while (cin >> N)
     {
         b.assign(2 * N - 1, vector<char>(N, '.'));
-        rep(i, 2 * N - 1) rep(j, N) cin >> b[i][j];
+
+        set<char> d;
+        rep(i, 2 * N - 1) rep(j, N) { cin >> b[i][j]; d.insert(b[i][j]); }
+
+        if (d.size() == 1 and N > 1)
+        {
+            if (b[0][0] == 'H') cout << 0 << '\n';
+            else cout << N << '\n';
+            continue;
+        }
 
         int ans = 0;
         v.assign(2 * N, vector<bool>(2 * N + 1, 0));
