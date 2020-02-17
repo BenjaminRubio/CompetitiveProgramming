@@ -33,14 +33,14 @@ int main()
 
         sort(S.begin(), S.end());
 
-        int tot = 0, lastl = INT_MIN, lastr = INT_MIN, M = 0;
+        int tot = 0, last = INT_MIN, M = 0;
         int max1 = INT_MIN, max2 = INT_MIN, id;
         vector<int> aux(n, 0);
         queue<pair<int, int>> q;
         bool up = false;
         for (Segment s : S)
         {
-            if (s.l != lastl) while (!q.empty())
+            if (s.l != last) while (!q.empty())
             {
                 pair<int, int> f = q.front();
                 if (f.ff >= max1)
@@ -53,12 +53,12 @@ int main()
             }
             
             int c = (s.l <= max1) + (s.l <= max2);
-            if (s.l != lastl and c == 1 and !up) aux[id]++;
-            if (s.l != lastl and !c) { tot++; up = true; }
+            if (s.l != last and c == 1 and !up) aux[id]++;
+            if (s.l != last and !c) { tot++; up = true; }
             else up = false;
 
             q.push({s.r, s.id});
-            lastl = s.l; lastr = s.r;
+            last = s.l;
         }
 
         if (tot == n) { cout << n - 1 << '\n'; continue; }
