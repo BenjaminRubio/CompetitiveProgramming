@@ -56,14 +56,8 @@ int main()
         uf.unionSet(x - 1, y - 1);
     }
 
-    set<int> parents;
     vector<priority_queue<int>> aux(n);
-
-    rep(i, n)
-    {
-        parents.insert(uf.findSet(i));
-        aux[uf.findSet(i)].push(p[i]);
-    }
+    rep(i, n) aux[uf.findSet(i)].push(p[i]);
 
     rep(i, n)
     {
