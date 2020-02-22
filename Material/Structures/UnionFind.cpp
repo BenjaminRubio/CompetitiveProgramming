@@ -28,7 +28,3 @@ struct UF
     }
     int sizeOfSet(int i) { return setSize[findSet(i)]; }
 };
-
-int main()
-{
-}
