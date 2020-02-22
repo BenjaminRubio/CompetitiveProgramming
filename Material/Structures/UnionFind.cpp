@@ -5,8 +5,8 @@ using namespace std;
 
 struct UF
 {
-    vector<int> p, rank, setSize;
     int numSets;
+    vector<int> p, rank, setSize;
     UF(int n)
     {
         numSets = n;
