@@ -41,10 +41,8 @@ public:
         node ansl, ansr;
         for (l += n, r += n; l < r; l >>= 1, r >>= 1)
         {
-            if (l & 1)
-                ansl = node(ansl, t[l++]);
-            if (r & 1)
-                ansr = node(t[--r], ansr);
+            if (l & 1) ansl = node(ansl, t[l++]);
+            if (r & 1) ansr = node(t[--r], ansr);
         }
         return node(ansl, ansr);
     }

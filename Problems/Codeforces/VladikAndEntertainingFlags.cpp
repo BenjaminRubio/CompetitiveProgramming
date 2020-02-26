@@ -4,36 +4,66 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 
-struct UF
+template <class node>
+class ST
 {
-    int numSets;
-    vector<int> p, rank, setSize;
-    UF(int n)
+    vector<node> t;
+    int n, N;
+
+public:
+    ST(vector<node> &arr)
     {
-        numSets = n;
-        setSize.assign(n, 1);
-        rank.assign(n, 0);
-        p.resize(n);
-        rep(i, n) p[i] = i;
+        n = arr.size();
+        t.resize(n * 2);
+        copy(arr.begin(), arr.end(), t.begin() + n);
+        for (int i = n - 1; i > 0; --i)
+            t[i] = node(t[i << 1], t[i << 1 | 1]);
     }
-    int findSet(int i) { return (p[i] == i) ? i : (p[i] = findSet(p[i])); }
-    bool isSameSet(int i, int j) { return findSet(i) == findSet(j); }
-    void unionSet(int i, int j)
+
+    node query(int l, int r)
     {
-        if (isSameSet(i, j)) return;
-        numSets--;
-        int x = findSet(i), y = findSet(j);
-        if (rank[x] > rank[y]) p[y] = x, setSize[x] += setSize[y];
-        else p[x] = y, setSize[y] += setSize[x];
-        if (rank[x] == rank[y]) rank[y]++;
+        node ansl, ansr;
+        for (l += n, r += n; l < r; l >>= 1, r >>= 1)
+        {
+            if (l & 1) ansl = node(ansl, t[l++]);
+            if (r & 1) ansr = node(t[--r], ansr);
+        }
+        return node(ansl, ansr);
     }
-    int sizeOfSet(int i) { return setSize[findSet(i)]; }
 };
 
 int N, M, Q, l, r;
 vector<vector<int>> m;
-vector<UF> U;
-vector<int> w;
+
+struct Node
+{
+    int c, l, r;
+    vector<int> cl, cr, al, ar;
+    Node() : c(0) {}
+    Node(int id) : c(N), l(id), r(id), cl(N), cr(N), al(N), ar(N)
+    {
+        rep(i, N) cl[i] = cr[i] = id * N + i;
+        rep(i, N) if (i and m[i][id] == m[i - 1][id]) merge(cl[i - 1], cr[i]);
+    }
+    Node(const Node &a, const Node &b) : c(0)
+    {
+        if (!a.c) { c = b.c; l = b.l; r = b.r; cl = b.cl; cr = b.cr; return; }
+        if (!b.c) { c = a.c; l = a.l; r = a.r; cl = a.cl; cr = a.cr; return; }
+        c = a.c + b.c; l = a.l, r = b.r;
+        cl = a.cl; cr = b.cr; al = a.cr; ar = b.cl;
+        rep(i, N) if (m[i][a.r] == m[i][b.l]) merge(al[i], ar[i]);
+    }
+    void merge(int x, int y)
+    {
+        if (x == y) return;
+        if (x > y) swap(x, y);
+        rep(i, N) if (cl[i] == x) cl[i] = y;
+        rep(i, N) if (cr[i] == x) cr[i] = y;
+        rep(i, N) if (al[i] == x) al[i] = y;
+        rep(i, N) if (ar[i] == x) ar[i] = y;
+        c--;
+    }
+};
 
 int main()
 {
@@ -45,47 +75,13 @@ int main()
     m.assign(N, vector<int>(M));
     rep(i, N) rep(j, M) cin >> m[i][j];
 
-    int binSize = sqrt(M);
-    int numBins = M / binSize + bool(M % binSize);
-    rep(i, numBins)
-    {
-        int off = i * binSize; // offset
-        int width = min(M, (i + 1) * binSize) - off; w.push_back(width);
-        UF uf(N * width);
-        repx(j, off, min(M, off + binSize)) rep(k, N)
-        {
-            if (j > off and m[k][j] == m[k][j - 1])
-                uf.unionSet(width * k + j - off, width * k + j - off - 1);
-            if (k > 0 and m[k][j] == m[k - 1][j])
-                uf.unionSet(width * k + j - off, width * (k - 1) + j - off);
-        }
-
-        U.push_back(uf);
-    }
+    vector<Node> v;
+    rep(i, M) v.emplace_back(i);
+    ST<Node> st(v);
 
     rep(_, Q)
     {
-        cin >> l >> r; l--; r--;
-
-        int lBin = l / binSize, rBin = r / binSize;
-
-        if (lBin == rBin)
-        {
-            int off = l, width = r - l + 1;
-            UF uf(N * width);
-            repx(j, off, width) rep(k, N)
-            {
-                if (j > off and m[k][j] == m[k][j - 1])
-                    uf.unionSet(width * k + j - off, width * k + j - off - 1);
-                if (k > 0 and m[k][j] == m[k - 1][j])
-                    uf.unionSet(width * k + j - off, width * (k - 1) + j - off);
-            }
-
-            cout << uf.numSets << '\n';
-        }
-        else
-        {
-            
-        }
+        cin >> l >> r;
+        cout << st.query(l - 1, r).c << '\n';
     }
 }
