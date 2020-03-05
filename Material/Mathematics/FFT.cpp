@@ -74,35 +74,3 @@ vl convMod(const vl &a, const vl &b, int M)
     }
     return res;
 }
-
-int n, m, p;
-vl a, b;
-
-int main()
-{
-    cin.sync_with_stdio(0); cin.tie(0);
-	cin.exceptions(cin.failbit);
-
-    cin >> n >> m >> p;
-
-    a.resize(n);
-    rep(i, n)
-    {
-        cin >> a[i];
-        a[i] %= p;
-    }
-
-    b.resize(m);
-    rep(i, m)
-    {
-        cin >> b[i];
-        b[i] %= p;
-    }
-
-    int i = 0;
-    for (auto c : convMod(a, b, p))
-    {
-        if (c) { cout << i << '\n'; break; }
-        i++;
-    }
-}
