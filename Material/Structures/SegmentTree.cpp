@@ -12,6 +12,7 @@ struct Node
     }
 };
 
+// 0 - indexed / inclusive - exclusive
 template <class node>
 class ST
 {
@@ -27,15 +28,11 @@ public:
         for (int i = n - 1; i > 0; --i)
             t[i] = node(t[i << 1], t[i << 1 | 1]);
     }
-
-    // 0-indexed
     void set_point(int p, const node &value)
     {
         for (t[p += n] = value; p > 1; p >>= 1)
             t[p >> 1] = node(t[p], t[p ^ 1]);
     }
-
-    // inclusive exclusive, 0-indexed
     node query(int l, int r)
     {
         node ansl, ansr;
