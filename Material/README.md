@@ -5,6 +5,7 @@ Diverse structures and algorithms for competitive programming problems.
 # Credit
 
 - Graphs
+    - Dijkstra: [Nicholas Mc-Donnell](https://github.com/N9199/apuntes_icpc/blob/master/graphs/dijsktra/dijsktra.cpp)
     - Minimum Spanning Tree: Modified from [Pablo Messina](https://github.com/PabloMessina/Competitive-Programming-Material/blob/master/Graphs/MinimumSpanningTree.cpp)
 
 - Mathemathics
