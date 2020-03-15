@@ -7,6 +7,7 @@ Diverse structures and algorithms for competitive programming problems.
 - Graphs
     - Dijkstra: [Nicholas Mc-Donnell](https://github.com/N9199/apuntes_icpc/blob/master/graphs/dijsktra/dijsktra.cpp)
     - Minimum Spanning Tree: Modified from [Pablo Messina](https://github.com/PabloMessina/Competitive-Programming-Material/blob/master/Graphs/MinimumSpanningTree.cpp)
+    - Min Cost Max Flow: From these [notes](https://github.com/gabrielpessoa1/Biblioteca-Maratona/blob/master/code/Graph/MinCostMaxFlow.cpp)
 
 - Mathemathics
     - Fast Fourier Transform: From these [notes](https://github.com/kth-competitive-programming/kactl/blob/master/content/numerical/FastFourierTransform.h)
