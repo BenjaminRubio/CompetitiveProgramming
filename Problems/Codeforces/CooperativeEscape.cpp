@@ -48,9 +48,15 @@ class MCMF
     {
         pTT flow(L[F[t]].c, 0);
         for (int v = t; v != s; v = L[F[v] ^ 1].v)
-            flow.ff = min(flow.ff, L[F[v]].c), flow.ss += L[F[v]].w;
+        {
+            flow.ff = min(flow.ff, L[F[v]].c);
+            flow.ss += L[F[v]].w;
+        }
         for (int v = t; v != s; v = L[F[v] ^ 1].v)
-            L[F[v]].c -= flow.ff, L[F[v] ^ 1].c += flow.ff;
+        {
+            L[F[v]].c -= flow.ff;
+            L[F[v] ^ 1].c += flow.ff;
+        }
         return flow;
     }
 
@@ -83,3 +89,46 @@ public:
         L.emplace_back(u, 0, -c);
     }
 };
+
+int main()
+{
+    int r, c;
+    cin >> r >> c;
+    vector<vector<char>> M(r + 2, vector<char>(c + 2, 'x'));
+    int B, C, F;
+    MCMF<int> AA(r * c+1);
+    rep(i, r)
+    {
+        rep(j, c)
+        {
+            cin >> M[i + 1][j + 1];
+            int ch = M[i + 1][j + 1];
+            if (ch == 'x')
+                continue;
+            if (ch == 'B')
+                B = c * i + j;
+            if (ch == 'F')
+                F = c * i + j;
+            if (ch == 'C')
+                C = c * i + j;
+            if (M[i][j + 1] != 'x')
+            {
+                AA.addEdge(c * i + j, c * (i - 1) + j, 1, 1);
+                AA.addEdge(c * (i - 1) + j, c * i + j, 1, 1);
+            }
+            if (M[i + 1][j] != 'x')
+            {
+                AA.addEdge(c * i + j, c * i + j - 1, 1, 1);
+                AA.addEdge(c * i + j - 1, c * i + j, 1, 1);
+            }
+        }
+    }
+    cerr << B << ' ' << C << ' ' << F << '\n';
+    AA.addEdge(r * c, B, 1, 0);
+    AA.addEdge(r * c, C, 1, 0);
+    pair<int, int> ans = AA.mcmf(r * c, F);
+ 
+    if (ans.ff < 2) cout << -1 << '\n';
+    else
+        cout << ans.ss << '\n';
+}
