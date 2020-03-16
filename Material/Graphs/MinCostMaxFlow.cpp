@@ -55,11 +55,7 @@ class MCMF
     }
 
 public:
-    MCMF(int n) : n(n)
-    {
-        E.resize(n); P.assign(n, 0); D.resize(n);
-        V.assign(n, false);
-    }
+    MCMF(int n) : n(n), E(n), D(n), P(n, 0), V(n, 0) {}
 
     pTT mcmf(int s, int t)
     {
