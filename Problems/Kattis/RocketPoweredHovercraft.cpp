@@ -15,8 +15,7 @@ struct Point
     double ang()
     {
         double a = atan2(y, x);
-        if (a < 0)
-            a += 2.0 * PI;
+        if (a < 0) a += 2.0 * PI;
         return a;
     }
 };
@@ -46,6 +45,7 @@ int main()
         if (ang <= p.ang())
             cout << (p.ang() + ang) / w << '\n';
         else
-            cout << 2.0 * p.ang() / w + (p.norm() - 2.0 * R * cos(PI * 0.5 - p.ang())) / v << '\n';
+            cout << 2.0 * p.ang() / w + 
+                    (p.norm() - 2.0 * R * cos(PI * 0.5 - p.ang())) / v << '\n';
     }
 }
