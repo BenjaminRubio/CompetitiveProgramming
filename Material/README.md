@@ -16,6 +16,9 @@ Diverse structures and algorithms for competitive programming problems.
 - Mathemathics
     - Fast Fourier Transform: From these [notes](https://github.com/kth-competitive-programming/kactl/blob/master/content/numerical/FastFourierTransform.h)
 
+- Strings
+    - Manacher: From [cp-algorithms](https://cp-algorithms.com/string/manacher.html)
+
 - Structures
     - Fenwick Tree: [Ignacio Hermosilla](https://github.com/ignaciohermosillacornejo/apuntes_icpc/tree/master/dataStructures/fenwickTree)
     - Segment Tree: From these [notes](https://docs.google.com/document/d/1rcex_saP4tExbbU62qGUjR3eenxOh-50i9Y45WtHkc4/edit)
