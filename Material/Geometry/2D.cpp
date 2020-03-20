@@ -2,6 +2,7 @@
 using namespace std;
 
 const double PI = 3.14159265358979323846;
+const double EPS = 1e-12;
 
 // POINT 2D
 
@@ -9,6 +10,7 @@ struct P
 {
     double x, y;
     P() {}
+    P(const P &p) : x(p.x), y(p.y) {}
     P(double x, double y) : x(x), y(y) {}
     P operator+(const P &p) const { return P(x + p.x, y + p.y); }
     P operator-(const P &p) const { return P(x - p.x, y - p.y); }
@@ -16,7 +18,7 @@ struct P
     P operator/(const double &c) const { return P(x / c, y / c); }
     double operator^(const P &p) const { return x * p.y - y * p.x; }
     double operator*(const P &p) const { return x * p.x + y * p.y; }
-    bool operator==(const P &p) const { return x == p.x && y == p.y; }
+    bool operator==(const P &p) const { return (P(*this) - p).norm() < EPS; }
     bool operator<(const P &p) const
     {
         return x < p.x or (x == p.x and y < p.y);
@@ -32,32 +34,38 @@ struct P
 };
 P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
-ostream &operator<<(ostream &s, P &p) { return s << p.x << ' ' << p.y; }
+ostream &operator<<(ostream &s, const P &p) { return s << p.x << ' ' << p.y; }
 
 // Segments
 
-double point_seg_dist(P &p, P &a, P &b)
+bool parallel(P a, P b, P c, P d) { return abs((a - b) ^ (c - d)) < EPS; }
+
+bool on_segment(P p, P a, P b)
 {
-    if ((p - a) * (b - a) >= 0 && (p - b) * (a - b) >= 0)
-        return abs(p ^ (b - a));
-    return min((p - a).norm(), (p - b).norm());
+    if (parallel(p, a, p, b) && (p - a) * (p - b) < 0) return true;
+    return false;
 }
 
-int sgn(double x) { return (x < 0) ? -1 : ((x > 0) ? 1 : 0); }
-bool intersect(P &a, P &b, P &c, P &d) // seg seg intersection
+bool do_intersect(P a, P b, P c, P d)
 {
-    return sgn((c - a) ^ (b - a)) * sgn((d - a) ^ (b - a)) <= 0 &&
-           sgn((a - c) ^ (d - c)) * sgn((b - c) ^ (d - c)) <= 0;
+    if (a == c || a == d || b == c || b == d) return true;
+    if (a == b && c == d) return false;
+    if (a == b) return on_segment(a, c, d);
+    if (c == d) return on_segment(c, a, b);
+    if (parallel(a, b, c, d) && parallel(a, c, b, d) && parallel(a, d, b, c))
+    {
+        if (on_segment(a, c, d) || on_segment(b, c, d) ||
+            on_segment(c, a, b) || on_segment(d, a, b)) return true;
+        return false;
+    }
+    if (((a - b) ^ (a - c)) * ((a - b) ^ (a - d)) > 0) return false;
+    if (((c - d) ^ (c - a)) * ((c - d) ^ (c - b)) > 0) return false;
+    return true;
 }
 
-double seg_seg_dist(P &a, P &b, P &c, P &d)
+P lines_intersection(P a, P b, P c, P d)
 {
-    if (intersect(a, b, c, d)) return 0;
-    return min({(a - c).norm(), (a - d).norm(), 
-                (b - c).norm(), (b - d).norm()});
-}
-
-double point_line_dist(P &p, P &a, P &b)
-{
-    return (abs((b - a) ^ (p - a))) / (b - a).norm();
+    b = b - a; d = c - d; c = c - a;
+    assert((b * b) > EPS && (d * d) > EPS);
+    return a + b * (c ^ d) / (b ^ d);
 }
