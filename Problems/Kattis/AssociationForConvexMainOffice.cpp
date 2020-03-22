@@ -2,81 +2,40 @@
 using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 
-struct Point
+struct P
 {
     int x, y;
-    Point operator+(const Point &p) const
-    {
-        return {x + p.x, y + p.y};
-    }
-    Point reduce() const
-    {
-        return {x / __gcd(x, y), y / __gcd(x, y)};
-    }
-    Point rotate() const
-    {
-        return {-y, x};
-    }
-    Point rotate_times(int t) const
-    {
-        Point ans = {x, y};
-        while (t--)
-            ans = ans.rotate();
-        return ans;
-    }
-    double slope() const
-    {
-        return (double)y / (double)x;
-    }
-    bool operator<(const Point &p) const
-    {
-        return slope() < p.slope();
-    }
+    P(int x, int y) : x(x), y(y) {}
+    P rot() { return P(-y, x); }
+    P reduce() { return P(x / __gcd(x, y), y / __gcd(x, y)); }
+    P operator+(const P &p) const { return P(x + p.x, y + p.y); }
+    bool operator<(const P &p) const { return y * p.x < p.y * x; }
 };
 
 int N;
-set<Point> s;
+set<P> s;
 
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    repx(i, 1, 580) repx(j, 1, 580 - i + 2)
+    bool done = false;
+    rep(i, 575) rep(j, i) if (!done)
     {
-        s.insert(Point({i, j}).reduce());
-        s.insert(Point({j, i}).reduce());
+        s.insert(P(j + 1, i - j).reduce());
+        if (s.size() == 100000) done = true;
     }
 
-    while (s.size() >= 100000)
-    {
-        s.erase(*s.begin());
-        s.erase(*--s.end());
-    }
-    cerr << s.size() << '\n';
-
-    int sum = 0;
+    vector<P> v;
+    for (P p : s) v.push_back(p);
+    rep(i, 300000) v.push_back(v[i].rot());
 
     cin >> N;
 
-    Point p = {20000000, 0};
-
-    set<Point>::iterator iter = s.begin();
-    int rot = 0;
-    rep(i, N)
+    int i = 0;
+    P p(20000000, 0);
+    while (i < N)
     {
-        if (iter++ == s.end())
-        {
-            iter = s.begin();
-            rot++;
-        }
         cout << p.x << ' ' << p.y << '\n';
-        p = p + (*iter).rotate_times(rot);
-        sum += (*iter).rotate_times(rot).x;
+        p = p + v[i++];
     }
-    cout << p.x << ' ' << p.y << '\n';
-
-    cerr << sum << '\n';
 }
