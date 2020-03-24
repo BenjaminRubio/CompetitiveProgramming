@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const double PI = 3.14159265358979323846;
+const double PI = 3.141592653589793238462643383279502884L;;
 const double EPS = 1e-12;
 
 // POINT 2D
@@ -12,6 +12,7 @@ struct P
     P() {}
     P(const P &p) : x(p.x), y(p.y) {}
     P(double x, double y) : x(x), y(y) {}
+
     P operator+(const P &p) const { return P(x + p.x, y + p.y); }
     P operator-(const P &p) const { return P(x - p.x, y - p.y); }
     P operator*(const double &c) const { return P(x * c, y * c); }
@@ -21,8 +22,9 @@ struct P
     bool operator==(const P &p) const { return (P(*this) - p).norm() < EPS; }
     bool operator<(const P &p) const
     {
-        return x < p.x or (x == p.x and y < p.y);
+        return x - p.x > EPS or (abs(x - p.x) < EPS && y - p.y > EPS);
     }
+
     double norm() { return sqrt(x * x + y * y); }
     double norm2() { return x * x + y * y; }
     double ang()
@@ -31,6 +33,8 @@ struct P
         if (a < 0) a += 2.0 * PI;
         return a;
     }
+    P rot(P r){ return P((*this) ^ r, (*this) * r); }
+    P rot(double a){ return rot(P(sin(a),cos(a))); }
 };
 P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
