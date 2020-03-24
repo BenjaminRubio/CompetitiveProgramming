@@ -11,7 +11,7 @@ struct P
     P() {}
     P(const P &p) : x(p.x), y(p.y) {}
     P(double x, double y) : x(x), y(y) {}
-    
+
     P operator+(const P &p) const { return P(x + p.x, y + p.y); }
     P operator-(const P &p) const { return P(x - p.x, y - p.y); }
     P operator*(const double &c) const { return P(x * c, y * c); }
@@ -26,10 +26,9 @@ struct P
     double norm() { return sqrt(x * x + y * y); }
     double ang() { return atan2(y, x); }
 };
-P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
 
-int N, x, y;
+int N;
 vector<P> p(1000);
 set<P> s;
 
