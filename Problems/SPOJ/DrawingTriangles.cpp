@@ -40,18 +40,13 @@ int main()
     {
         s.clear();
 
-        rep(i, N)
-        {
-            cin >> p[i];
-            s.insert(p[i]);
-        }
+        rep(i, N) { cin >> p[i]; s.insert(p[i]); }
 
         double L0 = (p[1] - p[0]).norm();
         double L1 = (p[2] - p[0]).norm();
         double L2 = (p[2] - p[1]).norm();
         double A = (p[2] - p[0]).ang() - (p[1] - p[0]).ang();
-        P rA(sin(A), cos(A));      // rotate vector  A
-		P rA_(sin(-A), cos(-A));   // rotate vector -A
+        P rA(sin(A), cos(A)), rA_(sin(-A), cos(-A));
         double r = L1 / L0;
 
         int ans = 0;
