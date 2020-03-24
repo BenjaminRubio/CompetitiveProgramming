@@ -34,7 +34,7 @@ struct P
         return a;
     }
     P rot(P r){ return P((*this) ^ r, (*this) * r); }
-    P rot(double a){ return rot(P(sin(a),cos(a))); }
+    P rot(double a){ return rot(P(sin(a), cos(a))); }
 };
 P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }

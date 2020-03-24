@@ -18,7 +18,6 @@ struct P
     double operator^(const P &p) const { return x * p.y - y * p.x; }
     double operator*(const P &p) const { return x * p.x + y * p.y; }
     P rot(P r){ return P((*this) ^ r, (*this) * r); }
-    P rot(double a){ return rot(P(sin(a),cos(a))); }
     double norm() { return sqrt(x * x + y * y); }
     double ang() { return atan2(y, x); }
     bool operator<(const P &p) const
