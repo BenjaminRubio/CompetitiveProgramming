@@ -11,18 +11,20 @@ struct P
     P() {}
     P(const P &p) : x(p.x), y(p.y) {}
     P(double x, double y) : x(x), y(y) {}
+    
     P operator+(const P &p) const { return P(x + p.x, y + p.y); }
     P operator-(const P &p) const { return P(x - p.x, y - p.y); }
     P operator*(const double &c) const { return P(x * c, y * c); }
     double operator^(const P &p) const { return x * p.y - y * p.x; }
     double operator*(const P &p) const { return x * p.x + y * p.y; }
-    P rot(P r){ return P((*this) ^ r, (*this) * r); }
-    double norm() { return sqrt(x * x + y * y); }
-    double ang() { return atan2(y, x); }
     bool operator<(const P &p) const
     {
         return x - p.x > EPS or (abs(x - p.x) < EPS && y - p.y > EPS);
     }
+
+    P rot(P r){ return P((*this) ^ r, (*this) * r); }
+    double norm() { return sqrt(x * x + y * y); }
+    double ang() { return atan2(y, x); }
 };
 P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
