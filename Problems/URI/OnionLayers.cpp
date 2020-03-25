@@ -6,11 +6,15 @@ using namespace std;
 
 struct P
 {
-    int x, y;
+    int x, y, id;
     P() {}
     bool operator<(const P &p) const
     {
         return x < p.x || (x == p.x && y < p.y);
+    }
+    bool operator==(const P &p) const
+    {
+        return x == p.x && y == p.y;
     }
 };
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
@@ -22,24 +26,22 @@ int cross(P &a, P &b, P &c)
     return dx0 * dy1 - dx1 * dy0;
 }
 
-vector<int> convex_hull(vector<P> &p)
+vector<P> convex_hull(vector<P> &p)
 {
     int n = p.size(), k = 0;
     vector<P> H(2 * n);
-    vector<int> r(2 * n);
-    sort(p.begin(), p.end());
     rep(i, n)
     {
-        while (k >= 2 && cross(H[k - 2], H[k - 1], p[i]) <= 0) k--;
-        H[k++] = p[i]; r[k - 1] = i;
+        while (k >= 2 && cross(H[k - 2], H[k - 1], p[i]) < 0) k--;
+        H[k++] = p[i];
     }
     for (int i = n - 2, t = k + 1; i >= 0; i--)
     {
-        while (k >= t && cross(H[k - 2], H[k - 1], p[i]) <= 0) k--;
-        H[k++] = p[i]; r[k - 1] = i;
+        while (k >= t && cross(H[k - 2], H[k - 1], p[i]) < 0) k--;
+        H[k++] = p[i];
     }
-    r.resize(k - 1);
-    return r;
+    H.resize(k);
+    return H;
 }
 
 int N;
@@ -47,29 +49,25 @@ vector<P> p;
 
 int main()
 {
-    while (cin >> N)
-    {
-        if (N == 0) break;
+    ios::sync_with_stdio(0); cin.tie(0);
 
+    while (cin >> N && N)
+    {
         p.resize(N);
-        rep(i, N) cin >> p[i];
+        rep(i, N) { cin >> p[i]; p[i].id = i; }
+
+        sort(p.begin(), p.end());
 
         vector<bool> v(N, false);
-        vector<P> p_;
-        vector<int> m(N);
         int c = 0, rem = N;
-        while (rem)
+        while (p.size())
         {
-            p_.clear();
-            rep(i, N) if (!v[i])
-            {
-                p_.push_back(p[i]);
-                m[p_.size() - 1] = i;
-            }
-            vector<int> r = convex_hull(p_);
+            vector<P> r = convex_hull(p);
+            for (P &i : r) v[i.id] = true;
 
-            for (int i : r) v[m[i]] = true;
-            rem -= r.size();
+            vector<P> p_;
+            for (P &i : p) if (!v[i.id]) p_.push_back(i);
+            p = p_;
             c++;
         }
 
