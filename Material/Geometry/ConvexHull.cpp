@@ -2,7 +2,6 @@
 using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define rep_(i, n) for (int i = (int)n - 1; i >= 0; i--)
 typedef long long int ll;
 
 struct P
