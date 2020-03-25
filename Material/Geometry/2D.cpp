@@ -30,7 +30,7 @@ struct P
     double ang()
     {
         double a = atan2(y, x);
-        if (a < 0) a += 2.0 * PI;
+        if (a < 0) a += 2. * PI;
         return a;
     }
     P rot(P r){ return P((*this) ^ r, (*this) * r); }
