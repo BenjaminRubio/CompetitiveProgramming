@@ -1,14 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#define rep(i, n) for (int i = 0; i < (int)n; i++)
+#define ff first
+#define ss second
+typedef long long ll;
+
 const double PI = 3.141592653589793238462643383279502884L;;
 const double EPS = 1e-12;
 
-// POINT 2D
-
 struct P
 {
-    double x, y;
+    double x, y, r;
     P() {}
     P(double x, double y) : x(x), y(y) {}
 
@@ -20,7 +23,7 @@ struct P
     double operator*(const P &p) const { return x * p.x + y * p.y; }
     bool operator==(const P &p) const
     {
-        return abs(x - p.x) < EPS and abs(y - p.y) < EPS;
+        return abs(x - p.x) < EPS and abs(y - p.y) < EPS and r == p.r;
     }
     bool operator<(const P &p) const
     {
@@ -43,36 +46,40 @@ P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
 ostream &operator<<(ostream &s, const P &p) { return s << p.x << ' ' << p.y; }
 
-// Segments
+typedef pair<P, P> S;
 
-bool parallel(P a, P b, P c, P d) { return abs((a - b) ^ (c - d)) < EPS; }
+int n, m;
+vector<S> s;
+set<P> p;
 
-bool on_segment(P p, P a, P b)
+int main()
 {
-    if (parallel(p, a, p, b) && (p - a) * (p - b) < 0) return true;
-    return false;
-}
+    cin >> n >> m;
 
-bool do_intersect(P a, P b, P c, P d)
-{
-    if (a == c || a == d || b == c || b == d) return true;
-    if (a == b && c == d) return false;
-    if (a == b) return on_segment(a, c, d);
-    if (c == d) return on_segment(c, a, b);
-    if (parallel(a, b, c, d) && parallel(a, c, b, d) && parallel(a, d, b, c))
+    s.resize(n);
+    rep(i, n) cin >> s[i].ff >> s[i].ss;
+
+    P pt;
+    rep(i, m) { cin >> pt >> pt.r; p.insert(pt); }
+
+    ll ans = 0;
+    for (P c : p) rep(i, n)
     {
-        if (on_segment(a, c, d) || on_segment(b, c, d) ||
-            on_segment(c, a, b) || on_segment(d, a, b)) return true;
-        return false;
-    }
-    if (((a - b) ^ (a - c)) * ((a - b) ^ (a - d)) > 0) return false;
-    if (((c - d) ^ (c - a)) * ((c - d) ^ (c - b)) > 0) return false;
-    return true;
-}
+        // cerr << "c: " << c << '\n';
+        P p1 = s[i].ff, p2 = s[i].ss;
+        if ((c - p1) * (p2 - p1) >= 0 and (c - p2) * (p1 - p2) >= 0)
+        {
+            P p3 = p1 + (p2 - p1).unit() * ((c - p1) * (p2 - p1).unit());
+            double d = abs(((c - p1) ^ (p2 - p1).unit()));
 
-P lines_intersection(P a, P b, P c, P d)
-{
-    b = b - a; d = c - d; c = c - a;
-    assert((b * b) > EPS && (d * d) > EPS);
-    return a + b * (c ^ d) / (b ^ d);
+            if (d <= c.r) continue;
+
+            P c_ = c + (p3 - c).unit() * 2. * d;
+            c_.r = c.r;
+            // cerr << "p3: " << p3 << ", c_: " << c_ << '\n';
+            if (p.count(c_)) ans++;
+        }
+    }
+
+    cout << ans / 2 << '\n';
 }
