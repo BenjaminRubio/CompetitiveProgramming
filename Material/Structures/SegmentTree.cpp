@@ -30,8 +30,8 @@ public:
     }
     void set_point(int p, const node &value)
     {
-        for (t[p += n] = value; p > 1; p >>= 1)
-            t[p >> 1] = node(t[p], t[p ^ 1]);
+        for (t[p += n] = value; p >>= 1; )
+            t[p] = node(t[p << 1], t[p << 1 | 1]);
     }
     node query(int l, int r)
     {
