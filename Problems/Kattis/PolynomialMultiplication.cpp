@@ -15,8 +15,7 @@ void fft(vector<C> &a)
     static vector<C> rt(2, 1);
     for (static int k = 2; k < n; k *= 2)
     {
-        R.resize(n);
-        rt.resize(n);
+        R.resize(n); rt.resize(n);
         auto x = polar(1.0L, M_PIl / k);
         repx(i, k, 2 * k) rt[i] = R[i] = i & 1 ? R[i / 2] * x : R[i / 2];
     }
@@ -48,29 +47,26 @@ vd conv(const vd &a, const vd &b)
     return res;
 }
 
-typedef long long ll;
-typedef vector<ll> vl;
-vl convMod(const vl &a, const vl &b, int M)
+int T, n;
+vd A, B;
+
+int main()
 {
-    if (a.empty() || b.empty()) return {};
-    vl res(a.size() + b.size() - 1);
-    int B = 32 - __builtin_clz(res.size()), n = 1 << B, cut = int(sqrt(M));
-    vector<C> L(n), R(n), outs(n), outl(n);
-    rep(i, a.size()) L[i] = C((int)a[i] / cut, (int)a[i] % cut);
-    rep(i, b.size()) R[i] = C((int)b[i] / cut, (int)b[i] % cut);
-    fft(L), fft(R);
-    rep(i, n)
+    cin >> T;
+    while (T--)
     {
-        int j = -i & (n - 1);
-        outl[j] = (L[i] + conj(L[j])) * R[i] / (2.0 * n);
-        outs[j] = (L[i] - conj(L[j])) * R[i] / (2.0 * n) / 1i;
+        cin >> n;
+        A.resize(n + 1);
+        rep(i, n + 1) cin >> A[i];
+
+        cin >> n;
+        B.resize(n + 1);
+        rep(i, n + 1) cin >> B[i];
+
+        vd AB = conv(A, B);
+
+        cout << AB.size() - 1 << '\n';
+        rep(i, AB.size()) cout << int(round(AB[i])) << ' ';
+        cout << '\n';
     }
-    fft(outl), fft(outs);
-    rep(i, res.size())
-    {
-        ll av = ll(real(outl[i]) + .5), cv = ll(imag(outs[i]) + .5);
-        ll bv = ll(imag(outl[i]) + .5) + ll(real(outs[i]) + .5);
-        res[i] = ((av % M * cut + bv) % M * cut + cv) % M;
-    }
-    return res;
 }
