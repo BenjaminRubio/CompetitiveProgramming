@@ -5,33 +5,29 @@ using namespace std;
 
 int n;
 double x, v;
-vector<pair<double, double>> a;
+pair<double, double> a[500000];
 
 int main()
 {
-    cout.precision(20);
+    ios::sync_with_stdio(0); cin.tie(0);
+    cout.precision(12);
 
     cin >> n;
 
-    rep(i, n)
-    {
-        cin >> x >> v;
-        a.push_back({x, v});
-    }
+    rep(i, n) cin >> a[i].first >> a[i].second;
 
     double l = 0;
-    double r = 1e10;
-    rep(k, 1000)
+    double r = 5e9;
+    rep(k, 65)
     {
-        double m = (l + r) * 0.5;
+        double m = (l + r) * .5;
 
-        bool collision = false;
-        double prev = DBL_MIN;
-        bool compare = false;
+        double prev = -1e9;
+        bool collision = false, compare = false;
         rep(i, n)
         {
             double pos = a[i].first + a[i].second * m;
-            if (compare && i > 0 && a[i].second < 0 && pos <= prev)
+            if (a[i].second < 0 && compare && pos <= prev)
                 collision = true;
             if (a[i].second > 0)
             {
@@ -40,13 +36,11 @@ int main()
             }
         }
 
-        if (collision)
-            r = m;
-        else
-            l = m;
+        if (collision) r = m;
+        else l = m;
     }
 
-    if (r < 1e10)
+    if (r < 3e9)
         cout << (l + r) * 0.5 << '\n';
     else
         cout << -1 << '\n';
