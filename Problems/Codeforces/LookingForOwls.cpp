@@ -3,7 +3,6 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
-#define ff first
 #define ss second
 typedef long long ll;
 
@@ -40,8 +39,7 @@ struct HASH
 };
 
 int N, M;
-map<HASH, vector<ll>> Hr;
-map<HASH, vector<ll>> Hl;
+map<HASH, vector<ll>> Hr, Hl;
 P C[1500];
 
 int main()
@@ -54,11 +52,9 @@ int main()
     rep(i, N)
     {
         cin >> p >> q; p = p * 2; q = q * 2;
-        int l = min(p.x, q.x);
-        int r = max(p.x, q.x);
+        int l = min(p.x, q.x), r = max(p.x, q.x);
         HASH h(p, q);
-        Hl[h].push_back(l);
-        Hr[h].push_back(r);
+        Hl[h].push_back(l); Hr[h].push_back(r);
     }
 
     for (auto &e : Hr) sort(e.ss.begin(), e.ss.end());
@@ -71,8 +67,7 @@ int main()
     rep(i, M) repx(j, i + 1, M)
         if (C[i].r == C[j].r and (C[j] - C[i]).norm2() > 4 * C[i].r * C[i].r)
     {
-        P c = C[i] + C[j];
-        P d = (C[j] - C[i]).rot();
+        P c = C[i] + C[j], d = (C[j] - C[i]).rot();
         HASH h(c, c + d);
 
         if (!Hr.count(h)) continue;
