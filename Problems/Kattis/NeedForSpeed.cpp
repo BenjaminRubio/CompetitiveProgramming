@@ -18,7 +18,7 @@ int main()
     rep(i, N) cin >> D[i] >> V[i];
 
     rep(i, N) l = min(l, V[i]);
-    l = -l + 1e-9;
+    l = -l;
 
     rep(_, 1000)
     {
