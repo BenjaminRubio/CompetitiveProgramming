@@ -43,6 +43,13 @@ P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
 ostream &operator<<(ostream &s, const P &p) { return s << p.x << ' ' << p.y; }
 
+double ang(double a)
+{
+    while (a >= 2. * PI) a -= 2. * PI;
+    while (a < 0) a += 2. * PI;
+    return a;
+}
+
 // Segments
 
 bool parallel(P a, P b, P c, P d) { return abs((a - b) ^ (c - d)) < EPS; }

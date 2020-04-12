@@ -2,104 +2,76 @@
 using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-typedef long long ll;
 
-const double pi = 3.14159265358979323846;
+const double PI = 3.141592653589793238462643383279502884L;;
+const double EPS = 1e-12;
 
-int n;
-ll x, y, x_, y_, v, T, r;
-set<pair<double, int>> s;
-double a, da, s_, h, d;
-int c;
+struct P
+{
+    double x, y;
+    P() {}
+    P(double x, double y) : x(x), y(y) {}
+    P operator-(const P &p) const { return P(x - p.x, y - p.y); }
+    double norm() { return sqrt(x * x + y * y); }
+    double norm2() { return x * x + y * y; }
+    double ang() { return atan2(y, x); }
+};
+istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
+
+double ang(double a)
+{
+    while (a >= 2. * PI) a -= 2. * PI;
+    while (a < 0) a += 2. * PI;
+    return a;
+}
+
+int N;
+P p;
+double R, T, v;
+vector<P> C;
+vector<double> r;
 
 int main()
 {
-    ios::sync_with_stdio(0); 
-    cin.tie(0);
-    cout << setprecision(10) << fixed;
+    ios::sync_with_stdio(0); cin.tie(0);
+    cout.setf(ios::fixed); cout.precision(10);
 
-    cin >> x_ >> y_ >> v >> T;
-    cin >> n;
+    cin >> p >> v >> T;
+    R = v * T;
 
-    c = 0;
-    rep(i, n)
+    cin >> N;
+    C.resize(N); r.resize(N);
+    rep(i, N) cin >> C[i] >> r[i];
+    rep(i, N) C[i] = C[i] - p;
+
+    int cnt = 0;
+    bool done = false;
+    vector<pair<double, bool>> v;
+    rep(i, N)
     {
-        cin >> x >> y >> r;
-        x -= x_;
-        y -= y_;
-        d = sqrt(x * x + y * y);
-        a = atan2(y, x);
-        if (a < 0)
-            a += 2.0 * pi;
-        if (x * x + y * y <= r * r)
-        {
-            cout << "1.00000000000";
-            return 0;
-        }
-        if (d <= T * v)
-        {
-            da = asin(r / d);
-            if (da < 0)
-                da += 2.0 * pi;
-            if (a + da <= 2.0 * pi)
-                s.insert({a + da, 1});
-            else
-            {
-                s.insert({min(a + da - 2.0 * pi, 2.0 * pi), 1});
-                c++;
-            }
-            if (a - da >= 0)
-                s.insert({a - da, 0});
-            else
-            {
-                s.insert({max(0.0, a - da + 2.0 * pi) , 0});
-                c++;
-            }
-        }
-        else if (x * x + y * y < T * v * T * v + r * r + 2 * r * T * v)
-        {
-            s_ = (r + T * v + d) / 2.0;
-            h = 2.0 * sqrt(s_ * (s_ - r) * (s_ - T * v) * (s_ - d)) / d;
-            da = asin(h / (T * v));
-            if (da < 0)
-                da += 2.0 * pi;
-            if (a + da <= 2.0 * pi)
-                s.insert({a + da, 1});
-            else
-            {
-                s.insert({min(a + da - 2.0 * pi, 2.0 * pi), 1});
-                c++;
-            }
-            if (a - da >= 0)
-                s.insert({a - da, 0});
-            else
-            {
-                s.insert({max(0.0, a - da + 2.0 * pi) , 0});
-                c++;
-            }
-        }
+        double a = C[i].ang(), d;
+        if (C[i].norm() > R + r[i]) continue;
+        if (r[i] > C[i].norm() - EPS) done = true;
+        if (C[i].norm2() <= R * R + r[i] * r[i])
+            d = asin(r[i] / C[i].norm());
+        else d = acos((R * R + C[i].norm2() - r[i] * r[i]) / (2 * R * C[i].norm()));
+        if (ang(a - d) > ang(a + d)) cnt++;
+        v.emplace_back(ang(a - d), 0);
+        v.emplace_back(ang(a + d), 1);
     }
-    if (v == 0)
-    {
-        cout << "0.0000000\n";
-        return 0;
-    }
+    if (done) { cout << 1. << '\n'; return 0; }
 
-    if ((n == 93953) && x_ == -1000000000) {cout << "0.16666665729\n"; return 0;}
+    sort(v.begin(), v.end());
 
-    s.insert({2 * pi + 0.000001, 0});
-    double ans = 0.0;
-    double last = 0.0;
-    for (auto p : s)
+    double ans = 0, l = 0;
+    for (auto &e : v)
     {
-        if (c > 0)
-            ans += p.first - last;
-        if (!p.second)
-            c++;
-        else
-            c--;
-        if (c > 0)
-            last = p.first;
+        if (cnt) ans += e.first - l;
+        if (e.second) cnt--;
+        else cnt++;
+        l = e.first;
     }
-    cout << ans / (2.0 * pi) << '\n';
+    if (cnt) ans += 2. * PI - l;
+
+    cout << ans / (2. * PI) << '\n';
 }
