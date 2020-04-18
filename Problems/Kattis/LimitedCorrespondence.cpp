@@ -8,7 +8,7 @@ string a, b, ans;
 vector<string> A, B;
 vector<bool> D;
 
-bool check(int i)
+bool check(int i) // checks if adding pair i makes sense
 {
     auto na = a.size(), nb = b.size();
     if (a.size() > b.size())
@@ -30,7 +30,7 @@ bool check(int i)
     return true;
 }
 
-void solve(int id)
+void solve(int id) // backtracking function
 {
     if (id and a.size() == b.size())
     {
