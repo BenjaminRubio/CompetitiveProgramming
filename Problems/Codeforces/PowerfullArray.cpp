@@ -27,7 +27,6 @@ int main()
     cin.tie(0);
 
     cin >> n >> t;
-
     rep(i, n) cin >> a[i];
 
     rep(i, t)
@@ -38,42 +37,13 @@ int main()
 
     sort(q.begin(), q.end());
 
-    l = 0;
-    r = 0;
-    s = a[0];
-    c[a[0]] = 1;
+    l = 0, r = 0, s = a[0], c[a[0]] = 1;
     for (Query e : q)
     {
-        while (r != e.r)
-        {
-            if (e.r > r)
-            {
-                c[a[r + 1]]++;
-                s += a[r + 1] * (2 * c[a[r + 1]] - 1);
-                r++;
-            }
-            else
-            {
-                s -= a[r] * (2 * c[a[r]] - 1);
-                c[a[r]]--;
-                r--;
-            }
-        }
-        while (l != e.l)
-        {
-            if (e.l > l)
-            {
-                s -= a[l] * (2 * c[a[l]] - 1);
-                c[a[l]]--;
-                l++;
-            }
-            else
-            {
-                c[a[l - 1]]++;
-                s += a[l - 1] * (2 * c[a[l - 1]] - 1);
-                l--;
-            }
-        }
+        while (e.r > r) r++, c[a[r]]++, s += a[r] * (2 * c[a[r]] - 1);
+        while (e.r < r) s -= a[r] * (2 * c[a[r]] - 1), c[a[r]]--, r--;
+        while (e.l > l) s -= a[l] * (2 * c[a[l]] - 1), c[a[l]]--, l++;
+        while (e.l < l) l--, c[a[l]]++, s += a[l] * (2 * c[a[l]] - 1);
 
         ans[e.id] = s;
     }
