@@ -2,8 +2,6 @@
 using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define ff first
-#define ss second
 
 int T, o, n, c;
 vector<int> O, N, W;
