@@ -3,63 +3,41 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-int n, x;
-vector<int> p, p_;
+int N, x;
+vector<int> p;
+int DP[101][101][101][3];
+
+int dp(int i, int o, int e, int l)
+{
+    if (i == N) return 0;
+
+    if (DP[i][o][e][l] != -1) return DP[i][o][e][l];
+
+    if (p[i] != -1)
+        return DP[i][o][e][l] = dp(i + 1, o, e, p[i]) + (l != p[i] && l != 2);
+
+    int ans = INT_MAX;
+    if (o) ans = min(ans, dp(i + 1, o - 1, e, 1) + (l == 0));
+    if (e) ans = min(ans, dp(i + 1, o, e - 1, 0) + (l == 1));
+
+    return DP[i][o][e][l] = ans;
+}
 
 int main()
 {
-    cin >> n;
+    memset(DP, -1, sizeof DP);
 
-    p.resize(n);
-    rep(i, n) cin >> p[i];
+    cin >> N;
 
-    if (n == 1)
+    int e = N / 2, o = N - e;
+    p.assign(N, -1);
+    rep(i, N)
     {
-        cout << 0 << '\n';
-        return 0;
+        cin >> x;
+        if (x) p[i] = x % 2;
+        if (x && x % 2 == 0) e--;
+        if (x && x % 2 == 1) o--;
     }
 
-    int e = n / 2;
-    int o = n - n / 2;
-    int ceros = 0;
-    rep(i, n)
-    {
-        if (p[i] % 2)
-            o--;
-        else if (p[i] != 0)
-            e--;
-        if (p[i] == 0)
-            ceros++;
-    }
-
-    int e_ = 0;
-    int o_ = 0;
-    int aux = 0;
-    int last = -1;
-    rep(i, n)
-    {
-        if (p[i])
-        {
-            if (last == -1 || last == (p[i] % 2))
-            {
-                if (p[i] % 2 == 0)
-                    e_ += aux;
-                else
-                    o_ += aux;
-            }
-            last = (p[i] % 2);
-            aux = 0;
-        }
-        else
-            aux++;
-    }
-    if (last != -1 && last % 2 == 0)
-        e_ += aux;
-    else if (last != -1)
-        o_ += aux;
-
-    int ans;
-    ans = min(o_ - o, e_ - e) * 2 + (ceros - o_ - e_);
-
-    cout << ans + 1 << '\n';
+    cout << dp(0, o, e, 2) << '\n';
 }
