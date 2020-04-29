@@ -85,7 +85,20 @@ void polarSort(vector<P> &v)
     });
 }
 
-// Segments
+// LINE
+
+struct Line
+{
+    P v; T c;
+    Line(P v, T c) : v(v), c(c) {}
+    Line(T a, T b, T c) : v(P(b, -a)), c(c) {}
+    Line(P p, P q) : v(q - p), c(v ^ p) {}
+
+    T side(P p) { return (v ^ p) - c; }
+    // continue 
+};
+
+// SEGMENT
 
 bool parallel(P &a, P &b, P &c, P &d) { return abs((a - b) ^ (c - d)) < EPS; }
 
