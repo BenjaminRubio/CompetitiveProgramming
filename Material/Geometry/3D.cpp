@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -47,28 +46,29 @@ ostream &operator<<(ostream &s, const P &p)
     return s << p.x << ' ' << p.y << ' ' << p.z;
 }
 
-// Arcs
+// ARCS
 
-bool in_arc(P &a, P &b, P &n, P &p) {
+bool in_arc(P &a, P &b, P &n, P &p)
+{
     double ab = a % b;
     double ap = a % p;
-    if (ap > ab) return false;
-    P c_ = (n ^ a).unit();
-    P a_ = a.unit();
-    a_ = (a_ * cos(ap) + c_ * sin(ap)) * a.norm();
-    return ((p - a_).norm() < EPS);
+    P c = (a * cos(ap) + (n ^ a) * sin(ap));
+    return ab > ap && p == c;
 }
 
-bool find_arcs_intersection(P &a1, P &b1, P &a2, P &b2, double &angle) {
+bool find_intersection(P &a1, P &b1, P &a2, P &b2, double &angle)
+{
     P n1 = (a1 ^ b1).unit(), n2 = (a2 ^ b2).unit(), i = (n1 ^ n2);
     if (i.norm() < EPS) return false;
     i = i.unit() * a1.norm();
-    if (in_arc(a1, b1, n1, i) and in_arc(a2, b2, n2, i)) {
+    if (in_arc(a1, b1, n1, i) and in_arc(a2, b2, n2, i))
+    {
         angle = a1 % i;
         return true;
     }
     i = i * -1.;
-    if (in_arc(a1, b1, n1, i) and in_arc(a2, b2, n2, i)) {
+    if (in_arc(a1, b1, n1, i) and in_arc(a2, b2, n2, i))
+    {
         angle = a1 % i;
         return true;
     }

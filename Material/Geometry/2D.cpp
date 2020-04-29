@@ -20,15 +20,15 @@ struct P
     double operator*(const P &p) const { return x * p.x + y * p.y; }
     bool operator==(const P &p) const
     {
-        return abs(x - p.x) < EPS and abs(y - p.y) < EPS;
+        return abs(x - p.x) + abs(y - p.y) < EPS;
     }
     bool operator<(const P &p) const
     {
         return x - p.x > EPS or (abs(x - p.x) < EPS && y - p.y > EPS);
     }
 
-    double norm() { return sqrt(x * x + y * y); }
-    double norm2() { return x * x + y * y; }
+    double norm() const { return sqrt(x * x + y * y); }
+    double norm2() const { return x * x + y * y; }
     double ang()
     {
         double a = atan2(y, x);
@@ -36,7 +36,7 @@ struct P
         return a;
     }
     P unit() { return (*this) / (*this).norm(); }
-    P rot(P r){ return P((*this) ^ r, (*this) * r); }
+    P rot(P r) { return P((*this) ^ r, (*this) * r); }
     P rot(double a){ return rot(P(sin(a), cos(a))); }
 };
 P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
@@ -52,15 +52,15 @@ double ang(double a)
 
 // Segments
 
-bool parallel(P a, P b, P c, P d) { return abs((a - b) ^ (c - d)) < EPS; }
+bool parallel(P &a, P &b, P &c, P &d) { return abs((a - b) ^ (c - d)) < EPS; }
 
-bool on_segment(P p, P a, P b)
+bool on_segment(P &p, P &a, P &b)
 {
     if (parallel(p, a, p, b) && (p - a) * (p - b) < 0) return true;
     return false;
 }
 
-bool do_intersect(P a, P b, P c, P d)
+bool do_intersect(P &a, P &b, P &c, P &d)
 {
     if (a == c || a == d || b == c || b == d) return true;
     if (a == b && c == d) return false;
@@ -79,7 +79,7 @@ bool do_intersect(P a, P b, P c, P d)
 
 // Lines
 
-P lines_intersection(P a, P b, P c, P d)
+P lines_intersection(P &a, P &b, P &c, P &d)
 {
     b = b - a; d = c - d; c = c - a;
     assert((b * b) > EPS && (d * d) > EPS);
@@ -90,7 +90,7 @@ typedef long long ll;
 struct HASH // Hashing for integer coordinates lines
 {
     ll a, b, c;
-    HASH(const P& p1, const P& p2)
+    HASH(const P &p1, const P &p2)
     {
         a = p1.y - p2.y;
         b = p2.x - p1.x;
