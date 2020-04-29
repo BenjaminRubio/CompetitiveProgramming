@@ -43,7 +43,7 @@ P polar(double r, double a, double b)
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y >> p.z; }
 ostream &operator<<(ostream &s, const P &p)
 {
-    return s << p.x << ' ' << p.y << ' ' << p.z;
+    return s << '(' << p.x << ", " << p.y << ", " << p.z << ')';
 }
 
 // ARCS
