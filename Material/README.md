@@ -5,7 +5,7 @@ Diverse structures and algorithms for competitive programming problems.
 # Credit
 
 - Geometry
-    Modified from these [handbook](https://vlecomte.github.io/cp-geo.pdf)
+    - Modified from these [handbook](https://vlecomte.github.io/cp-geo.pdf)(WIP)
     - Convex Hull: [Pablo Messina](https://github.com/PabloMessina/Competitive-Programming-Material/blob/master/Geometry/ConvexHull.cpp)
 
 - Graphs
