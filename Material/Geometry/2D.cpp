@@ -39,6 +39,7 @@ struct P
         return a;
     }
     P unit() { return (*this) / (*this).norm(); }
+    P perp() { return P(-y, x); }
     P rot(P r) { return P((*this) ^ r, (*this) * r); }
     P rot(double a){ return rot(P(sin(a), cos(a))); }
 };
@@ -87,15 +88,51 @@ void polarSort(vector<P> &v)
 
 // LINE
 
-struct Line
+struct L
 {
     P v; T c;
-    Line(P v, T c) : v(v), c(c) {}
-    Line(T a, T b, T c) : v(P(b, -a)), c(c) {}
-    Line(P p, P q) : v(q - p), c(v ^ p) {}
+    L(P v, T c) : v(v), c(c) {}
+    L(T a, T b, T c) : v(P(b, -a)), c(c) {}
+    L(P p, P q) : v(q - p), c(v ^ p) {}
 
     T side(P p) { return (v ^ p) - c; }
-    // continue 
+    double dist(P p) { return abs(side(p) / v.norm()); }
+    double dist2(P p) { return side(p) * side(p) / (double)v.norm2(); }
+    L perp(P p) { return L(p, p + v.perp()); }
+    L translate(P t) { return L(v, c + (v ^ t)); }
+    P proj(P p) { return p - v.perp() * side(p) / v.norm2(); }
+    P refl(P p) { return p - v.perp() * 2 * side(p) / v.norm2(); }
+};
+
+bool parallel(L l1, L l2) {return !(l1.v ^ l2.v); }
+
+// only if not parallel
+P inter(L l1, L l2) { return (l2.v * l1.c - l1.v * l2.c) / (l1.v ^ l2.v); }
+
+L bisector(L l1, L l2, bool in)
+{
+    double sign = in ? 1 : -1;
+    return L(l2.v / l2.v.norm() + l1.v / l1.v.norm() * sign,
+             l2.c / l2.v.norm() + l1.c / l1.v.norm() * sign);
+}
+
+typedef long long ll;
+struct HASH // Hashing for integer coordinates lines
+{
+    ll a, b, c;
+    HASH(const P &p1, const P &p2)
+    {
+        a = p1.y - p2.y;
+        b = p2.x - p1.x;
+        c = p1.x * (p2.y - p1.y) - p1.y * (p2.x - p1.x);
+        ll sgn = (a < 0 or (a == 0 and b < 0)) ? -1 : 1;
+        ll g = __gcd(abs(a), __gcd(abs(b), abs(c))) * sgn;
+        a /= g, b /= g, c /= g;
+    }
+    bool operator<(const HASH &h) const
+    {
+        return a < h.a or (a == h.a and (b < h.b or (b == h.b and c < h.c)));
+    }
 };
 
 // SEGMENT
@@ -124,31 +161,3 @@ bool do_intersect(P &a, P &b, P &c, P &d)
     if (((c - d) ^ (c - a)) * ((c - d) ^ (c - b)) > 0) return false;
     return true;
 }
-
-// Lines
-
-P lines_intersection(P &a, P &b, P &c, P &d)
-{
-    b = b - a; d = c - d; c = c - a;
-    assert((b * b) > EPS && (d * d) > EPS);
-    return a + b * (c ^ d) / (b ^ d);
-}
-
-typedef long long ll;
-struct HASH // Hashing for integer coordinates lines
-{
-    ll a, b, c;
-    HASH(const P &p1, const P &p2)
-    {
-        a = p1.y - p2.y;
-        b = p2.x - p1.x;
-        c = p1.x * (p2.y - p1.y) - p1.y * (p2.x - p1.x);
-        ll sgn = (a < 0 or (a == 0 and b < 0)) ? -1 : 1;
-        ll g = __gcd(abs(a), __gcd(abs(b), abs(c))) * sgn;
-        a /= g, b /= g, c /= g;
-    }
-    bool operator<(const HASH &h) const
-    {
-        return a < h.a or (a == h.a and (b < h.b or (b == h.b and c < h.c)));
-    }
-};
