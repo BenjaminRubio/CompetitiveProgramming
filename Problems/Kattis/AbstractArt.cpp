@@ -5,7 +5,7 @@ using namespace std;
 #define ff first
 #define ss second
 
-typedef double T;  // can be integer
+typedef double T;
 struct P
 {
     T x, y;
