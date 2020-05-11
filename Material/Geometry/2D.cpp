@@ -255,7 +255,7 @@ double areaPolygonIntersection(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
     }
 }
 
-vector<P> convex_hull(vector<P> &p)
+vector<P> convexHull(vector<P> &p)
 {
     int n = p.size(), k = 0;
     vector<P> H(2 * n);
