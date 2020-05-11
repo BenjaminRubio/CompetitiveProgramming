@@ -27,7 +27,6 @@ struct P
 
     P unit() { return (*this) / (*this).norm(); }
 };
-P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
 
 double areaPolygon(vector<P> &p)
