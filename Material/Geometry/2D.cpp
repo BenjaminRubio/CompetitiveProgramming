@@ -178,3 +178,36 @@ double segSeg(P &a, P &b, P &c, P &d)
     return min({segPoint(a, b, c), segPoint(a, b, d),
                 segPoint(c, d, a), segPoint(c, d, b)});
 }
+
+// POLYGONS
+
+double areaTriangle(P &a, P &b, P &c)
+{
+    return abs((b - a) ^ (c - a)) / 2.;
+}
+
+double areaPolygon(vector<P> &p)
+{
+    double ans = 0; int n = p.size();
+    rep(i, n) ans += p[i] ^ p[(i + 1) % n];
+    return abs(ans) / 2.;
+}
+
+bool above(P &a, P &p) { return p.y >= a.y; }
+
+bool crossesRay(P &a, P &p, P &q)
+{
+    return (above(a, q) - above(a, p)) * turn(a, p, q) > 0;
+}
+
+// if strict, returns false when a is on the boundary
+bool inPolygon(vector<P> &p, P &a, bool strict = true)
+{
+    int c = 0, n = p.size();
+    rep(i, n)
+    {
+        if (onSegment(p[i], p[(i + 1) % n], a)) return !strict;
+        c += crossesRay(a, p[i], p[(i + 1) % n]);
+    }
+    return c & 1;
+}
