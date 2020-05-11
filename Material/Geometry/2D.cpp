@@ -59,7 +59,7 @@ double ang(double a)
 
 int sgn(T x) { return (0 < x) - (x < 0); }
 
-int turn(P &a, P &b, P &c) { return sgn((b - a) ^ (c - a)); }
+double turn(P &a, P &b, P &c) { return (b - a) ^ (c - a); }
 
 bool isConvex(vector<P> p)
 {
@@ -104,7 +104,7 @@ struct L
     P refl(P p) { return p - v.perp() * 2 * side(p) / v.norm2(); }
 };
 
-bool parallel(L l1, L l2) {return !(l1.v ^ l2.v); }
+bool parallel(L l1, L l2) {return abs(l1.v ^ l2.v) < EPS; }
 
 // only if not parallel
 P inter(L l1, L l2) { return (l2.v * l1.c - l1.v * l2.c) / (l1.v ^ l2.v); }
@@ -137,27 +137,44 @@ struct HASH // Hashing for integer coordinates lines
 
 // SEGMENT
 
-bool parallel(P &a, P &b, P &c, P &d) { return abs((a - b) ^ (c - d)) < EPS; }
+bool inDisk(P &a, P &b, P &p) { return (a - p) * (b - p) <= 0; }
 
-bool on_segment(P &p, P &a, P &b)
+bool onSegment(P &p, P &a, P &b)
 {
-    if (parallel(p, a, p, b) && (p - a) * (p - b) < 0) return true;
-    return false;
+    return abs(turn(a, b, p)) < EPS && inDisk(a, b, p); 
 }
 
-bool do_intersect(P &a, P &b, P &c, P &d)
+bool properInter(P &a, P &b, P &c, P &d, P &out)
 {
-    if (a == c || a == d || b == c || b == d) return true;
-    if (a == b && c == d) return false;
-    if (a == b) return on_segment(a, c, d);
-    if (c == d) return on_segment(c, a, b);
-    if (parallel(a, b, c, d) && parallel(a, c, b, d) && parallel(a, d, b, c))
-    {
-        if (on_segment(a, c, d) || on_segment(b, c, d) ||
-            on_segment(c, a, b) || on_segment(d, a, b)) return true;
-        return false;
-    }
-    if (((a - b) ^ (a - c)) * ((a - b) ^ (a - d)) > 0) return false;
-    if (((c - d) ^ (c - a)) * ((c - d) ^ (c - b)) > 0) return false;
-    return true;
+    double ta = turn(c, d, a), tb = turn(c, d, b),
+           tc = turn(a, b, c), td = turn(a, b, d);
+    out = (a * tb - b * ta) / (tb - ta);
+    return (ta * tb < 0 && tc * td < 0);
+}
+
+set<P> inter(P &a, P &b, P &c, P &d)
+{
+    P out;
+    if (properInter(a, b, c, d, out)) return {out};
+    set<P> ans;
+    if (onSegment(c, d, a)) ans.insert(a);
+    if (onSegment(c, d, b)) ans.insert(b);
+    if (onSegment(a, b, c)) ans.insert(c);
+    if (onSegment(a, b, d)) ans.insert(d);
+    return ans;
+}
+
+double segPoint(P &a, P &b, P &p)
+{
+    if ((p - a) * (b - a) >= 0 && (p - b) * (a - b) >= 0)
+        return abs(((b - a) ^ (p - a)) / (b - a).norm());
+    return min((p - a).norm(), (b - a).norm());
+}
+
+double segSeg(P &a, P &b, P &c, P &d)
+{
+    P aux;
+    if (properInter(a, b, c, d, aux)) return 0;
+    return min({segPoint(a, b, c), segPoint(a, b, d),
+                segPoint(c, d, a), segPoint(c, d, b)});
 }
