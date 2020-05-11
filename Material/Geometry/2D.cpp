@@ -211,3 +211,46 @@ bool inPolygon(vector<P> &p, P &a, bool strict = true)
     }
     return c & 1;
 }
+
+#define ff first
+#define ss second
+double areaPolygonIntersection(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
+{
+    double area = 0;
+    rep(i, pol.size()) rep(j, pol[i].size())
+    {
+        int m = pol[i].size();
+        P p1 = pol[i][j], p2 = pol[i][(j + 1) % m];
+
+        vector<pair<double, int>> s; s.emplace_back(1., 0);
+
+        rep(ii, pol.size()) if (ii != i) rep(jj, pol[ii].size())
+        {
+            int mm = pol[ii].size();
+            P p3 = pol[ii][jj], p4 = pol[ii][(jj + 1) % mm];
+
+            double t1 = turn(p1, p2, p3), t2 = turn(p1, p2, p4),
+                   t3 = turn(p3, p4, p1), t4 = turn(p3, p4, p2);
+            if (!t1 && !t2 && (p2 - p1) * (p4 - p3) > 0 && i > ii)
+            {
+                s.emplace_back((p3 - p1) * (p2 - p1).unit(), 1);
+                s.emplace_back((p4 - p1) * (p2 - p1).unit(), -1);
+            }
+            if (t1 >= 0 && t2 < 0) s.emplace_back(t3 / (t3 - t4), 1);
+            if (t1 < 0 && t2 >= 0) s.emplace_back(t3 / (t3 - t4), -1);
+        }
+
+        sort(s.begin(), s.end());
+
+        int c = 0;
+        double last = 0, f = 0;
+        for (auto e : s)
+        {
+            double now = min(1., max(0., e.ff));
+            if (c == 0) f += now - last;
+            c += e.ss, last = now;
+        }
+
+        area += (p1 ^ p2) * f;
+    }
+}
