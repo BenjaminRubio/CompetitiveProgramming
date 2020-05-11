@@ -5,9 +5,6 @@ using namespace std;
 #define ff first
 #define ss second
 
-const double PI = 3.141592653589793238462643383279502884L;
-const double EPS = 1e-12;
-
 typedef double T;  // can be integer
 struct P
 {
