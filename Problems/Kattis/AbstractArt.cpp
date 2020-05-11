@@ -81,8 +81,8 @@ int main()
                 s.emplace_back((p3 - p1) * (p2 - p1).unit(), 1);
                 s.emplace_back((p4 - p1) * (p2 - p1).unit(), -1);
             }
-            else if (t1 >= 0 && t2 < 0) s.emplace_back(t3 / (t3 - t4), 1);
-            else if (t1 < 0 && t2 >= 0) s.emplace_back(t3 / (t3 - t4), -1);
+            if (t1 >= 0 && t2 < 0) s.emplace_back(t3 / (t3 - t4), 1);
+            if (t1 < 0 && t2 >= 0) s.emplace_back(t3 / (t3 - t4), -1);
         }
 
         sort(s.begin(), s.end());
