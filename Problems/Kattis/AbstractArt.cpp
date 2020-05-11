@@ -21,34 +21,14 @@ struct P
     P operator/(const double &c) const { return P(x / c, y / c); }
     T operator^(const P &p) const { return x * p.y - y * p.x; }
     T operator*(const P &p) const { return x * p.x + y * p.y; }
-    bool operator==(const P &p) const
-    {
-        return abs(x - p.x) + abs(y - p.y) < EPS;
-    }
-    bool operator<(const P &p) const
-    {
-        return x - p.x > EPS or (abs(x - p.x) < EPS && y - p.y > EPS);
-    }
 
     T norm2() const { return x * x + y * y; }
     double norm() const { return sqrt(norm2()); }
-    double ang()
-    {
-        double a = atan2(y, x);
-        if (a < 0) a += 2. * PI;
-        return a;
-    }
+
     P unit() { return (*this) / (*this).norm(); }
-    P perp() { return P(-y, x); }
-    P rot(P r) { return P((*this) ^ r, (*this) * r); }
-    P rot(double a){ return rot(P(sin(a), cos(a))); }
 };
 P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
-ostream &operator<<(ostream &s, const P &p)
-{
-    return s << '(' << p.x << ", " << p.y << ')';
-}
 
 double areaPolygon(vector<P> &p)
 {
