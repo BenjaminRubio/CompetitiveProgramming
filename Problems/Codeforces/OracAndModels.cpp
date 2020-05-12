@@ -23,9 +23,7 @@ int main()
             rep(j, (n / i) + 2) if (j > 1)
             {
                 if (i * j <= n && s[(i * j) - 1] > s[i - 1])
-                {
                     c[i - 1] = max(c[i - 1], c[(i * j) - 1] + 1);
-                }
             }
             M = max(M, c[i - 1]);
         }

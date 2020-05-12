@@ -48,22 +48,18 @@ int main()
 
         for (auto &e : f)
         {
-            // cerr << e.ff << ' ';
             cnt[e.ff]++;
             if (e.ss < M[e.ff]) { m[e.ff] = M[e.ff]; M[e.ff] = e.ss; }
             else if (e.ss < m[e.ff]) m[e.ff] = e.ss;
         }
-        // cerr << '\n';
     }
 
     ll ans = 1;
     for (ll p : primes)
     {
-        // cerr << cnt[p] << ' ';
         if (cnt[p] == n) while (m[p]--) ans *= p;
         else if (cnt[p] == n - 1) while (M[p]--) ans *= p;
     }
-    // cerr << '\n';
 
     cout << ans << '\n';
 }
