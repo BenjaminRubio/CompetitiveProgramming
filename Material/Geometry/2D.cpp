@@ -3,7 +3,7 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-const double PI = 3.141592653589793238462643383279502884L;
+const double PI = acos(-1.0L);
 const double EPS = 1e-12;
 
 // POINT 2D

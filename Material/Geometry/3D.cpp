@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const double PI = 3.141592653589793238462643383279502884L;
+const double PI = acos(-1.0L);
 const double EPS = 1e-12;
 
 // POINT 3D
