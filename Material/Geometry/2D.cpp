@@ -214,7 +214,7 @@ bool inPolygon(vector<P> &p, P &a, bool strict = true)
 
 #define ff first
 #define ss second
-double areaPolygonIntersection(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
+double areaPolygonUnion(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
 {
     double area = 0;
     rep(i, pol.size()) rep(j, pol[i].size())
