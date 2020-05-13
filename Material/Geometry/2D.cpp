@@ -253,6 +253,8 @@ double areaPolygonUnion(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
 
         area += (p1 ^ p2) * f;
     }
+    
+    return area;
 }
 
 vector<P> convexHull(vector<P> &p)
