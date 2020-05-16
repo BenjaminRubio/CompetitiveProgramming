@@ -15,10 +15,6 @@ struct P
     P operator*(const double &c) const { return P(x * c, y * c); }
 };
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
-ostream &operator<<(ostream &s, const P &p)
-{
-    return s << '(' << p.x << ", " << p.y << ')';
-}
 
 int N, K;
 double m;
