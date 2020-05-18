@@ -6,7 +6,7 @@ Diverse structures and algorithms for competitive programming problems.
 
 - Geometry
     - Modified from these [handbook](https://vlecomte.github.io/cp-geo.pdf)(WIP)
-    - Convex Hull: [Pablo Messina](https://github.com/PabloMessina/Competitive-Programming-Material/blob/master/Geometry/ConvexHull.cpp)
+    - Others: [Pablo Messina](https://github.com/PabloMessina/Competitive-Programming-Material/blob/master/Geometry)
 
 - Graphs
     - Dijkstra: [Nicholas Mc-Donnell](https://github.com/N9199/apuntes_icpc/blob/master/graphs/dijsktra/dijsktra.cpp)

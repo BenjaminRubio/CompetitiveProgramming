@@ -275,3 +275,39 @@ vector<P> convexHull(vector<P> &p)
     H.resize(k - 1);
     return H;
 }
+
+// MISCELLANEOUS
+
+P bary(P &A, P &B, P &C, double a, double b, double c)
+{
+    return (A * a + B * b + C * c) / (a + b + c);
+}
+
+P circum(P &A, P &B, P &C)
+{
+    double a = (B - C).norm2(), b = (C - A).norm2(), c = (A - B).norm2();
+    return bary(A, B, C, a * (b + c - a), b * (c + a - b), c * (a + b - c));
+}
+
+pair<P, double> smallestEnclosingCircle(vector<P> &p)
+{
+    random_shuffle(p.begin(), p.end());
+    P c = p[0]; double r = 0;
+    int N = p.size();
+    rep(i, N) if (i && (p[i] - c).norm() > r + EPS)
+    {
+        c = p[i]; r = 0;
+        rep(j, i) if ((p[j] - c).norm() > r + EPS)
+        {
+            c = (p[i] + p[j]) * 0.5;
+            r = (p[i] - c).norm();
+            rep(k, j) if ((p[k] - c).norm() > r + EPS)
+            {
+                c = circum(p[i], p[j], p[k]);
+                r = (p[k] - c).norm();
+            }
+        }
+    }
+
+    return {c, r};
+}
