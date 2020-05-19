@@ -18,7 +18,7 @@ struct P
     P operator*(const double &c) const { return P(x * c, y * c); }
     P operator/(const double &c) const { return P(x / c, y / c); }
     T operator*(const P &p) const { return x * p.x + y * p.y; }
-    bool operator<(const P &p) const { return ang() < p.ang(); }
+    T operator^(const P &p) const { return x * p.y - y * p.x; }
 
     T norm2() const { return x * x + y * y; }
     double norm() const { return sqrt(norm2()); }
@@ -31,10 +31,12 @@ struct P
 };
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
 
+bool half(P &p) { return p.y > 0 || (p.y == 0 && p.x > 0); }
+
 struct Node
 {
     double v;
-    Node() { v = -1.; }
+    Node() { v = 0.; }
     Node(double v) : v(v) {}
     Node(const Node &a, const Node &b) { v = max(a.v, b.v); }
 };
@@ -53,11 +55,6 @@ public:
         copy(arr.begin(), arr.end(), t.begin() + n);
         for (int i = n - 1; i > 0; --i)
             t[i] = node(t[i << 1], t[i << 1 | 1]);
-    }
-    void set_point(int p, const node &value)
-    {
-        for (t[p += n] = value; p >>= 1; )
-            t[p] = node(t[p << 1], t[p << 1 | 1]);
     }
     node query(int l, int r)
     {
@@ -84,7 +81,7 @@ int main()
     p.resize(N);
     rep(i, N) cin >> p[i];
 
-    double ans = -1.;
+    double ans = 0.;
     rep(i, N)
     {
         P a = p[i];
@@ -92,14 +89,19 @@ int main()
         vector<P> v;
         rep(j, N) if (i != j) v.push_back(p[j] - a);
 
-        sort(v.begin(), v.end());
+        sort(v.begin(), v.end(), [](P &p1, P &p2)
+        {
+            int h1 = half(p1), h2 = half(p2);
+            return h1 != h2 ? h1 > h2 : (p1 ^ p2) > 0;
+        });
+
         rep(j, N - 1) v.push_back(v[j]);
 
         vector<Node> d;
         rep(j, 2 * N - 2) d.emplace_back(v[j].norm());
         ST<Node> st(d);
 
-        vector<double> v_; v_.resize(2 * N - 2);
+        vector<double> v_(2 * N - 2);
         rep(j, 2 * N - 2) v_[j] = v[j].ang() + ((j >= N - 1) ? 2. * PI : 0.);
 
         int l = 0, r = 0;
@@ -108,7 +110,7 @@ int main()
             double bl = v_[j] + PI / 3., br = v_[j] + 5. * PI / 3.;
 
             while (l < v_.size() && v_[l] < bl) l++;
-            while (r < v_.size() && v_[r] < br) r++;
+            while (r < v_.size() && v_[r] <= br) r++;
 
             ans = max(ans, min(d[j].v, st.query(l, r).v));
         }
