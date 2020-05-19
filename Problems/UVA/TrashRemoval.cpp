@@ -76,7 +76,6 @@ int main()
             ans = min(ans, aux);
         }
 
-        cout << "Case " << k++ << ": ";
-        cout << ceil(ans * 100.) / 100. << '\n';
+        cout << "Case " << k++ << ": " << ceil(ans * 100.) / 100. << '\n';
     }
 }
