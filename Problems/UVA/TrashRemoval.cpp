@@ -71,8 +71,7 @@ int main()
             P p1 = H[i], p2 = H[(i + 1) % N];
             double aux = 0;
 
-            rep(j, N)
-                aux = max(aux, abs(turn(p1, p2, H[j]) / (p2 - p1).norm()));
+            rep(j, N) aux = max(aux, turn(p1, p2, H[j]) / (p2 - p1).norm());
 
             ans = min(ans, aux);
         }
