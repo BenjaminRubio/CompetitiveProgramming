@@ -137,7 +137,7 @@ struct HASH // Hashing for integer coordinates lines
 
 bool inDisk(P &a, P &b, P &p) { return (a - p) * (b - p) <= 0; }
 
-bool onSegment(P &p, P &a, P &b)
+bool onSegment(P &a, P &b, P &p)
 {
     return abs(turn(a, b, p)) < EPS && inDisk(a, b, p); 
 }
