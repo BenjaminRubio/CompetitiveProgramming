@@ -57,8 +57,6 @@ double ang(double a)
     return a;
 }
 
-int sgn(T x) { return (0 < x) - (x < 0); }
-
 double turn(P &a, P &b, P &c) { return (b - a) ^ (c - a); }
 
 bool isConvex(vector<P> p)
