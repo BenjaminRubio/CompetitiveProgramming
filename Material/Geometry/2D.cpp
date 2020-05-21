@@ -27,7 +27,7 @@ struct P
     }
     bool operator<(const P &p) const
     {
-        return x - p.x > EPS or (abs(x - p.x) < EPS && y - p.y > EPS);
+        return p.x - x > EPS or (abs(x - p.x) < EPS && p.y - y > EPS);
     }
 
     T norm2() const { return x * x + y * y; }
@@ -38,7 +38,7 @@ struct P
         if (a < 0) a += 2. * PI;
         return a;
     }
-    P unit() { return (*this) / (*this).norm(); }
+    P unit() { return (*this) / norm(); }
     P perp() { return P(-y, x); }
     P rot(P r) { return P((*this) ^ r, (*this) * r); }
     P rot(double a){ return rot(P(sin(a), cos(a))); }
