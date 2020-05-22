@@ -27,7 +27,7 @@ struct P
     }
     bool operator<(const P &p) const
     {
-        return p.x - x > EPS or (abs(x - p.x) < EPS && p.y - y > EPS);
+        return abs(x - p.x) > EPS ? p.x - x > EPS : p.y - y > EPS;
     }
 
     T norm2() const { return x * x + y * y; }
@@ -276,6 +276,8 @@ vector<P> convexHull(vector<P> &p)
 
 // MISCELLANEOUS
 
+// Smallest Enclosing cicle
+
 P bary(P &A, P &B, P &C, double a, double b, double c)
 {
     return (A * a + B * b + C * c) / (a + b + c);
@@ -308,4 +310,45 @@ pair<P, double> smallestEnclosingCircle(vector<P> &p)
     }
 
     return {c, r};
+}
+
+// Closest pair of points from array "a" (mindist: squared mindist)
+
+#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
+const int MAXN = 1000010;
+
+int n;
+T mindist;
+pair<P, P> best_pair;
+P a[MAXN], t[MAXN];
+
+T sq(T x) { return x * x; }
+
+bool cmpY(P & a, P & b) { return a.y < b.y; }
+
+// sort "a" before usage (P must have default operator<)
+void closest(int l, int r)
+{
+    if (r - l <= 3)
+    {
+        repx(i, l, r) repx(j, i + 1, r)
+            mindist = min(mindist, (a[i] - a[j]).norm2());
+        sort(a + l, a + r, cmpY);
+        return;
+    }
+
+    int m = (l + r) >> 1;
+    int midx = a[m].x;
+    closest(l, m); closest(m, r);
+
+    merge(a + l, a + m, a + m, a + r, t, cmpY);
+    copy(t, t + r - l, a + l);
+
+    int tsz = 0;
+    repx(i, l, r)  if (sq(a[i].x - midx) < mindist)
+    {
+        for (int j = tsz - 1; j >= 0 && sq(a[i].y - t[j].y) < mindist; --j)
+            mindist = min(mindist, (a[i] - t[j]).norm2());
+        t[tsz++] = a[i];
+    }
 }
