@@ -26,7 +26,6 @@ const int MAXN = 1000010;
 
 int n;
 T mindist;
-pair<P, P> best_pair;
 P a[MAXN], t[MAXN];
 
 T sq(T x) { return x * x; }

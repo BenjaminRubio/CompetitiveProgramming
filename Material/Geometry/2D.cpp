@@ -319,36 +319,41 @@ const int MAXN = 1000010;
 
 int n;
 T mindist;
-pair<P, P> best_pair;
+pair<P, P> best;
 P a[MAXN], t[MAXN];
 
 T sq(T x) { return x * x; }
 
 bool cmpY(P & a, P & b) { return a.y < b.y; }
 
+void update(P &p1, P &p2)
+{
+    T aux = (p1 - p2).norm2();
+    if (aux < mindist) { mindist = aux; best = {p1, p2}; }
+}
+
 // sort "a" before usage (P must have default operator<)
 void closest(int l, int r)
 {
     if (r - l <= 3)
     {
-        repx(i, l, r) repx(j, i + 1, r)
-            mindist = min(mindist, (a[i] - a[j]).norm2());
+        repx(i, l, r) repx(j, i + 1, r) update(a[i], a[j]);
         sort(a + l, a + r, cmpY);
         return;
     }
 
     int m = (l + r) >> 1;
-    int midx = a[m].x;
+    int xm = a[m].x;
     closest(l, m); closest(m, r);
 
     merge(a + l, a + m, a + m, a + r, t, cmpY);
     copy(t, t + r - l, a + l);
 
     int tsz = 0;
-    repx(i, l, r)  if (sq(a[i].x - midx) < mindist)
+    repx(i, l, r)  if (sq(a[i].x - xm) < mindist)
     {
         for (int j = tsz - 1; j >= 0 && sq(a[i].y - t[j].y) < mindist; --j)
-            mindist = min(mindist, (a[i] - t[j]).norm2());
+            update(a[i], a[j]);
         t[tsz++] = a[i];
     }
 }
