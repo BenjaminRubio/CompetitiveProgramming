@@ -15,14 +15,14 @@ ll cost(int i, int j)
     return (acc[j + 1] - acc[i]) * (j - i + 1);
 }
 
-vector<long long> last, now;
+vector<ll> last, now;
 
 void compute(int l, int r, int optl, int optr)
 {
     if (l > r) return;
 
     int mid = (l + r) / 2;
-    pair<long long, int> best = {cost(0, mid), -1};
+    pair<ll, int> best = {cost(0, mid), -1};
 
     repx(k, optl, min(mid, optr + 1))
         best = min(best, {last[k] + cost(k + 1, mid), k});
