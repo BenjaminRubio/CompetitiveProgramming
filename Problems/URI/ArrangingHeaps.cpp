@@ -12,7 +12,8 @@ vector<ll> X, W, Wacc, XWacc;
 
 ll cost(int i, int j)
 {
-    return X[j] * (Wacc[j] - (i ? Wacc[i - 1] : 0)) - XWacc[j] + (i ? XWacc[i - 1] : 0);
+    return X[j] * (Wacc[j] - (i ? Wacc[i - 1] : 0)) - 
+           XWacc[j] + (i ? XWacc[i - 1] : 0);
 }
 
 vector<ll> last, now;
