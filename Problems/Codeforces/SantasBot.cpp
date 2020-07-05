@@ -46,12 +46,8 @@ int main()
     }
 
     ll ans = 0;
-    rep(i, N)
-    {
-        ll x = 0, y = 0;
-        rep(j, A[i].size()) x += C[A[i][j]], y += N * N;
-        ans = (ans + x * mulinv(y)) % MOD;
-    }
+    rep(i, N) rep(j, A[i].size())
+        ans = (ans + C[A[i][j]] * mulinv(A[i].size() * N * N)) % MOD;
 
     cout << ans << '\n';
 }
