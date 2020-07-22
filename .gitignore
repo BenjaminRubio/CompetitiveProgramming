@@ -6,7 +6,7 @@ in
 out
 *.out
 .*
-test.cpp
+test.*
 generate.py
 Extras
 
