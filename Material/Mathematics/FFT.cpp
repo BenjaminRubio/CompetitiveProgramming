@@ -4,7 +4,7 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 
-#define M_PIl 3.141592653589793238462643383279502884L
+#define M_PIl acos(-1.0L)
 
 typedef complex<double> C;
 typedef vector<double> vd;
