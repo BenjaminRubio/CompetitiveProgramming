@@ -17,17 +17,6 @@ void add_node(int u, int e, int p)
     G[e].emplace_back(u, D[u][e]);
 }
 
-int dfs(int u, int e, int p)
-{
-    if (u == e) return 0;
-    for (auto &v : G[u]) if (v.ff != p)
-    {
-        int aux = dfs(v.ff, e, u);
-        if (aux != -1) return aux + v.ss;
-    }
-    return -1;
-}
-
 bool check(int s, int u, int p, int d)
 {
     if (D[s][u] != d) return false;
