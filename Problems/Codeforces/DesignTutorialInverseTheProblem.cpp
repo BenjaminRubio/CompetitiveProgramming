@@ -2,7 +2,6 @@
 using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 #define ff first
 #define ss second
 
@@ -54,7 +53,7 @@ int main()
     if (!flag) { cout << "NO\n"; return 0; }
 
     vector<pair<int, int>> v;
-    repx(i, 1, N) v.emplace_back(D[0][i], i);
+    rep(i, N) if (i) v.emplace_back(D[0][i], i);
 
     sort(v.begin(), v.end());
 
