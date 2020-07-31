@@ -1,18 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+typedef long double ld;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define ff first
 #define ss second
 
 int N;
-vector<pair<pair<long double, long double>, long double>> C;
-vector<pair<long double, int>> v;
-vector<long double> p;
+vector<pair<pair<ld, ld>, ld>> C;
+vector<pair<ld, int>> v;
+vector<ld> p;
 
-long double get_diff(long double proj)
+ld get_diff(ld proj)
 {
-    long double m = 1e15, M = -1e15;
+    ld m = 1e15, M = -1e15;
     rep(i, N)
     {
         m = min(m, C[i].ff.ff + proj * C[i].ss);
@@ -59,14 +60,14 @@ int main()
         int m1 = l + (r - l) / 3;
         int m2 = r - (r - l) / 3;
 
-        long double v1 = get_diff(p[m1]);
-        long double v2 = get_diff(p[m2]);
+        ld v1 = get_diff(p[m1]);
+        ld v2 = get_diff(p[m2]);
 
         if (v1 <= v2) r = m2;
         if (v2 <= v1) l = m1;
     }
 
-    long double ans = 1e15;
+    ld ans = 1e15;
     for (int i = l; i <= r; i++) ans = min(ans, get_diff(p[i]));
 
     cout << ans << '\n';
