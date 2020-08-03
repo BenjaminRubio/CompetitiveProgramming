@@ -18,7 +18,7 @@ int main()
         rep(i, N) cin >> C[i + 1];
         N = N + 1;
 
-        DP.assign(N + 1, vector<int>(N + 1));
+        DP.assign(N + 1, vector<int>(N + 1, 1e9));
         OPT.assign(N + 1, vector<int>(N + 1));
 
         rep(i, N) DP[i][i + 1] = C[i + 1] - C[i], OPT[i][i + 1] = i;
@@ -26,7 +26,6 @@ int main()
         repx(d, 2, N + 1) rep(l, N + 1 - d)
         {
                 int r = l + d, l_ = OPT[l][r - 1], r_ = OPT[l + 1][r];
-                DP[l][r] = 1e9;
                 repx(i, l_, r_ + 1)
                 {
                     int aux = DP[l][i] + DP[i][r] + C[r] - C[l];
