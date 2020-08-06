@@ -21,7 +21,6 @@ int main()
     while (!E.empty())
     {
         par e = E.top(); E.pop();
-        // cerr << e.ff << ' ' << e.ss << '\n';
         if (e.ss == 0)
         {
             if (!flag)
