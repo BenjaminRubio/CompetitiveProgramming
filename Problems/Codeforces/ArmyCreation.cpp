@@ -39,7 +39,6 @@ public:
         build(arr.begin(), arr.end(), 0, s - 1, 1);
     }
 
-    // counts numbers in [x,y] in positions [a,b)
     int range(int x, int y, int a, int b)
     {
         if (y < x or b <= a) return 0;
