@@ -6,8 +6,8 @@ using namespace __gnu_pbds;
 using namespace std;
  
 template <typename T, typename Comparator = less<T>>
-using ordered_set = tree<T, null_type, Comparator, rb_tree_tag,
-                         tree_order_statistics_node_update>;
+using super_set = tree<T, null_type, Comparator, rb_tree_tag,
+                       tree_order_statistics_node_update>;
  
 // order_of_key(T x)
 // -> returns the number of elements strictly smaller than x
