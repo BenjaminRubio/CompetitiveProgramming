@@ -35,8 +35,7 @@ int main()
         if (R[j] != -1) L[R[j]] = L[k];
         if (L[k] != -1) R[L[k]] = R[j];
 
-        if (t == 1) t = 2;
-        else t = 1;
+        t = t % 2 + 1; // 1 to 2 and 2 to 1
     }
 
     rep(i, N) cout << V[i];
