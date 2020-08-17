@@ -35,7 +35,8 @@ int main()
 
         if (T == 0) active.erase(X);
         if (T == 1) active.insert(X);
-        if (T == 2 && !active.empty()) ans[X] = *active.begin();
+        if (T == 2 && !active.empty())
+            ans[X] = *active.begin();
     }
 
     rep(i, Q) cout << ans[i] << '\n';
