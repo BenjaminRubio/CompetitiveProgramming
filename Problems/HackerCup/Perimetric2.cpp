@@ -118,7 +118,7 @@ int main()
                         r = max(r, it->ss);
                         q.push(*it);
                         A += min(L[i] + W[i], it->ss) - it->ff;
-                        c += (it->ff > L[i]) + (it->ss <= L[i] + W[i]);
+                        c += (it->ff > L[i]) + (it->ss < L[i] + W[i]);
                     }
                     it++;
                 }
@@ -130,7 +130,7 @@ int main()
             }
             else { v += 2 * H[i]; h += W[i]; s.insert({L[i], L[i] + W[i]}); }
 
-            ans *= 2 * h + v;
+            ans *= 2ll * h + v;
         }
 
         cout << int(ans) << '\n';
