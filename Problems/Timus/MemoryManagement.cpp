@@ -13,17 +13,17 @@ int main()
 {
     A.assign(N, 0);
 
-    priority_queue<par, vector<par>, greater<par>> q;
+    queue<par> q;
     priority_queue<int, vector<int>, greater<int>> off;
 
     rep(i, N) off.push(i + 1);
 
     while (cin >> t >> x)
     {
-        while (!q.empty() && q.top().ff <= t)
+        while (!q.empty() && q.front().ff <= t)
         {
-            if (A[q.top().ss] == q.top().ff)
-                A[q.top().ss] = 0, off.push(q.top().ss);
+            if (A[q.front().ss] == q.front().ff)
+                A[q.front().ss] = 0, off.push(q.front().ss);
             q.pop();
         }
         if (x == '+')
