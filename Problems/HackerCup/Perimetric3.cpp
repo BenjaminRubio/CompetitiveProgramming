@@ -4,46 +4,76 @@ using namespace std;
 typedef long long ll;
 #define rep(i, n) for (ll i = 0; i < (ll)n; i++)
 #define repx(i, a, b) for (ll i = (ll)a; i < (ll)b; i++)
-#define ff first
-#define ss second
 
-template<int MOD, int RT> struct mint {
-	static const int mod = MOD;
-	static constexpr mint rt() { return RT; } // primitive root for FFT
-	int v; explicit operator int() const { return v; } // explicit -> don't silently convert to int
-	mint() { v = 0; }
-	mint(ll _v) { v = (-MOD < _v && _v < MOD) ? _v : _v % MOD;
-		if (v < 0) v += MOD; }
-	friend bool operator==(const mint& a, const mint& b) { 
-		return a.v == b.v; }
-	friend bool operator!=(const mint& a, const mint& b) { 
-		return !(a == b); }
-	friend bool operator<(const mint& a, const mint& b) { 
-		return a.v < b.v; }
-   
-	mint& operator+=(const mint& m) { 
-		if ((v += m.v) >= MOD) v -= MOD; 
-		return *this; }
-	mint& operator-=(const mint& m) { 
-		if ((v -= m.v) < 0) v += MOD; 
-		return *this; }
-	mint& operator*=(const mint& m) { 
-		v = (ll)v*m.v%MOD; return *this; }
-	mint& operator/=(const mint& m) { return (*this) *= inv(m); }
-	friend mint pow(mint a, ll p) {
-		mint ans = 1; assert(p >= 0);
-		for (; p; p /= 2, a *= a) if (p&1) ans *= a;
-		return ans; }
-	friend mint inv(const mint& a) { assert(a.v != 0); 
-		return pow(a,MOD-2); }
-		
-	mint operator-() const { return mint(-v); }
-	mint& operator++() { return *this += 1; }
-	mint& operator--() { return *this -= 1; }
-	friend mint operator+(mint a, const mint& b) { return a += b; }
-	friend mint operator-(mint a, const mint& b) { return a -= b; }
-	friend mint operator*(mint a, const mint& b) { return a *= b; }
-	friend mint operator/(mint a, const mint& b) { return a /= b; }
+struct SUM
+{
+    static ll const neutro = 0;
+    static ll op(ll x, ll y) { return x + y; }
+    static ll lazy_op(int i, int j, ll x) { return x * (j - i + 1); }
+};
+
+template <class t>
+class STL
+{
+    vector<ll> arr, st, lazy;
+    int n;
+
+    void build(int u, int i, int j)
+    {
+        if (i == j) { st[u] = arr[i]; return; }
+        int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
+        build(l, i, m); build(r, m + 1, j);
+        st[u] = t::op(st[l], st[r]);
+    }
+
+    void propagate(int u, int i, int j, ll x)
+    {
+        st[u] = t::lazy_op(i, j, x);
+        if (i != j)
+        {
+            lazy[u * 2 + 1] = x;
+            lazy[u * 2 + 2] = x;
+        }
+        lazy[u] = -1;
+    }
+
+    ll query(int a, int b, int u, int i, int j)
+    {
+        if (j < a or b < i) return t::neutro;
+        int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
+        if (lazy[u] != -1) propagate(u, i, j, lazy[u]);
+        if (a <= i and j <= b) return st[u];
+        ll x = query(a, b, l, i, m);
+        ll y = query(a, b, r, m + 1, j);
+        return t::op(x, y);
+    }
+
+    void update(int a, int b, ll value, int u, int i, int j)
+    {
+        int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
+        if (lazy[u] != -1) propagate(u, i, j, lazy[u]);
+        if (a <= i and j <= b) propagate(u, i, j, value);
+        else if (j < a or b < i) return;
+        else
+        {
+            update(a, b, value, l, i, m);
+            update(a, b, value, r, m + 1, j);
+            st[u] = t::op(st[l], st[r]);
+        }
+    }
+
+public:
+    STL(vector<ll> &v)
+    {
+        arr = v; n = v.size();
+        st.resize(n * 4 + 5);
+        lazy.assign(n * 4 + 5, -1);
+        build(0, 0, n - 1);
+    }
+
+    ll query(int a, int b) { return query(a, b, 0, 0, n - 1); }
+
+    void update(int a, int b, ll value) { update(a, b, value, 0, 0, n - 1); }
 };
 
 const ll MOD = 1e9 + 7;
@@ -63,90 +93,66 @@ int main()
 
         cin >> N >> K;
 
-        vector<ll> L(N), W(N), H(N);
+        vector<ll> L(N), W(N), H(N), R(N);
         rep(i, K) cin >> L[i];
 
         cin >> A >> B >> C >> D;
         repx(i, K, N)
-            L[i] = mod(mul(A, L[i - 2], D) + mul(B, L[i - 1], D) + mod(C, D), D) + 1;
+            L[i] = mod(mul(A, L[i - 2], D) + mul(B, L[i - 1], D) + mod(C, D), D) + 1ll;
 
         rep(i, K) cin >> W[i];
 
         cin >> A >> B >> C >> D;
         repx(i, K, N)
-            W[i] = mod(mul(A, W[i - 2], D) + mul(B, W[i - 1], D) + mod(C, D), D) + 1;
+            W[i] = mod(mul(A, W[i - 2], D) + mul(B, W[i - 1], D) + mod(C, D), D) + 1ll;
 
         rep(i, K) cin >> H[i];
 
         cin >> A >> B >> C >> D;
         repx(i, K, N)
-            H[i] = mod(mul(A, H[i - 2], D) + mul(B, H[i - 1], D) + mod(C, D), D) + 1;
+            H[i] = mod(mul(A, H[i - 2], D) + mul(B, H[i - 1], D) + mod(C, D), D) + 1ll;
 
-        mint<MOD, 0> ans(1), h(0), v(0);
-        set<pair<pair<pair<ll, ll>, pair<ll, ll>>, ll>> s;
+        set<ll> s;
+        rep(i, N) R[i] = L[i] + W[i], s.insert(L[i]), s.insert(R[i]);
+
+        map<ll, ll> m; int id = 0;
+        W.assign(s.size() + 1, 0);
+        ll l = 0;
+        for (ll x : s)
+        {
+            W[id] = x - l;
+            m[x] = id++, l = x;
+        }
+
+        rep(i, N) L[i] = m[L[i]], R[i] = m[R[i]];
+
+        vector<ll> n(s.size() + 1, 0);
+        STL<SUM> stlw(W), stlh(n), stlv(n), stlt(n);
+
+        ll ans = 1, P = 0;
         rep(i, N)
         {
-            if (!s.empty())
-            {
-                ll c = 0, A = 0, m1 = 0, m2 = 0, lst = 0;
-                queue<pair<pair<pair<ll, ll>, pair<ll, ll>>, ll>> q, q_;
-                stack<pair<pair<pair<ll, ll>, pair<ll, ll>>, ll>> st;
+            P = (P + 2ll * stlw.query(L[i] + 1, R[i])) % MOD;
+            stlw.update(L[i] + 1, R[i], 0);
 
-                auto it = s.lower_bound({{{L[i], -1}, {-1, -1}}, -1});
-                while (it != s.end())
-                {
-                    if (it->ff.ss.ff > L[i] + W[i]) { it++; continue; }
-                    st.push(*it);
-                    if (it->ff.ss.ff < L[i] && it->ff.ff.ff >= L[i])
-                    {
-                        // A += max(min(L[i] + W[i], it->ff.ff.ff) - max(L[i], lst), 0ll);
-                        c += ll(it->ff.ff.ff <= L[i] + W[i]) * it->ff.ff.ss;
-                        if (L[i] + W[i] >= it->ff.ff.ff)
-                        {
-                            q.push(*it);
-                            q_.push({{{it->ff.ff.ff, 0}, it->ff.ss}, it->ss});
-                        }
-                    }
-                    if (it->ff.ss.ff >= L[i])
-                    {
-                        q.push(*it);
-                        if (L[i] + W[i] < it->ff.ff.ff)
-                            q_.push({{it->ff.ff, {it->ff.ss.ff, 0}}, it->ss});
-                        // A += max(min(L[i] + W[i], it->ff.ff.ff) - max(it->ff.ss.ff, lst), 0ll);
-                        c += it->ff.ss.ss + ll(it->ff.ff.ff <= L[i] + W[i]) * it->ff.ff.ss;
-                    }
-                    if (it->ff.ss.ff < L[i] && it->ff.ff.ff >= L[i]) m1 = max(m1, it->ss);
-                    if (it->ff.ss.ff <= (L[i] + W[i]) && it->ff.ff.ff > (L[i] + W[i])) m2 = max(m2, it->ss);
-                    // lst = it->ff.ff.ff;
-                    it++;
-                }
+            ll tl = stlt.query(L[i], L[i]), tr = stlt.query(R[i], R[i]);
+            ll l = H[i] - stlh.query(L[i], L[i]) + (tl != 2) * stlv.query(L[i], L[i]);
+            ll r = H[i] - stlh.query(R[i], R[i]) + (tr != 1) * stlv.query(R[i], R[i]);
+            P = (P + l + r) % MOD;
+            stlh.update(L[i], R[i], H[i]);
 
-                lst = L[i] + W[i];
-                while (!st.empty())
-                {
-                    auto e = st.top(); st.pop();
-                    A += max(min(lst, e.ff.ff.ff) - max(L[i], e.ff.ss.ff), 0ll);
-                    lst = min(lst, e.ff.ss.ff);
-                }
+            P = (P - stlv.query(L[i], R[i])) % MOD;
+            stlv.update(L[i], R[i], 0);
+            stlv.update(L[i], L[i], l);
+            stlv.update(R[i], R[i], r);
 
-                v += H[i] - m1;
-                v += H[i] - m2;
+            stlt.update(L[i], R[i], 0);
+            stlt.update(L[i], L[i], 1);
+            stlt.update(R[i], R[i], 2);
 
-                while (!q.empty()) s.erase(q.front()), q.pop();
-                while (!q_.empty()) s.insert(q_.front()), q_.pop();
-                s.insert({{{L[i] + W[i], H[i] - m2}, {L[i], H[i] - m1}}, H[i]});
-
-                v -= c;
-                h += W[i] - A;
-                // cerr << "~" << c << "-" <<  H[i] - m1 << "-" << H[i] - m2 << "-" << W[i] - A << "~" << "   ";
-            }
-            else { v += 2 * H[i]; h += W[i]; s.insert({{{L[i] + W[i], H[i]}, {L[i], H[i]}}, H[i]}); }
-            // cerr << L[i] << '-' << L[i] + W[i] << ": " << H[i] << '-' << int(2 * h + v) << "   ";
-
-            ans *= 2 * h + v;
+            ans = (ans * P) % MOD;
         }
-        // cerr << '\n' << '\n';
 
-        cout << int(ans) << '\n';
+        cout << (ans + MOD) % MOD << '\n';
     }
 }
