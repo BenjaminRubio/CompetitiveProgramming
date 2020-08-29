@@ -75,7 +75,6 @@ public:
 
 int N, x;
 vector<int> P;
-priority_queue<pair<int, int>> Q;
 
 int main()
 {
