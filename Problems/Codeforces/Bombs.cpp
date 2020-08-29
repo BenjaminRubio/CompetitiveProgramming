@@ -96,11 +96,7 @@ int main()
         cin >> x;
         stl.update(0, x - 1, -1);
 
-        while (stl.query(0, N - 1) <= 0)
-        {
-            ans--;
-            stl.update(0, P[ans - 1], 1);
-        }
+        while (stl.query(0, N - 1) <= 0) stl.update(0, P[--ans - 1], 1);
         cout << ans << ' ';
     }
     cout << '\n';
