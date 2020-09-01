@@ -30,7 +30,7 @@ class STL
 
     void propagate(int u, int i, int j, int x)
     {
-        st[u] = node(x, st[u]);
+        st[u] = node(x, i, j, st[u]);
         if (i != j)
         {
             st[u * 2 + 1].lz = 1, st[u * 2 + 1].v_ += x;
