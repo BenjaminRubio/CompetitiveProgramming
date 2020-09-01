@@ -3,112 +3,128 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-struct Digits
-{
-    int C[4][10];
-    Digits() { memset(C, 0, sizeof C); }
-    Digits(int v)
-    {
-        memset(C, 0, sizeof C);
-        rep(i, 4) C[i][v % 10] = 1, v /= 10;
-    }
-    Digits operator+(int s)
-    {
-        rep(i, 4)
-        {
-            
-        }
-    }
-}
+int L[31] = {4, 7, 44, 47, 74, 77, 444, 447, 474, 477, 744, 747, 774, 777, 4444, 4447, 4474, 
+             4477, 4744, 4747, 4774, 4777, 7444, 7447, 7474, 7477, 7744, 7747, 7774, 7777, 44444};
 
-template <class t>
+struct Node
+{
+    int v, c, d, v_ = 0;
+    bool lz = false;
+    Node() : d(1e6), c(0), v(-1e6) {}
+    Node(int x) : v(x), c(1)
+    {
+        int i = 0;
+        while (L[i] < x) i++;
+        d = L[i] - x;
+    }
+    Node(const Node &a, const Node &b)
+    {
+        d = min(a.d, b.d);
+        c = (a.d <= b.d) * a.c + (a.d >= b.d) * b.c;
+    }
+    Node(int x, const Node &b)
+    {
+        *this = b;
+        v += x, d -= x, lz = 0, v_ = 0;
+    }
+};
+
+template <class node>
 class STL
 {
-    vector<int> arr, st, lazy;
+    vector<node> st;
     int n;
 
-    void build(int u, int i, int j)
+    void build(int u, int i, int j, vector<node> &arr)
     {
         if (i == j) { st[u] = arr[i]; return; }
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        build(l, i, m); build(r, m + 1, j);
-        st[u] = t::op(st[l], st[r]);
+        build(l, i, m, arr), build(r, m + 1, j, arr);
+        st[u] = node(st[l], st[r]);
     }
 
     void propagate(int u, int i, int j, int x)
     {
-        st[u] += x;
+        st[u] = node(x, st[u]);
         if (i != j)
         {
-            lazy[u * 2 + 1] += x;
-            lazy[u * 2 + 2] += x;
+            st[u * 2 + 1].lz = 1, st[u * 2 + 1].v_ += x;
+            st[u * 2 + 2].lz = 1, st[u * 2 + 2].v_ += x;
         }
-        lazy[u] = 0;
     }
 
-    int query(int a, int b, int u, int i, int j)
+    node query(int a, int b, int u, int i, int j)
     {
-        if (j < a or b < i) return t::neutro;
+        if (j < a || b < i) return node();
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        if (lazy[u]) propagate(u, i, j, lazy[u]);
-        if (a <= i and j <= b) return st[u];
-        int x = query(a, b, l, i, m);
-        int y = query(a, b, r, m + 1, j);
-        return t::op(x, y);
+        if (st[u].lz) propagate(u, i, j, st[u].v_);
+        if (a <= i && j <= b) return st[u];
+        return node(query(a, b, l, i, m), query(a, b, r, m + 1, j));
     }
 
-    void update(int a, int b, int value, int u, int i, int j)
+    void update(int a, int b, int v, int u, int i, int j)
     {
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        if (lazy[u]) propagate(u, i, j, lazy[u]);
-        if (a <= i and j <= b) propagate(u, i, j, value);
-        else if (j < a or b < i) return;
+        if (st[u].lz) propagate(u, i, j, st[u].v_);
+        if (a <= i && j <= b) propagate(u, i, j, v);
+        else if (j < a || b < i) return;
         else
         {
-            update(a, b, value, l, i, m);
-            update(a, b, value, r, m + 1, j);
-            st[u] = t::op(st[l], st[r]);
+            update(a, b, v, l, i, m);
+            update(a, b, v, r, m + 1, j);
+            st[u] = node(st[l], st[r]);
         }
     }
 
 public:
-    STL(vector<int> &v)
+    STL(vector<node> &v)
     {
-        arr = v; n = v.size();
+        n = v.size();
         st.resize(n * 4 + 5);
-        lazy.assign(n * 4 + 5, 0);
-        build(0, 0, n - 1);
+        build(0, 0, n - 1, v);
     }
 
-    int query(int a, int b) { return query(a, b, 0, 0, n - 1); }
+    void fix(int u, int i, int j)
+    {
+        if (st[u].lz) propagate(u, i, j, st[u].v_);
+        if (st[u].d >= 0) return;
+        if (i == j) { st[u] = node(st[u].v); return; }
+        int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
+        fix(l, i, m), fix(r, m + 1, j);
+        st[u] = node(st[l], st[r]);
+    }
 
-    void update(int a, int b, int value) { update(a, b, value, 0, 0, n - 1); }
+    node query(int a, int b) { return query(a, b, 0, 0, n - 1); }
+
+    void update(int a, int b, int v) { update(a, b, v, 0, 0, n - 1); }
 };
 
-int N, x;
-vector<int> P;
+int N, M, x, l, r;
+string t;
+vector<Node> v;
 
 int main()
 {
-    cin >> N;
+    cin >> N >> M;
 
-    P.resize(N);
-    rep(i, N) { cin >> x; P[x - 1] = i; }
+    rep(i, N) { cin >> x; v.emplace_back(x); }
 
-    vector<int> v(N, 0);
     STL<Node> stl(v);
-
-    cout << N << ' ';
-
-    int ans = N;
-    stl.update(0, P[ans - 1], 1);
-    rep(i, N - 1)
+    rep(i, M)
     {
-        cin >> x;
-        stl.update(0, x - 1, -1);
-
-        while (stl.query(0, N - 1) <= 0) stl.update(0, P[--ans - 1], 1);
-        cout << ans << ' ';
+        cin >> t;
+        if (t == "count")
+        {
+            cin >> l >> r;
+            Node ans = stl.query(l - 1, r - 1);
+            if (ans.d == 0) cout << ans.c << ' ';
+            else cout << 0 << ' ';
+        }
+        else
+        {
+            cin >> l >> r >> x;
+            stl.update(l - 1, r - 1, x);
+            stl.fix(0, 0, N - 1);
+        }
     }
-    cout << '\n';
 }
