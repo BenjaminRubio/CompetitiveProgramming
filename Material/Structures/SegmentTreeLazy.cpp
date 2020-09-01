@@ -1,79 +1,74 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-
 struct Node
 {
-    static ll const neutro = 0;
-    static ll op(ll x, ll y) { return x + y; }
-    static ll lazy_op(int i, int j, ll x) { return x * (j - i + 1); }
+    int v, v_ = 0;
+    bool lz = false;
+    Node() : v(0) {}
+    Node(int x) : v(x) {}
+    Node(const Node &a, const Node &b) : v(a.v + b.v) {}
+    Node(int x, int i, int j, const Node &b)
+    {
+        v = b.v + (j - i + 1) * x;
+    }
 };
 
-// 0 - indexed / inclusive - inclusive
-template <class t>
+template <class node>
 class STL
 {
-    vector<ll> arr, st, lazy;
+    vector<node> st;
     int n;
 
-    void build(int u, int i, int j)
+    void build(int u, int i, int j, vector<node> &arr)
     {
         if (i == j) { st[u] = arr[i]; return; }
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        build(l, i, m); build(r, m + 1, j);
-        st[u] = t::op(st[l], st[r]);
+        build(l, i, m, arr), build(r, m + 1, j, arr);
+        st[u] = node(st[l], st[r]);
     }
 
-    void propagate(int u, int i, int j, ll x)
+    void propagate(int u, int i, int j, int x)
     {
-        st[u] += t::lazy_op(i, j, x); // incrementar el valor (+)
-        // st[u] = t::lazy_op(i, j, x); // setear el valor
+        st[u] = node(x, st[u]);
         if (i != j)
         {
-            lazy[u * 2 + 1] += x;
-            lazy[u * 2 + 2] += x;
-            // lazy[u * 2 + 1] = x;
-            // lazy[u * 2 + 2] = x;
+            st[u * 2 + 1].lz = 1, st[u * 2 + 1].v_ += x;
+            st[u * 2 + 2].lz = 1, st[u * 2 + 2].v_ += x;
         }
-        lazy[u] = 0;
     }
 
-    ll query(int a, int b, int u, int i, int j)
+    node query(int a, int b, int u, int i, int j)
     {
-        if (j < a or b < i) return t::neutro;
+        if (j < a || b < i) return node();
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        if (lazy[u]) propagate(u, i, j, lazy[u]);
-        if (a <= i and j <= b) return st[u];
-        ll x = query(a, b, l, i, m);
-        ll y = query(a, b, r, m + 1, j);
-        return t::op(x, y);
+        if (st[u].lz) propagate(u, i, j, st[u].v_);
+        if (a <= i && j <= b) return st[u];
+        return node(query(a, b, l, i, m), query(a, b, r, m + 1, j));
     }
 
-    void update(int a, int b, ll value, int u, int i, int j)
+    void update(int a, int b, int v, int u, int i, int j)
     {
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        if (lazy[u]) propagate(u, i, j, lazy[u]);
-        if (a <= i and j <= b) propagate(u, i, j, value);
-        else if (j < a or b < i) return;
+        if (st[u].lz) propagate(u, i, j, st[u].v_);
+        if (a <= i && j <= b) propagate(u, i, j, v);
+        else if (j < a || b < i) return;
         else
         {
-            update(a, b, value, l, i, m);
-            update(a, b, value, r, m + 1, j);
-            st[u] = t::op(st[l], st[r]);
+            update(a, b, v, l, i, m);
+            update(a, b, v, r, m + 1, j);
+            st[u] = node(st[l], st[r]);
         }
     }
 
 public:
-    STL(vector<ll> &v)
+    STL(vector<node> &v) : n(v.size())
     {
-        arr = v; n = v.size();
         st.resize(n * 4 + 5);
-        lazy.assign(n * 4 + 5, 0);
-        build(0, 0, n - 1);
+        build(0, 0, n - 1, v);
     }
 
-    ll query(int a, int b) { return query(a, b, 0, 0, n - 1); }
+    node query(int a, int b) { return query(a, b, 0, 0, n - 1); }
 
-    void update(int a, int b, ll value) { update(a, b, value, 0, 0, n - 1); }
+    void update(int a, int b, int v) { update(a, b, v, 0, 0, n - 1); }
 };
