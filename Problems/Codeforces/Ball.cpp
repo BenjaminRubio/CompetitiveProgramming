@@ -1,138 +1,88 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-typedef unsigned long long ull;
-typedef pair<int, int> par;
-typedef vector<int> vi;
-typedef vector<float> vfloat;
-typedef vector<par> vp;
-typedef vector<vi> graph;
-typedef vector<vp> wgraph;
-
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = a; i < (int)b; i++)
-#define invrep(i, a, b) for (int i = b; i-- > (int)a;)
+#define ff first
+#define ss second
 
-#define pb push_back
-#define pf push_front
-#define eb emplace_back
-#define ppb pop_back
 
-#define umap unordered_map
-
-#define lg(x) (31 - __buitlin_clz(x))
-#define lgg(x) (63 - __buitlin_clzll(x))
-#define gcd __gcd
-
-//ios::sync_with_stdio(0); cin.tie(0);
-//cout.setf(ios::fixed); cout.precision(4);
-
-#define debugx(x) cerr << #x << ": " << x << endl
-#define debugv(v)  //       \
-    cerr << #v << ":";    \
-    for (auto e : v)      \
-        cerr << " " << e; \
-    cerr << endl
-#define debugm(m)  //                                      \
-    cerr << #m << endl;                                  \
-    rep(i, (int)m.size())                                \
-    {                                                    \
-        cerr << i << ":";                                \
-        rep(j, (int)m[i].size()) cerr << " " << m[i][j]; \
-        cerr << endl;                                    \
-    }
-#define debugmp(m) //\
-    cerr << #m << endl;                                                                         \
-    rep(i, (int)m.size())                                                                       \
-    {                                                                                           \
-        cerr << i << ":";                                                                       \
-        rep(j, (int)m[i].size()) cerr << " {" << m[i][j].first << "," << m[i][j].second << "}"; \
-        cerr << endl;                                                                           \
-    }
-#define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
-
-// Union Find apuntes Ignacio Hermosilla.
-
-class UnionFind
+struct Node
 {
-private:
-    int numS;
-    vi p, rank, setSize;
+    int v;
+    Node() : v(0) {}
+    Node(int v) : v(v) {}
+    Node(const Node &a, const Node &b) : v(max(a.v, b.v)) {}
+};
+
+template <class node>
+class ST
+{
+    vector<node> t;
+    int n;
 
 public:
-    UnionFind(int n)
+    ST(vector<node> &arr)
     {
-        numS = n;
-        rank.assign(n, 0);
-        setSize.assign(n, 1);
-        p.resize(n);
-        rep(i, n) p[i] = i;
+        n = arr.size();
+        t.resize(n * 2);
+        copy(arr.begin(), arr.end(), t.begin() + n);
+        for (int i = n - 1; i > 0; --i)
+            t[i] = node(t[i << 1], t[i << 1 | 1]);
     }
-    int findSet(int i)
+    void set_point(int p, const node &value)
     {
-        return (p[i] == i) ? i : (p[i] = findSet(p[i]));
+        for (t[p += n] = value; p >>= 1; )
+            t[p] = node(t[p << 1], t[p << 1 | 1]);
     }
-    bool isSameSet(int i, int j)
+    node query(int l, int r)
     {
-        return findSet(i) == findSet(j);
-    }
-    void UnionSet(int i, int j)
-    {
-        if (not isSameSet(i, j))
+        node ansl, ansr;
+        for (l += n, r += n; l < r; l >>= 1, r >>= 1)
         {
-            numS--;
-            int x = findSet(i), y = findSet(j);
-            p[y] = x;
-            setSize[x] += setSize[y];
+            if (l & 1) ansl = node(ansl, t[l++]);
+            if (r & 1) ansr = node(t[--r], ansr);
         }
-    }
-    int numSets()
-    {
-        return numS;
-    }
-    int setOfSize(int i)
-    {
-        return setSize[i];
+        return node(ansl, ansr);
     }
 };
 
-int n;
-int B[500000];
-int I[500000];
-int R[500000];
+int N;
+set<int> S;
+map<int, int> M;
+vector<pair<int, pair<int, int>>> L;
 
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+    ios::sync_with_stdio(0); cin.tie(0);
 
-    cin >> n;
-    UnionFind uf(n);
+    cin >> N;
 
-    rep(i, n)
-        cin >> B[i];
-    rep(i, n)
-        cin >> I[i];
-    rep(i, n)
-        cin >> R[i];
-    
-    rep(i, n)
+    L.resize(N);
+    rep(i, N) cin >> L[i].ff;
+    rep(i, N) { cin >> L[i].ss.ff; S.insert(L[i].ss.ff); }
+    rep(i, N) cin >> L[i].ss.ss;
+
+    int id = 0;
+    for (int x : S) M[x] = id++;
+
+    sort(L.rbegin(), L.rend());
+
+    vector<Node> v(id);
+    ST<Node> st(v);
+
+    queue<pair<int, int>> Q;
+    int ans = 0, l = -1;
+    rep(i, N)
     {
-        rep(j, i)
+        if (L[i].ff != l) while (!Q.empty())
         {
-            int p1 = uf.findSet(i);
-            int p2 = uf.findSet(j);
-            if (B[p2] > B[p1] && I[p2] > I[p1] && R[p2] > R[p1])
-            {
-                uf.UnionSet(p2, p1);
-            }
-            if (B[p2] < B[p1] && I[p2] < I[p1] && R[p2] < R[p1])
-            {
-                uf.UnionSet(p1, p2);
-            }
+            int p = st.query(Q.front().ff, Q.front().ff + 1).v;
+            st.set_point(Q.front().ff, max(p, Q.front().ss)), Q.pop();
         }
+        if (st.query(M[L[i].ss.ff] + 1, id).v > L[i].ss.ss) ans++;
+        else Q.emplace(M[L[i].ss.ff], L[i].ss.ss);
+        l = L[i].ff;
     }
 
-    cout << n - uf.numSets() << '\n';
+    cout << ans << '\n';
 }
