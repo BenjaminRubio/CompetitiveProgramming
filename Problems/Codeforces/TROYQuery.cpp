@@ -2,128 +2,78 @@
 using namespace std;
 
 typedef long long ll;
-typedef unsigned long long ull;
-typedef pair<int, int> par;
-typedef vector<int> vi;
-typedef vector<float> vfloat;
-typedef vector<par> vp;
-typedef vector<vi> graph;
-typedef vector<vp> wgraph;
-
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = a; i < (int)b; i++)
-#define invrep(i, a, b) for (int i = b; i-- > (int)a;)
+#define mp make_pair
+#define ff first
+#define ss second
 
-#define pb push_back
-#define pf push_front
-#define eb emplace_back
-#define ppb pop_back
-
-#define umap unordered_map
-
-#define lg(x) (31 - __buitlin_clz(x))
-#define lgg(x) (63 - __buitlin_clzll(x))
-#define gcd __gcd
-
-//ios::sync_with_stdio(0); cin.tie(0);
-//cout.setf(ios::fixed); cout.precision(4);
-
-#define debugx(x) cerr << #x << ": " << x << endl
-#define debugv(v)  //       \
-    cerr << #v << ":";    \
-    for (auto e : v)      \
-        cerr << " " << e; \
-    cerr << endl
-#define debugm(m)  //                                      \
-    cerr << #m << endl;                                  \
-    rep(i, (int)m.size())                                \
-    {                                                    \
-        cerr << i << ":";                                \
-        rep(j, (int)m[i].size()) cerr << " " << m[i][j]; \
-        cerr << endl;                                    \
-    }
-#define debugmp(m) //\
-    cerr << #m << endl;                                                                         \
-    rep(i, (int)m.size())                                                                       \
-    {                                                                                           \
-        cerr << i << ":";                                                                       \
-        rep(j, (int)m[i].size()) cerr << " {" << m[i][j].first << "," << m[i][j].second << "}"; \
-        cerr << endl;                                                                           \
-    }
-#define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
-
-// Union Find apuntes Ignacio Hermosilla.
-
-class UnionFind
+struct UF
 {
-private:
-    int numS;
-    vi p, rank, setSize;
-
-public:
-    UnionFind(int n)
+    int numSets;
+    vector<int> p, rank, setSize;
+    UF(int n)
     {
-        numS = n;
-        rank.assign(n, 0);
+        numSets = n;
         setSize.assign(n, 1);
+        rank.assign(n, 0);
         p.resize(n);
         rep(i, n) p[i] = i;
     }
-    int findSet(int i)
+    int findSet(int i) { return (p[i] == i) ? i : (p[i] = findSet(p[i])); }
+    bool isSameSet(int i, int j) { return findSet(i) == findSet(j); }
+    void unionSet(int i, int j)
     {
-        return (p[i] == i) ? i : (p[i] = findSet(p[i]));
-    }
-    bool isSameSet(int i, int j)
-    {
-        return findSet(i) == findSet(j);
-    }
-    void UnionSet(int i, int j)
-    {
-        numS--;
+        if (isSameSet(i, j)) return;
+        numSets--;
         int x = findSet(i), y = findSet(j);
-        p[y] = x;
-        setSize[x] += setSize[y];
-        }
-        int numSets()
-        {
-            return numS;
+        if (rank[x] > rank[y]) p[y] = x, setSize[x] += setSize[y];
+        else p[x] = y, setSize[y] += setSize[x];
+        if (rank[x] == rank[y]) rank[y]++;
     }
-    int setOfSize(int i)
-    {
-        return setSize[i];
-    }
+    int sizeOfSet(int i) { return setSize[findSet(i)]; }
 };
 
-int n, a, b, c;
-ll x, y;
-umap<ll, int> cx, cy;
+ll N, x, y, t;
+char a, b;
+set<ll> X, Y;
+map<ll, ll> mX, mY;
+vector<pair<pair<ll, ll>, pair<ll, ll>>> Q;
 
 int main()
 {
-    cin >> n;
-    c = 0;
-    UnionFind uf(2 * n);
+    cin >> N;
 
-    rep(i, n)
+    rep(i, N)
     {
-        cin >> x >> y >> a >> b;
-        if (cx.find(x) == cx.end())
-            cx[x] = c++;
-        if (cy.find(x) == cy.end())
-            cy[y] = c++;
+        cin >> x >> y >> a >> t >> b >> t;
+        X.insert(x); Y.insert(y);
+        Q.emplace_back(mp(x, y), mp(a, b));
+    }
+
+    int idx, idy = 0;
+    for (ll x : X) mX[x] = idx++;
+    for (ll y : Y) mY[y] = idy++;
+
+    UF uf(2 * idx + 2 * idy);
+
+    bool flag = 1;
+    for (auto &q : Q)
+    {
+        x = mX[q.ff.ff], y = mY[q.ff.ss], tie(a, b) = q.ss;
         if (a == b)
         {
-            uf.UnionSet(cx[x], cy[y]);
-            cout << "Yes\n";
+            uf.unionSet(x, 2 * idx + y);
+            uf.unionSet(idx + x, 2 * idx + idy + y);
         }
         else
         {
-            if (uf.isSameSet(cx[x], cy[y]))
-            {
-                cout << "No\n";
-                continue;
-            }
-            cout << "Yes\n";
+            uf.unionSet(x, 2 * idx + idy + y);
+            uf.unionSet(idx + x, 2 * idx + y);
         }
+        if (uf.isSameSet(x, idx + x) || uf.isSameSet(2 * idx + y, 2 * idx + idy + y))
+            flag = 0;
+
+        if (flag) cout << "Yes\n";
+        else cout << "No\n";
     }
 }
