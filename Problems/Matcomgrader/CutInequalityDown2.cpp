@@ -46,6 +46,8 @@ priority_queue<Query> q;
 
 int main()
 {
+    ios::sync_with_stdio(0); cin.tie(0);
+
     cin >> N >> L >> U;
 
     A.resize(N);
@@ -105,7 +107,6 @@ int main()
         while (!q.empty() && q.top().T == 1 && q.top().P == i)
         {
             Query qq = q.top(); q.pop();
-            // cerr << qq.id << ' ' << V[uf.findSet(qq.id)] << ' ' << off << '\n';
             ans[qq.id] = V[uf.findSet(qq.id)] + off;
         }
     }
