@@ -3,28 +3,19 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-struct UF
+
+struct DSU
 {
-    int numSets;
-    vector<int> p, rank, setSize;
-    UF(int n)
+	vector<int> p;
+    DSU(int N) : p(N, -1) {}
+	int get(int x) { return p[x] < 0 ? x : p[x] = get(p[x]); } 
+	bool sameSet(int a, int b) { return get(a) == get(b); }
+	int size(int x) { return -p[get(x)]; }
+	void unite(int x, int y)
     {
-        numSets = n;
-        setSize.assign(n, 1);
-        rank.assign(n, 0);
-        p.resize(n);
-        rep(i, n) p[i] = i;
-    }
-    int findSet(int i) { return (p[i] == i) ? i : (p[i] = findSet(p[i])); }
-    bool isSameSet(int i, int j) { return findSet(i) == findSet(j); }
-    void unionSet(int i, int j)
-    {
-        if (isSameSet(i, j)) return;
-        numSets--;
-        int x = findSet(i), y = findSet(j);
-        if (rank[x] > rank[y]) p[y] = x, setSize[x] += setSize[y];
-        else p[x] = y, setSize[y] += setSize[x];
-        if (rank[x] == rank[y]) rank[y]++;
-    }
-    int sizeOfSet(int i) { return setSize[findSet(i)]; }
+		x = get(x), y = get(y);
+        if (x == y) return;
+		if (p[x] > p[y]) swap(x,y);
+		p[x] += p[y], p[y] = x;
+	}
 };
