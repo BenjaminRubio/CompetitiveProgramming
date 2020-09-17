@@ -8,7 +8,8 @@ ll gcdext(ll a, ll b, ll& x, ll& y)
 {
     ll r2, x2, y2, r1, x1, y1, r0, x0, y0, q;
     r2 = a, x2 = 1, y2 = 0, r1 = b, x1 = 0, y1 = 1;
-    while (r1) {
+    while (r1)
+    {
         q = r2 / r1, r0 = r2 % r1;
         x0 = x2 - q * x1, y0 = y2 - q * y1;
         r2 = r1, x2 = x1, y2 = y1;
