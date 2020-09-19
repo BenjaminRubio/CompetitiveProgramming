@@ -4,12 +4,12 @@ using namespace std;
 typedef unsigned int ui;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-struct M
+struct Matrix
 {
     ui m[65][65] = {0};
-    M operator*(const M &o)
+    Matrix operator*(const Matrix &o)
     {
-        M ans;
+        Matrix ans;
         rep(i, 65) rep(j, 65) rep(k, 65)
             ans.m[i][k] = ans.m[i][k] + m[i][j] * o.m[j][k];
         return ans;
@@ -22,7 +22,7 @@ int main()
 {
     cin >> K; K++;
 
-    M ans, A; ans.m[0][0] = 1;
+    Matrix ans, A; ans.m[0][0] = 1;
 
     rep(i, 64) rep(j, 64)
     {
