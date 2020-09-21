@@ -3,7 +3,6 @@ using namespace std;
 
 typedef long long ll;
 #define rep(i, n) for (ll i = 0; i < (ll)n; i++)
-#define repx(i, a, b) for (ll i = (ll)a; i < (ll)b; i++)
 #define ff first
 #define ss second
 
