@@ -39,11 +39,9 @@ struct L
     double dist(P p) { return abs(side(p) / v.norm()); }
 };
 
-int N;
-P p[2000], p_[2000];
-int I[2000];
+int N, I[2000];
+P p[2000], p_[2000], a, b;
 vector<pair<double, pair<int, int>>> s;
-P a, b;
 
 int main()
 {
