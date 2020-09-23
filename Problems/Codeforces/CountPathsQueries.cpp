@@ -18,7 +18,6 @@ struct Matrix
             ans.m[i][k] = (ans.m[i][k] + m[i][j] * o.m[j][k]) % MOD;
         return ans;
     }
-
 };
 
 int n, m, q, a, b, s, t, k;
