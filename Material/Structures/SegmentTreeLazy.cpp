@@ -17,8 +17,7 @@ struct Node
 template <class node>
 class STL
 {
-    vector<node> st;
-    int n;
+    vector<node> st; int n;
 
     void build(int u, int i, int j, vector<node> &arr)
     {

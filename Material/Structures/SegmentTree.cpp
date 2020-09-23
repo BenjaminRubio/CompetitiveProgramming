@@ -6,10 +6,7 @@ struct Node
     int v;
     Node() { v = 0; } // neutro
     Node(int v) : v(v) {}
-    Node(const Node &a, const Node &b)
-    {
-        v = a.v + b.v;
-    }
+    Node(const Node &a, const Node &b) { v = a.v + b.v; }
 };
 
 // 0 - indexed / inclusive - exclusive
