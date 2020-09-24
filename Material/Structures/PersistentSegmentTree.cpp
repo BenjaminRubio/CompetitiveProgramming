@@ -48,7 +48,7 @@ struct PST
     node query(int t, int a, int b) { return query(rt[t], a, b, 0, n - 1); }
 };
 
-// Init with 0's (no build)
+// Init with null's (no build) (requires l = r = 0 as default)
 template <class node>
 struct PST
 {
