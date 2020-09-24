@@ -52,9 +52,9 @@ struct PST
     {
         if (i == j) return i;
         int m = (i + j) / 2;
-        int q1a = query(a, i, m).v, q1b = query(b + 1, i, m).v;
-        if (q1b - q1a >= k) return search(a, b, k, i, m);
-        else return search(a, b, k - q1b + q1a, m + 1, j);
+        int qa = query(a, i, m).v, qb = query(b + 1, i, m).v;
+        if (qb - qa >= k) return search(a, b, k, i, m);
+        else return search(a, b, k - qb + qa, m + 1, j);
     }
 };
 
