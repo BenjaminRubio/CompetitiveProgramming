@@ -29,3 +29,4 @@ Diverse structures and algorithms for competitive programming problems.
     - Sparse Table: From [Pablo Messina](https://github.com/PabloMessina/Competitive-Programming-Material/blob/master/Data_Structures/sparse-table.cpp)
     - Union Find: Slightly modified from these [notes](https://github.com/bqi343/USACO/blob/master/Implementations/content/graphs%20(12)/DSU/DSU%20(7.6).h)
     - Wavelet Tree: From these [notes](https://docs.google.com/document/d/1rcex_saP4tExbbU62qGUjR3eenxOh-50i9Y45WtHkc4/edit)
+    - Persistent SegTree: Slightly modified from these [notes](https://github.com/bqi343/USACO/blob/master/Implementations/content/graphs%20(12)/DSU/DSU%20(7.6).h)

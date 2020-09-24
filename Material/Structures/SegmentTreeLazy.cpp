@@ -14,6 +14,7 @@ struct Node
     }
 };
 
+// 0 - indexed / inclusive - inclusive
 template <class node>
 class STL
 {
@@ -26,7 +27,6 @@ class STL
         build(l, i, m, arr), build(r, m + 1, j, arr);
         st[u] = node(st[l], st[r]);
     }
-
     void propagate(int u, int i, int j, int x)
     {
         st[u] = node(x, i, j, st[u]);
@@ -36,7 +36,6 @@ class STL
             st[u * 2 + 2].lz = 1, st[u * 2 + 2].v_ += x;
         }
     }
-
     node query(int a, int b, int u, int i, int j)
     {
         if (j < a || b < i) return node();
@@ -45,7 +44,6 @@ class STL
         if (a <= i && j <= b) return st[u];
         return node(query(a, b, l, i, m), query(a, b, r, m + 1, j));
     }
-
     void update(int a, int b, int v, int u, int i, int j)
     {
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;

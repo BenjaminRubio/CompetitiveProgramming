@@ -11,16 +11,12 @@ struct Node
 
 // 0 - indexed / inclusive - exclusive
 template <class node>
-class ST
+struct ST
 {
-    vector<node> t;
-    int n;
+    vector<node> t; int n;
 
-public:
-    ST(vector<node> &arr)
+    ST(vector<node> &arr) : n(arr.size()), t(n * 2)
     {
-        n = arr.size();
-        t.resize(n * 2);
         copy(arr.begin(), arr.end(), t.begin() + n);
         for (int i = n - 1; i > 0; --i)
             t[i] = node(t[i << 1], t[i << 1 | 1]);

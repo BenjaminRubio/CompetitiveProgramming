@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
-
 struct Node
 {
     int v, l, r;
@@ -12,8 +10,9 @@ struct Node
     { v = a.v + b.v; }
 };
 
+// 0 - indexed / inclusive - inclusive
 template <class node>
-struct PST
+struct PST 
 {
     int cnt = 0, n, rc = 0;
 	vector<node> st; vector<int> rt;
@@ -47,45 +46,4 @@ struct PST
     { n = arr.size(); rt[rc++] = build(arr, 0, n - 1); }
 	void update(int t, int p, node v) { rt[rc++] = update(rt[t], p, v, 0, n - 1); }
 	node query(int t, int a, int b) { return query(rt[t], a, b, 0, n - 1); }
-
-    int search(int a, int b, int k, int i, int j)
-    {
-        if (i == j) return i;
-        int m = (i + j) / 2;
-        int q1a = query(a, i, m).v, q1b = query(b + 1, i, m).v;
-        if (q1b - q1a >= k) return search(a, b, k, i, m);
-        else return search(a, b, k - q1b + q1a, m + 1, j);
-    }
 };
-
-int N, Q, a, b, k;
-vector<int> A;
-map<int, int> m, m_;
-
-int main()
-{
-    ios::sync_with_stdio(0); cin.tie(0);
-
-    cin >> N >> Q;
-    
-    A.resize(N); set<int> s;
-    rep(i, N) { cin >> A[i]; s.insert(A[i]); }
-
-    int id = 0;
-    for (int x : s) m[x] = id, m_[id++] = x;
-
-    vector<Node> v(s.size());
-    PST<Node> pst(v);
-
-    rep(i, N)
-    {
-        Node p = pst.query(i, m[A[i]], m[A[i]]); p.v++;
-        pst.update(i, m[A[i]], p);
-    }
-
-    rep(_, Q)
-    {
-        cin >> a >> b >> k; a--, b--;
-        cout << m_[pst.search(a, b, k, 0, s.size() - 1)] << '\n';
-    }
-}
