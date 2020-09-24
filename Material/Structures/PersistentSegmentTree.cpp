@@ -15,35 +15,35 @@ template <class node>
 struct PST 
 {
     int cnt = 0, n, rc = 0;
-	vector<node> st; vector<int> rt;
+    vector<node> st; vector<int> rt;
 
-	node query(int u, int a, int b, int i, int j)
+    node query(int u, int a, int b, int i, int j)
     {
         if (j < a || b < i) return node();
-		if (a <= i && j <= b) return st[u];
-		int m = (i + j) / 2, l = st[u].l, r = st[u].r;
-		return node(query(l, a, b, i, m), query(r, a, b, m + 1, j), l, r);
-	}
-	int update(int u, int p, node v, int i, int j)
+        if (a <= i && j <= b) return st[u];
+        int m = (i + j) / 2, l = st[u].l, r = st[u].r;
+        return node(query(l, a, b, i, m), query(r, a, b, m + 1, j), l, r);
+    }
+    int update(int u, int p, node v, int i, int j)
     {
-		if (j < p || p < i) return u;
-		st[cnt] = st[u]; int x = cnt++, m = (i + j) / 2;
-		if (i == j) { st[x] = v; return x; }
+        if (j < p || p < i) return u;
+        st[cnt] = st[u]; int x = cnt++, m = (i + j) / 2;
+        if (i == j) { st[x] = v; return x; }
         int l = st[x].l = update(st[x].l, p, v, i, m);
         int r = st[x].r = update(st[x].r, p, v, m + 1, j);
         st[x] = node(st[st[x].l], st[st[x].r], l, r); return x;
-	}
-	int build(vector<node> &arr, int i, int j)
+    }
+    int build(vector<node> &arr, int i, int j)
     {
-		int u = cnt++, m = (i + j) / 2;
-		if (i == j) { st[u] = arr[i]; return u; }
-		int l = st[u].l = build(arr, i, m);
+        int u = cnt++, m = (i + j) / 2;
+        if (i == j) { st[u] = arr[i]; return u; }
+        int l = st[u].l = build(arr, i, m);
         int r = st[u].r = build(arr, m + 1, j);
-		st[u] = node(st[st[u].l], st[st[u].r], l, r); return u;
-	}
+        st[u] = node(st[st[u].l], st[st[u].r], l, r); return u;
+    }
 
     PST(vector<node> &arr) : st(2e7), rt(1e5)
     { n = arr.size(); rt[rc++] = build(arr, 0, n - 1); }
-	void update(int t, int p, node v) { rt[rc++] = update(rt[t], p, v, 0, n - 1); }
-	node query(int t, int a, int b) { return query(rt[t], a, b, 0, n - 1); }
+    void update(int t, int p, node v) { rt[rc++] = update(rt[t], p, v, 0, n - 1); }
+    node query(int t, int a, int b) { return query(rt[t], a, b, 0, n - 1); }
 };
