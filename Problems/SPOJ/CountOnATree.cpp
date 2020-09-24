@@ -1,6 +1,3 @@
-#pragma GCC target ("avx2")
-#pragma GCC optimization ("O3")
-#pragma GCC optimization ("unroll-loops")
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -120,7 +117,9 @@ void dfs(int u, int p, PST<Node> &pst)
 
 int main()
 {
-    scanf("%d %d", &N, &Q);
+    ios::sync_with_stdio(0); cin.tie(0);
+
+    cin >> N >> Q;
 
     rep(i, N) { cin >> W[i]; s.push_back(W[i]); }
 
@@ -132,7 +131,7 @@ int main()
 
     rep(i, N - 1)
     {
-        scanf("%d %d", &u, &v);; u--, v--;
+        cin >> u >> v; u--, v--;
         G[u].push_back(v); G[v].push_back(u);
     }
 
@@ -141,8 +140,8 @@ int main()
 
     while (Q--)
     {
-        scanf("%d %d %d", &u, &v, &k);; u--, v--; int l = lca.lca(u, v);
+        cin >> u >> v >> k; u--, v--; int l = lca.lca(u, v);
         int a = I[u], b = I[v], c = I[l], d = (P[l] != -1) ? I[P[l]] : 0;
-        printf("%d\n", m_[pst.search(a, b, c, d, k)]);
+        cout << m_[pst.search(a, b, c, d, k)] << '\n';
     }
 }
