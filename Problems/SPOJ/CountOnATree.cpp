@@ -15,7 +15,7 @@ struct Node
 };
 
 template <class node>
-struct PST 
+struct PST
 {
     int cnt = 1, n, rc = 1; node na, nb, nc, nd;
     vector<node> st; vector<int> rt;
