@@ -19,7 +19,7 @@ struct Query
 
 const int MAXN = 1e5;
 
-int N, Q, u, v, id;
+int N, Q, u, v, id, s;
 vector<vector<int>> G;
 int A[2 * MAXN], I[2 * MAXN], W[MAXN], L[MAXN], R[MAXN], C[MAXN], O[MAXN];
 
@@ -68,8 +68,6 @@ void dfs(int u, int p)
     for (int v : G[u]) if (v != p) dfs(v, u);
     A[id] = W[u], I[id] = u, R[u] = id++;
 }
-
-int s;
 
 void update(int p)
 {
