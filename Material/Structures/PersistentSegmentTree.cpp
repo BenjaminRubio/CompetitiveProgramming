@@ -12,7 +12,7 @@ struct Node
 
 // 0 - indexed / inclusive - inclusive
 template <class node>
-struct PST 
+struct PST
 {
     int cnt = 0, n, rc = 0;
     vector<node> st; vector<int> rt;
