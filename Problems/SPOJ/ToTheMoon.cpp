@@ -11,7 +11,8 @@ struct Node
     Node() {}
     Node(ll x) : v(x) {}
     Node(const Node &a, const Node &b, int l, int r) : v(a.v + b.v), l(l), r(r) {}
-    Node(ll x, ll i, ll j, const Node &b) { *this = b; v = b.v + (j - i + 1ll) * x; }
+    Node(ll x, int i, int j, const Node &b)
+    { *this = b; v += (j - i + 1ll) * x; }
 };
 
 template <class node>
