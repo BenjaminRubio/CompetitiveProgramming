@@ -31,7 +31,7 @@ struct PST
         if (i == j) { st[x] = v; return x; }
         int l = st[x].l = update(st[x].l, p, v, i, m);
         int r = st[x].r = update(st[x].r, p, v, m + 1, j);
-        st[x] = node(st[st[x].l], st[st[x].r], l, r); return x;
+        st[x] = node(st[l], st[r], l, r); return x;
     }
     int build(vector<node> &arr, int i, int j)
     {
