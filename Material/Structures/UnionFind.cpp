@@ -12,8 +12,7 @@ struct DSU
     int size(int x) { return -p[get(x)]; }
     void unite(int x, int y)
     {
-        x = get(x), y = get(y);
-        if (x == y) return;
+        if ((x = get(x)) == (y = get(y))) return;
         if (p[x] > p[y]) swap(x,y);
         p[x] += p[y], p[y] = x;
     }
