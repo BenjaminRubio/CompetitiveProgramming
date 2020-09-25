@@ -42,7 +42,7 @@ struct PST
         st[u] = node(st[l], st[r], l, r); return u;
     }
 
-    PST(vector<node> &arr) : st(2e7), rt(1e5)
+    PST(vector<node> &arr) : st(1e7), rt(1e5)
     { n = arr.size(); rt[rc++] = build(arr, 0, n - 1); }
     void update(int t, int p, node v) { rt[rc++] = update(rt[t], p, v, 0, n - 1); }
     node query(int t, int a, int b) { return query(rt[t], a, b, 0, n - 1); }
@@ -72,7 +72,7 @@ struct PST
         st[x] = node(st[l], st[r], l, r); return x;
     }
 
-    PST(int N) : st(2e7), rt(1e5), n(N) {}
+    PST(int N) : st(1e7), rt(1e5), n(N) {}
     void update(int t, int p, node v) { rt[rc++] = update(rt[t], p, v, 0, n - 1); }
     node query(int t, int a, int b) { return query(rt[t], a, b, 0, n - 1); }
 };
