@@ -71,7 +71,7 @@ struct Node
     Node(int x) : v(x) {}
     Node(const Node &a, const Node &b, int l, int r) : v(a.v + b.v), l(l), r(r) {}
     Node(int x, int i, int j, const Node &b)
-    { *this = b; v += (j - i + 1) * x; }
+    { *this = b; v += (j - i + 1) * x; } // *this = b needed in this variant (keeps lazy)
 };
 
 template <class node>
