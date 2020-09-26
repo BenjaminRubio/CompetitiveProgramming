@@ -26,19 +26,18 @@ int find_mst(vector<vector<Edge>> &g, vector<vector<Edge>> &mst)
 
     while (!q.empty())
     {
-        Edge edge = q.top(); q.pop();
+        Edge e = q.top(); q.pop();
 
-        if (V[edge.v]) continue;
+        if (V[e.v]) continue;
 
-        int u = edge.u, v = edge.v, w = edge.w;
-        V[v] = true;
-        ans += w;
+        int u = e.u, v = e.v, w = e.w;
+        V[v] = true, ans += w;
         mst[u].emplace_back(u, v, w);
         mst[v].emplace_back(v, u, w);
 
         if (++c == n) break;
 
-        for (Edge p : g[v]) if (!V[p.v]) q.emplace(v, p.v, p.w);
+        for (Edge &p : g[v]) if (!V[p.v]) q.emplace(v, p.v, p.w);
     }
     
     return ans;
