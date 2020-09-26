@@ -15,11 +15,11 @@ struct Edge
 int find_mst(vector<vector<Edge>> &g, vector<vector<Edge>> &mst)
 {
     int n = g.size();
-    vector<bool> visited(n, false);
-    mst.assign(n, vector<Edge>());
+    vector<bool> V(n, false);
+    mst.assign(n, {});
 
-    int total_cost = 0, count = 1;
-    visited[0] = true;
+    int ans = 0, c = 1;
+    V[0] = true;
 
     priority_queue<Edge, vector<Edge>, greater<Edge>> q;
     for (Edge &p : g[0]) q.emplace(0, p.v, p.w);
@@ -28,18 +28,18 @@ int find_mst(vector<vector<Edge>> &g, vector<vector<Edge>> &mst)
     {
         Edge edge = q.top(); q.pop();
 
-        if (visited[edge.v]) continue;
+        if (V[edge.v]) continue;
 
-        int u = edge.u, v = edge.v, cost = edge.w;
-        visited[v] = true;
-        total_cost += cost;
-        mst[u].emplace_back(v, cost);
-        mst[v].emplace_back(u, cost);
+        int u = edge.u, v = edge.v, w = edge.w;
+        V[v] = true;
+        ans += w;
+        mst[u].emplace_back(u, v, w);
+        mst[v].emplace_back(v, u, w);
 
-        if (++count == n) break;
+        if (++c == n) break;
 
-        for (Edge p : g[v]) if (!visited[p.v]) q.emplace(v, p.v, p.w);
+        for (Edge p : g[v]) if (!V[p.v]) q.emplace(v, p.v, p.w);
     }
     
-    return total_cost;
+    return ans;
 }
