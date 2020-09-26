@@ -12,15 +12,13 @@ struct Edge
     bool operator>(const Edge &e) const { return w > e.w; }
 };
 
-int find_mst(vector<vector<Edge>> &g, vector<vector<Edge>> &mst)
+int find_mst(vector<vector<Edge>> &g, vector<vector<Edge>> &T)
 {
     int n = g.size();
-    vector<bool> V(n, false);
-    mst.assign(n, {});
+    vector<bool> V(n, 0);
+    T.assign(n, {});
 
-    int ans = 0, c = 1;
-    V[0] = true;
-
+    int ans = 0, c = 1; V[0] = 1;
     priority_queue<Edge, vector<Edge>, greater<Edge>> q;
     for (Edge &p : g[0]) q.emplace(0, p.v, p.w);
 
@@ -32,8 +30,8 @@ int find_mst(vector<vector<Edge>> &g, vector<vector<Edge>> &mst)
 
         int u = e.u, v = e.v, w = e.w;
         V[v] = true, ans += w;
-        mst[u].emplace_back(u, v, w);
-        mst[v].emplace_back(v, u, w);
+        T[u].emplace_back(u, v, w);
+        T[v].emplace_back(v, u, w);
 
         if (++c == n) break;
 
