@@ -4,7 +4,7 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
 template <class node>
-struct ST {};
+struct ST {};  // NEEDS INIT WITH NULLS
 
 template <class node>
 class HLD
