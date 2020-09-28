@@ -54,7 +54,7 @@ class HLD
         return ans;
     }
     template <class OP>
-    void process(int u, int v, OP op)
+    void path(int u, int v, OP op)
     {
         for (; R[u] != R[v]; v = A[R[v]])
         {
@@ -80,8 +80,7 @@ public:
     node query(int u, int v)
     {
         node ans = node();
-        process(u, v, [this, &ans](int l, int r)
-        { ans = node(ans, st.query(l, r)); });
+        path(u, v, [this, &ans](int l, int r) { ans = node(ans, st.query(l, r)); });
         return ans;
     }
 };

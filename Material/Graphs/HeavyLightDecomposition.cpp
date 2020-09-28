@@ -21,7 +21,7 @@ class HLD
         return ans;
     }
     template <class OP>
-    void process(int u, int v, OP op)
+    void path(int u, int v, OP op)
     {
         for (; R[u] != R[v]; v = A[R[v]])
         {
@@ -47,12 +47,11 @@ public:
     //     st.set_point(P[v], x);
     // }
     void update(int u, int v, const node& x)                  // OPTIONAL FOR RANGE UPDATES
-    { process(u, v, [this, &x](int l, int r) { st.update(l, r, x); }); }
+    { path(u, v, [this, &x](int l, int r) { st.update(l, r, x); }); }
     node query(int u, int v)
     {
         node ans = node();
-        process(u, v, [this, &ans](int l, int r)
-        { ans = node(ans, st.query(l, r)); });
+        path(u, v, [this, &ans](int l, int r) { ans = node(ans, st.query(l, r)); });
         return ans;
     }
 };
