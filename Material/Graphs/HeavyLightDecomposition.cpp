@@ -40,7 +40,7 @@ public:
         rep(i, n) if (A[i] == -1 || H[A[i]] != i)
             for (int j = i; j != -1; j = H[j]) R[j] = i, P[j] = p++;
     }
-    void set(int v, const node &x) { st.set_point(P[v], x); } // VALUES ON VERTEX
+    void set(int v, const node &x) { st.set(P[v], x); } // VALUES ON VERTEX
     // void set(int u, int v, const node &x)                  // VALUES ON EDGE
     // {
     //     if (D[u] > D[v]) swap(u, v);
