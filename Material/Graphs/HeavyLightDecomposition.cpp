@@ -44,7 +44,7 @@ public:
     // void set(int u, int v, const node &x)                  // VALUES ON EDGE
     // {
     //     if (D[u] > D[v]) swap(u, v);
-    //     st.set_point(P[v], x);
+    //     st.set(P[v], x);
     // }
     void update(int u, int v, const node& x)                  // OPTIONAL FOR RANGE UPDATES
     { path(u, v, [this, &x](int l, int r) { st.update(l, r, x); }); }
