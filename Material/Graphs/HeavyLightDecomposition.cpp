@@ -34,7 +34,7 @@ class HLD
         }
         if (D[u] > D[v]) swap(u, v);
         op(P[u], P[v] + 1);             // VALUES ON VERTEX
-        // op(P[u] + 1, P[v] + 1);      // VALUES ON EDGES
+        // op(P[u] + 1, P[v] + 1);      // VALUES ON EDGE
     }
 
 public:
@@ -46,7 +46,7 @@ public:
     }
 
     void set(int v, const node &x) { st.set_point(P[v], x); } // VALUES ON VERTEX
-    // void set(int u, int v, const node &x)                  // VALUES ON EDGES
+    // void set(int u, int v, const node &x)                  // VALUES ON EDGE
     // {
     //     if (D[u] > D[v]) swap(u, v);
     //     st.set_point(P[v], x);
