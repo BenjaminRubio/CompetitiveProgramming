@@ -36,10 +36,10 @@ struct ST
     }
 };
 
-template <class node>
+template <class ST, class node>
 class HLD
 {
-    ST<node> st;
+    ST st;
     vector<int> A, H, D, R, P;
 
     int dfs(vector<vector<int>> &G, int u)
@@ -108,7 +108,7 @@ int main()
             E.emplace_back(make_pair(u, v), w);
         }
 
-        HLD<Node> hld(G, N);
+        HLD<ST<Node>, Node> hld(G, N);
 
         for (auto &e : E) hld.set(e.ff.ff, e.ff.ss, e.ss);
 
