@@ -29,8 +29,8 @@ class HLD
             op(P[R[v]], P[v] + 1);
         }
         if (D[u] > D[v]) swap(u, v);
-        op(P[u], P[v] + 1);             // VALUES ON VERTEX
-        // op(P[u] + 1, P[v] + 1);      // VALUES ON EDGE
+        op(P[u], P[v] + 1);                // VALUES ON VERTEX
+        // op(P[u] + 1, P[v] + 1);         // VALUES ON EDGE
     }
 
 public:
@@ -46,6 +46,8 @@ public:
     //     if (D[u] > D[v]) swap(u, v);
     //     st.set_point(P[v], x);
     // }
+    void update(int u, int v, const node& x)                  // OPTIONAL FOR RANGE UPDATES
+    { process(u, v, [this, &x](int l, int r) { st.update(l, r, x); }); }
     node query(int u, int v)
     {
         node ans = node();
