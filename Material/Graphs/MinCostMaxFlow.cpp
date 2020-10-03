@@ -76,6 +76,6 @@ public:
         E[u].push_back(L.size());
         L.emplace_back(v, c, w);
         E[v].push_back(L.size());
-        L.emplace_back(u, 0, -c);
+        L.emplace_back(u, 0, -w);
     }
 };
