@@ -22,7 +22,7 @@ void dfs(int u)
     if (L[u] == D[u]) while (1)
     {
         int x = S.top(); S.pop();
-        C[x] = c, I[x] = false;
+        C[x] = c, I[x] = 0;
         if (x == u) { c++; break; }
     }
 }

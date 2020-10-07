@@ -17,7 +17,7 @@ void dfs(int u)
     }
     if (L[u] == D[u]) while (1) // SCC FOUND
     {
-        int x = S.top(); S.pop(); I[x] = false;
+        int x = S.top(); S.pop(); I[x] = 0;
         if (x == u) break;
     }
 }
