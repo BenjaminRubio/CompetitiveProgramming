@@ -1,167 +1,59 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-typedef unsigned long long ull;
-typedef pair<int, int> par;
-typedef vector<int> vi;
-typedef vector<float> vfloat;
-typedef vector<par> vp;
-typedef vector<vi> graph;
-typedef vector<vp> wgraph;
-
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = a; i < (int)b; i++)
-#define invrep(i, a, b) for (int i = b; i-- > (int)a;)
 
-#define pb push_back
-#define pf push_front
-#define eb emplace_back
-#define ppb pop_back
+int N, M, u, v, id;
+vector<vector<int>> G, G_;
+vector<int> D, V, L, I, A; stack<int> S;
 
-#define umap unordered_map
-
-#define lg(x) (31 - __buitlin_clz(x))
-#define lgg(x) (63 - __buitlin_clzll(x))
-#define gcd __gcd
-
-//ios::sync_with_stdio(0); cin.tie(0);
-//cout.setf(ios::fixed); cout.precision(4);
-
-#define debugx(x) cerr << #x << ": " << x << endl
-#define debugv(v)         \
-    cerr << #v << ":";    \
-    for (auto e : v)      \
-        cerr << " " << e; \
-    cerr << endl
-#define debugm(m)                                        \
-    cerr << #m << endl;                                  \
-    rep(i, (int)m.size())                                \
-    {                                                    \
-        cerr << i << ":";                                \
-        rep(j, (int)m[i].size()) cerr << " " << m[i][j]; \
-        cerr << endl;                                    \
-    }
-#define debugmp(m) //\
-    cerr << #m << endl;                                                                         \
-    rep(i, (int)m.size())                                                                       \
-    {                                                                                           \
-        cerr << i << ":";                                                                       \
-        rep(j, (int)m[i].size()) cerr << " {" << m[i][j].first << "," << m[i][j].second << "}"; \
-        cerr << endl;                                                                           \
-    }
-#define print(x) copy(x.begin(), x.end(), ostream_iterator<int>(cout, “”)), cout << endl
-
-// Apuntes Pablo Messina.
-
-int n, m, a, b;
-graph g, g_inv;
-vi v;
-
-int inv_dfs(int root, int size)
+int size(int u)
 {
-    stack<int> s;
-    vector<bool> visited;
-    visited.assign(size, false);
-    int count = 0;
-
-    s.push(root);
-    visited[root] = true;
-    count++;
-    while (!s.empty())
-    {
-        int u = s.top();
-        s.pop();
-        for (int v : g_inv[u])
-        {
-            if (!visited[v])
-            {
-                visited[u] = true;
-                count++;
-                s.push(v);
-            }
-        }
-    }
-    return count;
+    V[u] = 1; int ans = 1;
+    for (int v : G_[u]) if (!V[v]) ans += size(v);
+    return ans;
 }
 
-struct tarjanSCC
+void dfs(int u)
 {
-    vector<int> _stack, ids, low;
-    vector<bool> instack;
-    vector<vector<int>> *g;
-    int n, ID;
-    void dfs(int u)
+    D[u] = L[u] = id++, I[u] = 1; S.push(u);
+    for (int v : G[u])
     {
-        ids[u] = low[u] = ID++;
-        instack[u] = true;
-        _stack.push_back(u);
-        for (int v : (*g)[u])
+        if (D[v] == -1) { dfs(v); L[u] = min(L[v], L[u]); }
+        else if (I[v]) L[u] = min(L[v], L[u]);
+    }
+    if (L[u] == D[u])
+    {
+        V.assign(N, 0);
+        bool in = (size(u) == N);
+        while (1)
         {
-            if (ids[v] == -1)
-            {
-                dfs(v);
-                low[u] = min(low[v], low[u]);
-            }
-            else if (instack[v])
-            {
-                low[u] = min(low[v], low[u]);
-            }
-        }
-        if (low[u] == ids[u])
-        {
-            vi partial_v;
-            par first = {0, false};
-            while (1)
-            {
-                int x = _stack.back();
-                _stack.pop_back();
-                instack[x] = false;
-                partial_v.pb(x);
-                if (!first.second)
-                {
-                    first.second = true;
-                    first.first = x;
-                }
-                if (x == u)
-                    break;
-            }
-
-            if (inv_dfs(first.first, n) >= n)
-                for (auto a : partial_v)
-                    v.pb(a);
+            int x = S.top(); S.pop(); I[x] = 0;
+            if (in) A.push_back(x);
+            if (x == u) break;
         }
     }
-    tarjanSCC(vector<vector<int>> &_g)
-    {
-        g = &_g;
-        n = _g.size();
-        _stack.reserve(n);
-        ids.assign(n, -1);
-        low.resize(n);
-        instack.assign(n, 0);
-        ID = 0;
-        rep(u, n) if (ids[u] == -1) dfs(u);
-    }
-};
+}
 
 int main()
 {
-    cin >> n >> m;
-    g.assign(n, vi());
-    g_inv.assign(n, vi());
+    ios::sync_with_stdio(0); cin.tie(0);
 
-    rep(i, m)
+    cin >> N >> M;
+
+    G.assign(N, {}); G_.assign(N, {});
+    rep(_, M)
     {
-        cin >> a >> b;
-        g[a - 1].pb(b - 1);
-        g_inv[b - 1].pb(a - 1);
+        cin >> u >> v; u--, v--;
+        G[u].push_back(v); G_[v].push_back(u);
     }
 
-    tarjanSCC tscc(g);
-    sort(v.begin(), v.end());
+    D.assign(N, -1); L.resize(N); I.assign(N, 0);
+    id = 0; rep(u, N) if (D[u] == -1) dfs(u);
 
-    cout << v.size() << '\n';
-    for (auto a : v)
-        cout << a + 1 << ' ';
+    sort(A.begin(), A.end());
+
+    cout << A.size() << '\n';
+    for (int a : A) cout << a + 1 << ' ';
+    cout << '\n';
 }
