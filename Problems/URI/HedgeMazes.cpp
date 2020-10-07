@@ -21,15 +21,15 @@ int R, C, Q, u, v;
 vector<vector<int>> G;
 vector<int> D, L;
 
-void dfs(int u, int p, int d)
+void dfs(int u, int p, int d, DSU &dsu)
 {
     D[u] = L[u] = d;
     for(int v : G[u]) if (v != p)
     {
         if (D[v] == -1)
         {
-            dfs(v, u, d+1);
-            if (L[v] > D[u]) {} // (u - v) cut edge
+            dfs(v, u, d + 1, dsu);
+            if (L[v] > D[u]) dsu.unite(u, v);
             L[u] = min(L[u], L[v]);
         }
         else L[u] = min(L[u], D[v]);
@@ -47,6 +47,15 @@ int main()
             G[u].push_back(v); G[v].push_back(u);
         }
 
+        DSU dsu(R);
+        D.assign(R, -1); L.resize(R);
+        rep(u, R) if (D[u] == -1) dfs(u, -1, 0, dsu);
 
+        while (Q--)
+        {
+            cin >> u >> v; u--, v--;
+            cout << (dsu.sameSet(u, v) ? 'Y' : 'N') << '\n';
+        }
+        cout << "-\n";
     }
 }
