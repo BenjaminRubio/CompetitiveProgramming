@@ -17,14 +17,10 @@ void dfs(int u)
         if (D[v] == -1) { dfs(v); L[u] = min(L[v], L[u]); }
         else if (I[v]) L[u] = min(L[v], L[u]);
     }
-    if (L[u] == D[u])
+    if (L[u] == D[u]) while (1) // SCC FOUND
     {
-        cout << "SCC found!\n";        
-        while (1)
-        {
-            int x = S.back(); S.pop_back();
-            I[x] = false; if (x == u) break;
-        }
+        int x = S.back(); S.pop_back();
+        I[x] = false; if (x == u) break;
     }
 }
 
