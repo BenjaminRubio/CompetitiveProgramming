@@ -28,7 +28,7 @@ void dfs(int u, int p, int d)
         if (D[v] == -1)
         {
             dfs(v, u, d + 1);
-            if ((p == -1 && ++rc == 2) || L[v] >= d) {} // u is AP
+            if ((p == -1 && ++rc == 2) || (p != -1 && L[v] >= d)) {} // u is AP
             L[u] = min(L[u], L[v]); 
         }
         else if (D[v] < d) L[u] = min(L[u], D[v]);
