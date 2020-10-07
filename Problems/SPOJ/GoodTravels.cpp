@@ -9,13 +9,12 @@ typedef long long ll;
 int N, M, u, v, s, t, id, c, s_, t_;
 vector<vector<int>> G;
 vector<set<int>> G_;
-vector<int> S, D, L, C, F, F_;
-vector<bool> I;
+vector<int> D, L, C, F, F_;
+vector<bool> I; stack<int> S;
 
 void dfs(int u)
 {
-    D[u] = L[u] = id++, I[u] = 1;
-    S.push_back(u);
+    D[u] = L[u] = id++, I[u] = 1; S.push(u);
     for (int v : G[u])
     {
         if (D[v] == -1) { dfs(v); L[u] = min(L[v], L[u]); }
@@ -23,7 +22,7 @@ void dfs(int u)
     }
     if (L[u] == D[u]) while (1)
     {
-        int x = S.back(); S.pop_back();
+        int x = S.top(); S.pop();
         C[x] = c, I[x] = false;
         if (x == u) { c++; break; }
     }
@@ -56,7 +55,7 @@ int main()
         G[u].push_back(v);
     }
 
-    S.reserve(N); D.assign(N, -1); L.resize(N); I.assign(N, 0); C.resize(N);
+    D.assign(N, -1); L.resize(N); I.assign(N, 0); C.resize(N);
     id = c = 0; rep(u, N) if (D[u] == -1) dfs(u);
 
     G_.assign(c, {}); F_.assign(c, 0);
