@@ -9,8 +9,7 @@ typedef long long ll;
 int N, M, u, v, s, t, id, c, s_, t_;
 vector<vector<int>> G;
 vector<set<int>> G_;
-vector<int> D, L, C, F, F_;
-vector<bool> I; stack<int> S;
+vector<int> D, L, C, I, F, F_; stack<int> S;
 
 void dfs(int u)
 {

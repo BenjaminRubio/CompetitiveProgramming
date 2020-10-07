@@ -5,8 +5,7 @@ using namespace std;
 
 int N, id;
 vector<vector<int>> G;  // Directed Graph
-vector<int> D, L; stack<int> S;
-vector<bool> I;
+vector<int> D, L, I; stack<int> S;
 
 void dfs(int u)
 {
