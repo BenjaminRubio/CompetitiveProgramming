@@ -4,7 +4,7 @@ using namespace std;
 typedef long long ll;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-const int MOD = 1e9 + 7;
+const ll MOD = 1e9 + 7;
 
 int N, M, u, v, id; ll num, cost;
 vector<vector<int>> G;
