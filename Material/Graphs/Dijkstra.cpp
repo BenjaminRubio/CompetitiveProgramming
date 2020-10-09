@@ -7,30 +7,30 @@ struct Edge
 {
     int v, w;
     Edge(int v, int w) : v(v), w(w) {}
-    bool operator>(const Edge &e) const { return w > e.w; }
+    bool operator<(const Edge &e) const { return w > e.w; }
 };
 
 int n;
-vector<vector<Edge>> g;
+vector<vector<Edge>> G;
 
 int dijkstra(int s, int t)
 {
-    vector<int> cost(n, INF);
-    priority_queue<Edge, vector<Edge>, greater<Edge>> q;
+    vector<int> C(n, INF);
+    priority_queue<Edge> q;
 
     q.emplace(s, 0);
-    cost[s] = 0;
+    C[s] = 0;
     while (!q.empty())
     {
         int u = q.top().v, w = q.top().w; q.pop();
 
-        if (cost[u] < w) continue;
+        if (C[u] < w) continue;
 
-        for (auto e : g[u]) if (cost[e.v] > e.w + w)
+        for (auto e : G[u]) if (C[e.v] > e.w + w)
         {
-            cost[e.v] = e.w + w;
-            q.emplace(e.v, cost[e.v]);
+            C[e.v] = e.w + w;
+            q.emplace(e.v, C[e.v]);
         }
     }
-    return cost[t];
+    return C[t];
 }
