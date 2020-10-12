@@ -41,7 +41,7 @@ public:
             for (int j = i; j != -1; j = H[j]) R[j] = i, P[j] = p++;
     }
     void set(int v, const node &x) { st.set(P[v], x); } // VALUES ON VERTEX
-    // void set(int u, int v, const node &x)                  // VALUES ON EDGE
+    // void set(int u, int v, const node &x)            // VALUES ON EDGE
     // {
     //     if (D[u] > D[v]) swap(u, v);
     //     st.set(P[v], x);

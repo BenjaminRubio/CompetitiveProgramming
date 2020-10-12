@@ -5,72 +5,47 @@ typedef long long ll;
 
 class Dinic
 {
-    struct Edge
-    {
-        int to, rev; ll f, c;
-        Edge(int to, int rev, ll f, ll c) : to(to), rev(rev), f(f), c(c) {}
-    };
+    struct Edge { int to, rev; ll f, c; };
+    int n, t_;
+    vector<vector<Edge>> G;
+    vector<ll> D; vector<int> q, W;
 
-    int n, sink;
-    vector<vector<Edge>> g;
-    vector<ll> dist;
-    vector<int> q, work;
-
-    bool bfs(int start, int finish)
+    bool bfs(int s, int t)
     {
-        dist.assign(n, -1);
-        dist[start] = 0;
-        int head = 0, tail = 0;
-        q[tail++] = start;
-        while (head < tail)
+        W.assign(n, 0); D.assign(n, -1); D[s] = 0;
+        int f = 0, l = 0; q[l++] = s;
+        while (f < l)
         {
-            int u = q[head++];
-            for (const Edge &e : g[u]) if (dist[e.to] == -1 and e.f < e.c)
-            {
-                dist[e.to] = dist[u] + 1;
-                q[tail++] = e.to;
-            }
+            int u = q[f++];
+            for (const Edge &e : G[u]) if (D[e.to] == -1 && e.f < e.c)
+                D[e.to] = D[u] + 1, q[l++] = e.to;
         }
-        return dist[finish] != -1;
+        return D[t] != -1;
     }
-
     ll dfs(int u, ll f)
     {
-        if (u == sink) return f;
-        for (int &i = work[u]; i < (int)g[u].size(); ++i)
+        if (u == t_) return f;
+        for (int &i = W[u]; i < (int)G[u].size(); ++i)
         {
-            Edge &e = g[u][i];
-            int v = e.to;
-            if (e.c <= e.f or dist[v] != dist[u] + 1) continue;
+            Edge &e = G[u][i]; int v = e.to;
+            if (e.c <= e.f or D[v] != D[u] + 1) continue;
             ll df = dfs(v, min(f, e.c - e.f));
-            if (df > 0)
-            {
-                e.f += df;
-                g[v][e.rev].f -= df;
-                return df;
-            }
+            if (df > 0) { e.f += df, G[v][e.rev].f -= df; return df; }
         }
         return 0;
     }
 
 public:
-    Dinic(int n) : n(n), g(n), dist(n), q(n) {}
-
-    void add_Edge(int u, int v, ll cap)
+    Dinic(int n) : n(n), G(n), D(n), q(n) {}
+    void addEdge(int u, int v, ll cap)
     {
-        g[u].emplace_back(v, (int)g[v].size(), 0, cap);
-        g[v].emplace_back(u, (int)g[u].size(), 0, 0); // cap si bidireccional
+        G[u].push_back({v, G[v].size(), 0, cap});
+        G[v].push_back({u, G[u].size(), 0, 0}); // cap si bidireccional
     }
-
-    ll max_flow(int source, int dest)
+    ll maxFlow(int s, int t)
     {
-        sink = dest;
-        ll ans = 0;
-        while (bfs(source, dest))
-        {
-            work.assign(n, 0);
-            while (ll delta = dfs(source, LLONG_MAX)) ans += delta;
-        }
+        t_ = t; ll ans = 0;
+        while (bfs(s, t)) while (ll dl = dfs(s, LLONG_MAX)) ans += dl;
         return ans;
     }
 };
