@@ -6,8 +6,7 @@ typedef long long ll;
 class Dinic
 {
     struct Edge { int to, rev; ll f, c; };
-    int n, t_;
-    vector<vector<Edge>> G;
+    int n, t_; vector<vector<Edge>> G;
     vector<ll> D; vector<int> q, W;
 
     bool bfs(int s, int t)
@@ -39,8 +38,8 @@ public:
     Dinic(int n) : n(n), G(n), D(n), q(n) {}
     void addEdge(int u, int v, ll cap)
     {
-        G[u].push_back({v, G[v].size(), 0, cap});
-        G[v].push_back({u, G[u].size(), 0, 0}); // cap si bidireccional
+        G[u].push_back({v, (int)G[v].size(), 0, cap});
+        G[v].push_back({u, (int)G[u].size(), 0, 0}); // cap si bidireccional
     }
     ll maxFlow(int s, int t)
     {
