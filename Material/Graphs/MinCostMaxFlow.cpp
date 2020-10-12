@@ -16,12 +16,8 @@ class MCMF
         Edge(int v, T c, T w) : v(v), c(c), w(w) {}
     };
 
-    int n;
-    vector<vector<int>> E;
-    vector<Edge> L;
-    vector<int> F;
-    vector<T> D, P;
-    vector<bool> V;
+    int n; vector<vector<int>> E;
+    vector<Edge> L; vector<int> F; vector<T> D, P; vector<bool> V;
 
     bool dij(int s, int t)
     {
@@ -43,7 +39,6 @@ class MCMF
         }
         return D[t] < INF;
     }
-
     pTT augment(int s, int t)
     {
         pTT flow(L[F[t]].c, 0);
@@ -56,7 +51,6 @@ class MCMF
 
 public:
     MCMF(int n) : n(n), E(n), D(n), P(n, 0), V(n, 0) {}
-
     pTT mcmf(int s, int t)
     {
         pTT ans(0, 0);
@@ -70,12 +64,9 @@ public:
         }
         return ans;
     }
-
     void addEdge(int u, int v, T c, T w)
     {
-        E[u].push_back(L.size());
-        L.emplace_back(v, c, w);
-        E[v].push_back(L.size());
-        L.emplace_back(u, 0, -w);
+        E[u].push_back(L.size()); L.emplace_back(v, c, w);
+        E[v].push_back(L.size()); L.emplace_back(u, 0, -w);
     }
 };
