@@ -39,7 +39,7 @@ public:
     void addEdge(int u, int v, ll cap)
     {
         G[u].push_back({v, (int)G[v].size(), 0, cap});
-        G[v].push_back({u, (int)G[u].size(), 0, 0}); // cap si bidireccional
+        G[v].push_back({u, (int)G[u].size(), 0, 0}); // cap if bidirectional
     }
     ll maxFlow(int s, int t)
     {

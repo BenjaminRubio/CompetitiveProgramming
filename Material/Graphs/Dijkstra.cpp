@@ -15,10 +15,8 @@ vector<vector<Edge>> G;
 
 int dijkstra(int s, int t)
 {
-    vector<int> C(n, INF);  // CHECK FOR OVERFLOW
-    priority_queue<Edge> q;
-
-    q.emplace(s, 0); C[s] = 0;
+    vector<int> C(n, INF); C[s] = 0;  // CHECK FOR OVERFLOW
+    priority_queue<Edge> q; q.emplace(s, 0);
     while (!q.empty())
     {
         int u = q.top().v, w = q.top().w; q.pop();  // CHECK FOR OVERFLOW
