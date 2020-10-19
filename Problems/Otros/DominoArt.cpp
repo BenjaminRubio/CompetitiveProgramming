@@ -64,20 +64,20 @@ int main()
         M.assign(R, vector<bool>(C, 0)); int c = 0;
         rep(i, R) rep(j, C) { cin >> ch; M[i][j] = (ch == '#'), c += M[i][j]; }
 
-        Dinic flow(2 * R * C + 2);
+        Dinic flow(R * C + 2);
         rep(i, R) rep(j, C)
         {
             if (M[i][j] && ((i + j) & 1)) flow.addEdge(0, i * C + j + 1, 1);
-            else if (M[i][j]) flow.addEdge(i * C + j + R * C + 1, 2 * R * C + 1, 1);
+            else if (M[i][j]) flow.addEdge(i * C + j + 1, R * C + 1, 1);
 
-            rep(k, 4) if (in(i + dx[k], j + dy[k]))
+            if ((i + j) & 1) rep(k, 4) if (in(i + dx[k], j + dy[k]))
             {
                 int i_ = i + dx[k], j_ = j + dy[k];
-                flow.addEdge(i * C + j + 1, R * C + i_ * C + j_ + 1, 1);
+                flow.addEdge(i * C + j + 1, i_ * C + j_ + 1, 1);
             }
         }
 
-        bool flag = (flow.maxFlow(0, 2 * R * C + 1) == c / 2);
+        bool flag = (flow.maxFlow(0, R * C + 1) == c / 2);
         cout << "Case " << tt++ << ": " << (flag ? "Possible" : "Impossible") << '\n';
     }
 }
