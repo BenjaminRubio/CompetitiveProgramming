@@ -27,7 +27,7 @@ class Dinic
         for (int &i = W[u]; i < (int)G[u].size(); ++i)
         {
             Edge &e = G[u][i]; int v = e.to;
-            if (e.c <= e.f or D[v] != D[u] + 1) continue;
+            if (e.c <= e.f || D[v] != D[u] + 1) continue;
             ll df = dfs(v, min(f, e.c - e.f));
             if (df > 0) { e.f += df, G[v][e.rev].f -= df; return df; }
         }
@@ -35,11 +35,11 @@ class Dinic
     }
 
 public:
-    Dinic(int n) : n(n), G(n), D(n), q(n) {}
+    Dinic(int N) : n(N), G(N), D(N), q(N) {}
     void addEdge(int u, int v, ll cap)
     {
         G[u].push_back({v, (int)G[v].size(), 0, cap});
-        G[v].push_back({u, (int)G[u].size(), 0, 0}); // cap if bidirectional
+        G[v].push_back({u, (int)G[u].size() - 1, 0, 0}); // cap if bidirectional
     }
     ll maxFlow(int s, int t)
     {

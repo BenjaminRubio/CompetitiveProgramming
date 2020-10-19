@@ -51,36 +51,58 @@ public:
     }
 };
 
-int N, a, b;
-vector<pair<int, int>> G;
-vector<int> C;
+struct Edge
+{
+    int v, w;
+    Edge(int v, int w) : v(v), w(w) {}
+    bool operator<(const Edge &e) const { return w > e.w; }
+};
+
+int N, M, S, u, v, t;
+vector<int> T, C, D;
+vector<vector<Edge>> G;
+vector<pair<int, int>> E, V;
 
 int main()
 {
-    cin >> N;
+    ios::sync_with_stdio(0); cin.tie(0);
 
-    C.assign(N, 0);
-    rep(i, N)
+    cin >> N >> M >> S;
+
+    G.resize(N);
+    rep(_, M)
     {
-        cin >> a >> b; a--, b--;
-        C[a]++, C[b]++; G.emplace_back(a, b);
+        cin >> u >> v >> t; u--, v--;
+        G[u].emplace_back(v, t), G[v].emplace_back(u, t);
     }
 
-    int ans = N;
-    rep(i, N)
+    C.resize(S);
+    rep(i, S) { cin >> u; C[i] = u - 1; }
+
+    D.assign(N, INT_MAX); D[0] = 0;
+    priority_queue<Edge> q; q.emplace(0, 0);
+    while (!q.empty())
     {
-        Dinic flow(2 * N + 2);
-        rep(j, N) if (i != j)
-        {
-            flow.addEdge(0, j + 1, 1);
-            if (G[j].ff != i && G[j].ss != i)
-                flow.addEdge(j + 1, G[j].ff + N + 1, 1),
-                flow.addEdge(j + 1, G[j].ss + N + 1, 1);
-            if (j == G[i].ff || j == G[i].ss)
-                flow.addEdge(j + N + 1, 2 * N + 1, C[i] - 2);
-            else flow.addEdge(j + N + 1, 2 * N + 1, C[i] - 1);
-        }
-        if (flow.maxFlow(0, 2 * N + 1) == N - 1 - C[i]) ans--;
+        int u = q.top().v, w = q.top().w; q.pop();
+        if (D[u] < w) continue;
+        for (auto e : G[u]) if (D[e.v] > e.w + w)
+            D[e.v] = e.w + w, q.emplace(e.v, D[e.v]);
+    }
+
+    rep(u, N) for (Edge &e : G[u]) if (D[e.v] == D[u] + e.w)
+        E.emplace_back(e.v + 1, u + 1);
+
+    rep(i, S) V.emplace_back(D[C[i]], C[i] + 1);
+    sort(V.begin(), V.end());
+
+    int ans = 0, i = 0, j = 0;
+    while ((i = j) < S)
+    {
+        Dinic flow(N + 1);
+        while (j < S && V[j].ff == V[i].ff) flow.addEdge(0, V[j].ss, 1), j++;
+        for (auto &e : E) flow.addEdge(e.ff, e.ss, 1);
+
+        ans += flow.maxFlow(0, 1);
     }
 
     cout << ans << '\n';
