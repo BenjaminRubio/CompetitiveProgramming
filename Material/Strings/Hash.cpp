@@ -22,7 +22,7 @@ struct RH
 			}
 		}
 	}
-	ll get(int l, int r)
+	ll get(int l, int r)  // inclusive - exclusive
     {
 		ll h0 = (h[0][r] - h[0][l] + M[0]) % M[0];
 		h0 = (1LL * h0 * p[0][l]) % M[0];
