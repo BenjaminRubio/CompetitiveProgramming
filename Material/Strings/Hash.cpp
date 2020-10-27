@@ -26,28 +26,8 @@ struct RH
     {
 		ll h0 = (h[0][r] - h[0][l] + M[0]) % M[0];
 		h0 = (1LL * h0 * p[0][l]) % M[0];
-		ll h1 = (h[1][r] - h[1][l] + M[1]) % M[1];
+		ll h1 = (h[1][r] - h[1][r] + M[1]) % M[1];
 		h1 = (1LL * h1 * p[1][l]) % M[1];
 		return (h0 << 32) | h1;
 	}
 };
-
-int N;
-string S;
-
-int main()
-{
-    cin >> S; N = S.size(); bool p = N % 2;
-
-    RH rh(S);
-
-    int ans = 0, i = 0, j = 0;
-    while (j < N / 2)
-    {
-        if (rh.get(i, j + 1) == rh.get(N - j - 1, N - i)) ans += 2, i = ++j;
-        else if (j++ == N / 2 - 1) ans++, p = 0;
-    }
-
-    if (p) ans++;
-    cout << ans << '\n';
-}
