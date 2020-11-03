@@ -8,22 +8,22 @@ const int MAX = 1000001;
 
 struct Trie
 {
-	int N[MAX][26] = {0}, c = 0;
-	Trie() {}
+    int N[MAX][26] = {0}, c = 0;
+    Trie() {}
     void clear() { memset(N[0], 0, sizeof N[0]); c = 0; }
-	void add(string x, int a = 1)
+    void add(string x, int a = 1)
     {
-		int p = 0; for (char l : x)
+        int p = 0; for (char l : x)
         {
-			int t = l - 'a';
-			if (!N[p][t])
+            int t = l - 'a';
+            if (!N[p][t])
             {
                 N[p][t] = ++c;
                 memset(N[c], 0, sizeof N[c]);
             }
-			p = N[p][t];
-		}
-	}
+            p = N[p][t];
+        }
+    }
 };
 
 int N, M; ll ans;
