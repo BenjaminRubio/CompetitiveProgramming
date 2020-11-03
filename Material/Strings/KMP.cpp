@@ -9,7 +9,7 @@ int match(string &p, string &t)
     rep(j, n - 1)
     {
         int i = L[j]; while (p[i] != p[j + 1] && i) i = L[i - 1];
-        L[j + 1] = p[i] == p[j + 1] ? i + 1 : 0;
+        L[j + 1] = (p[i] == p[j + 1] ? i + 1 : 0);
     }
     int ans = 0, i = 0; rep(j, m)
     {
