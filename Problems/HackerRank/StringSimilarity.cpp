@@ -45,3 +45,29 @@ struct SA
     }
     SA(vector<int>& s) { n = s.size(); getSA(s); getLCP(s); }
 };
+
+int T;
+string S;
+
+int main()
+{
+    cin >> T;
+    while (T--)
+    {
+        cin >> S; int N = S.size();
+
+        vector<int> a; for (char c : S) a.push_back(c);
+        SA sa(a);
+
+        int i;
+        rep(j, N) if (sa.sa[j] == 0) { i = j; break; }
+
+        long long ans = 0, p = 1e6;
+        for (int j = i; j < N; j++) p = min((long long)sa.lcp[j], p), ans += p;
+
+        p = 1e6;
+        for (int j = i - 1; j >= 0; j--) p = min((long long)sa.lcp[j], p), ans += p;
+
+        cout << ans + N << '\n';
+    }
+}
