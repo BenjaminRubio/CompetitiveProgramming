@@ -7,8 +7,7 @@ using namespace std;
 
 struct SA
 {
-    int n;
-    vector<int> C, R, R_, sa, sa_;
+    int n; vector<int> C, R, R_, sa, sa_;
     inline int gr(int i) { return i < n ? R[i] : 0; }
     void csort(int maxv, int k)
     {

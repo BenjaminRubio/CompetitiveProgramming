@@ -3,19 +3,17 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
-#define rep_(i, n) for (int i = (int)n - 1; i >= 0; i--)
 
 struct SA
 {
-    int n;
-    vector<int> C, R, R_, sa, sa_, lcp;
+    int n; vector<int> C, R, R_, sa, sa_, lcp;
     inline int gr(int i) { return i < n ? R[i] : 0; }
     void csort(int maxv, int k)
     {
         C.assign(maxv + 1, 0);
         rep(i, n) C[gr(i + k)]++;
         repx(i, 1, maxv + 1) C[i] += C[i - 1];
-        rep_(i, n) sa_[--C[gr(sa[i] + k)]] = sa[i];
+        for (int i = (int)n - 1; i >= 0; i--) sa_[--C[gr(sa[i] + k)]] = sa[i];
         sa.swap(sa_);
     }
     void getSA(vector<int>& s)
