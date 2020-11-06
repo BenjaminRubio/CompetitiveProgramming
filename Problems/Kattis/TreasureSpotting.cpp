@@ -47,9 +47,8 @@ bool propInt(P &a, P &b, P &c, P &d)
 
 bool inter(P &a, P &b, P &c, P &d)
 {
-    if (propInt(a, b, c, d) || onSeg(c, d, a) || onSeg(c, d, b) || 
-        onSeg(a, b, c)|| onSeg(a, b, d)) return 1;
-    return 0;
+    return (propInt(a, b, c, d) || onSeg(c, d, a) || onSeg(c, d, b) || 
+            onSeg(a, b, c)|| onSeg(a, b, d));
 }
 
 int N, M; P t, a, b;
