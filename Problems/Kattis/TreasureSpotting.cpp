@@ -24,10 +24,6 @@ struct P
     P perp() { return P(y, -x); }
 };
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
-ostream &operator<<(ostream &s, const P &p)
-{
-    return s << '(' << p.x << ", " << p.y << ')';
-}
 
 double turn(P &a, P &b, P &c) { return (b - a) ^ (c - a); }
 
