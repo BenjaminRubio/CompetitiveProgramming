@@ -44,8 +44,6 @@ P dp(int u)
 
 int main()
 {
-    ios::sync_with_stdio(0); cin.tie(0);
-
     while (cin >> N >> C)
     {
         s.resize(N); V.resize(C);
