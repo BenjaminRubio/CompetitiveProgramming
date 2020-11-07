@@ -66,13 +66,13 @@ int main()
             if (t == 0) ss.emplace(s[i], i);
             if (t == 0 && s[i].p.y > s[i].q.y)
             {
-                auto it = ss.upper_bound(make_pair(s[i], i));
+                auto it = ss.upper_bound(mp(s[i], i));
                 if (it != ss.end()) D[i] = it->second;
             }
-            if (t == 2) ss.erase(make_pair(s[i], i));
+            if (t == 2) ss.erase(mp(s[i], i));
             if (t == 2 && s[i].p.y < s[i].q.y)
             {
-                auto it = ss.upper_bound(make_pair(s[i], i));
+                auto it = ss.upper_bound(mp(s[i], i));
                 if (it != ss.end()) D[i] = it->second;
             }
             if (t == 1 && !ss.empty()) A[i] = ss.begin()->second;
