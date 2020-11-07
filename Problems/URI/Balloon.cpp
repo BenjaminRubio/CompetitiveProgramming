@@ -81,14 +81,11 @@ int main()
         rep(i, N) DP[i] = P(-1, -1);
         rep(i, C)
         {
-            if (A[i] == -1) cout << V[i] << '\n';
-            else
-            {
-                P ans = dp(A[i]);
-                if (ans.x == -1) cout << V[i] << ' ' << ans.y << '\n';
-                else if (ans.y == INF) cout << ans.x << '\n';
-                else cout << ans.x << ' ' << ans.y << '\n';
-            }
+            if (A[i] == -1) { cout << V[i] << '\n'; continue; }
+            P ans = dp(A[i]);
+            if (ans.x == -1) cout << V[i] << ' ' << ans.y << '\n';
+            else if (ans.y == INF) cout << ans.x << '\n';
+            else cout << ans.x << ' ' << ans.y << '\n';
         }
     }
 }
