@@ -8,12 +8,10 @@ const double EPS = 1e-12;
 
 // POINT 2D
 
-typedef double T;  // can be integer
-struct P
+typedef double T; struct P
 {
     T x, y;
-    P() {}
-    P(T x, T y) : x(x), y(y) {}
+    P() {} P(T x, T y) : x(x), y(y) {}
 
     P operator+(const P &p) const { return P(x + p.x, y + p.y); }
     P operator-(const P &p) const { return P(x - p.x, y - p.y); }
@@ -57,7 +55,7 @@ double ang(double a)
     return a;
 }
 
-double turn(P &a, P &b, P &c) { return (b - a) ^ (c - a); }
+T turn(P &a, P &b, P &c) { return (b - a) ^ (c - a); }
 
 bool isConvex(vector<P> p)
 {
@@ -89,7 +87,7 @@ void polarSort(vector<P> &v)
 struct L
 {
     P v; T c;
-    L(P v, T c) : v(v), c(c) {}
+    L() {} L(P v, T c) : v(v), c(c) {}
     L(T a, T b, T c) : v(P(b, -a)), c(c) {}
     L(P p, P q) : v(q - p), c(v ^ p) {}
 
@@ -258,8 +256,7 @@ double areaPolygonUnion(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
 vector<P> convexHull(vector<P> &p)
 {
     int n = p.size(), k = 0;
-    vector<P> H(2 * n);
-    sort(p.begin(), p.end());
+    vector<P> H(2 * n); sort(p.begin(), p.end());
     rep(i, n)
     {
         while (k >= 2 && turn(H[k - 2], H[k - 1], p[i]) <= 0) k--;
@@ -292,8 +289,7 @@ P circum(P &A, P &B, P &C)
 pair<P, double> smallestEnclosingCircle(vector<P> &p)
 {
     random_shuffle(p.begin(), p.end());
-    P c = p[0]; double r = 0;
-    int N = p.size();
+    P c = p[0]; double r = 0; int N = p.size();
     rep(i, N) if (i && (p[i] - c).norm() > r + EPS)
     {
         c = p[i]; r = 0;
