@@ -313,8 +313,7 @@ pair<P, double> smallestEnclosingCircle(vector<P> &p)
 #define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 const int MAXN = 1000010;
 
-int n;
-T mindist;
+int n; T mindist;
 pair<P, P> best;
 P a[MAXN], t[MAXN];
 
@@ -338,8 +337,7 @@ void closest(int l, int r)
         return;
     }
 
-    int m = (l + r) >> 1;
-    int xm = a[m].x;
+    int m = (l + r) >> 1, xm = a[m].x;
     closest(l, m); closest(m, r);
 
     merge(a + l, a + m, a + m, a + r, t, cmpY);
