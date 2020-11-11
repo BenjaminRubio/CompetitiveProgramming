@@ -142,8 +142,8 @@ bool onSegment(P &a, P &b, P &p)
 
 bool properInter(P &a, P &b, P &c, P &d, P &out)
 {
-    double ta = turn(c, d, a), tb = turn(c, d, b),
-           tc = turn(a, b, c), td = turn(a, b, d);
+    T ta = turn(c, d, a), tb = turn(c, d, b),
+      tc = turn(a, b, c), td = turn(a, b, d);
     out = (a * tb - b * ta) / (tb - ta);
     return (ta * tb < 0 && tc * td < 0);
 }
