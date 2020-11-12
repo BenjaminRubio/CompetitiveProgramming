@@ -24,8 +24,7 @@ struct SA
             if (L[p] + 1 == L[q]) Lk[cur] = q;
             else
             {
-                int w = sz++;
-                L[w] = L[p] + 1, Lk[w] = Lk[q], N[w] = N[q];
+                int w = sz++; L[w] = L[p] + 1, Lk[w] = Lk[q], N[w] = N[q];
                 while (p != -1 && N[p][c] == q) N[p][c] = w, p = Lk[p];
                 Lk[q] = Lk[cur] = w;
             }
