@@ -12,7 +12,7 @@ struct SA
         int n = s.size(); L.resize(2 * n), Lk.resize(2 * n);
         N.assign(2 * n, vector<int>(26, -1));
         l = L[0] = 0, Lk[0] = -1, sz = 1;
-        for (char c : s) extend(c - 'a');  // 'a' is reference string
+        for (char c : s) extend(c - 'a');  // 'a' is reference char
     }
     void extend(char c)
     {
