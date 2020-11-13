@@ -118,8 +118,7 @@ struct HASH // Hashing for integer coordinates lines
     ll a, b, c;
     HASH(const P &p1, const P &p2)
     {
-        a = p1.y - p2.y;
-        b = p2.x - p1.x;
+        a = p1.y - p2.y, b = p2.x - p1.x;
         c = p1.x * (p2.y - p1.y) - p1.y * (p2.x - p1.x);
         ll sgn = (a < 0 or (a == 0 and b < 0)) ? -1 : 1;
         ll g = __gcd(abs(a), __gcd(abs(b), abs(c))) * sgn;

@@ -5,7 +5,7 @@ typedef long long ll;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define repx(i, a, b) for (int i = a; i < (int)b; i++)
 #define pb push_back
-const double PI = 3.14159265358979323846;
+const double PI = acos(-1LL);
 
 template <typename T>
 struct Point
@@ -81,10 +81,8 @@ int main()
             cout << "Y\n";
             return 0;
         }
-        if (e.second)
-            c--;
-        else
-            c++;
+        if (e.second) c--;
+        else c++;
     }
 
     cout << "N\n";
