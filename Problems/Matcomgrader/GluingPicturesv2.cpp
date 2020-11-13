@@ -6,10 +6,8 @@ struct SA
     int sz, l; vector<int> L, Lk;
     vector<vector<int>> N;
 
-    SA(string s)
+    SA(string s, int n) : L(2 * n), Lk(2 * n), N(2 * n, vector<int>(26, -1))
     {
-        int n = s.size(); L.resize(2 * n), Lk.resize(2 * n);
-        N.assign(2 * n, vector<int>(26, -1));
         l = L[0] = 0, Lk[0] = -1, sz = 1;
         for (char c : s) extend(c - 'A');
     }
@@ -41,7 +39,7 @@ int main()
     ios::sync_with_stdio(0); cin.tie(0);
 
     cin >> C >> N;
-    SA sa(C);
+    SA sa(C, C.size());
 
     while (N--)
     {

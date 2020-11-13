@@ -7,10 +7,8 @@ struct SA
     int sz, l; vector<int> L, Lk;
     vector<vector<int>> N;
 
-    SA(string s)
+    SA(string s, int n) : L(2 * n), Lk(2 * n), N(2 * n, vector<int>(26, -1))
     {
-        int n = s.size(); L.resize(2 * n), Lk.resize(2 * n);
-        N.assign(2 * n, vector<int>(26, -1));
         l = L[0] = 0, Lk[0] = -1, sz = 1;
         for (char c : s) extend(c - 'a');  // 'a' is reference char
     }
@@ -40,10 +38,8 @@ struct SA
     int sz, l; vector<int> L, Lk;
     vector<map<char, int>> N;
 
-    SA(string s)
+    SA(string s, int n) : L(2 * n), Lk(2 * n), N(2 * n)
     {
-        int n = s.size();
-        L.resize(2 * n), Lk.resize(2 * n); N.resize(2 * n);
         l = L[0] = 0, Lk[0] = -1, sz = 1;
         for (char c : s) extend(c);
     }
