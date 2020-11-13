@@ -15,19 +15,12 @@ struct SA
     {
         int cur = sz++, p = l; L[cur] = L[l] + 1;
         while (p != -1 && N[p][c] == -1) N[p][c] = cur, p = Lk[p];
-        if (p == -1) Lk[cur] = 0;
-        else
-        {
-            int q = N[p][c];
-            if (L[p] + 1 == L[q]) Lk[cur] = q;
-            else
-            {
-                int w = sz++; L[w] = L[p] + 1, Lk[w] = Lk[q], N[w] = N[q];
-                while (p != -1 && N[p][c] == q) N[p][c] = w, p = Lk[p];
-                Lk[q] = Lk[cur] = w;
-            }
-        }
-        l = cur;
+        if (p == -1) { Lk[cur] = 0, l = cur; return; }
+        int q = N[p][c];
+        if (L[p] + 1 == L[q]) { Lk[cur] = q, l = cur; return; }
+        int w = sz++; L[w] = L[p] + 1, Lk[w] = Lk[q], N[w] = N[q];
+        while (p != -1 && N[p][c] == q) N[p][c] = w, p = Lk[p];
+        Lk[q] = Lk[cur] = w, l = cur;
     }
 };
 
