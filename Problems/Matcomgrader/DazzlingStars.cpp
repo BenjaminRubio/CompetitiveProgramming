@@ -1,89 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = a; i < (int)b; i++)
-#define pb push_back
-const double PI = acos(-1LL);
 
-template <typename T>
-struct Point
+typedef long long T; struct P
 {
-    T x, y, b;
+    T x, y;
+    P() {} P(T x, T y) : x(x), y(y) {}
 
-    Point<T> operator-(const Point<T> &p) const { return {x - p.x, y - p.y}; }
+    P operator-(const P &p) const { return P(x - p.x, y - p.y); }
+    T operator^(const P &p) const { return x * p.y - y * p.x; }
 
-    double angle()
+    bool half() const { return y > 0 || (y == 0 && x > 0); }
+    bool operator<(const P &p) const
     {
-        double angle = atan2(y, x);
-        if (angle < 0)
-            angle += 2 * PI;
-        return angle;
+        int h1 = half(), h2 = p.half();
+        return h1 != h2 ? h1 > h2 : ((*this) ^ p) > 0;
     }
-};
 
-int n, x, y, b;
-vector<Point<ll>> stars;
+    P rot() { return P(y, -x); }
+    P tor() { return P(-y, x); }
+};
+istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
+
+int N; vector<P> p;
+vector<int> B;
 
 int main()
 {
-    cin >> n;
-    rep(i, n)
+    ios::sync_with_stdio(0); cin.tie(0);
+
+    cin >> N;
+
+    p.resize(N); B.resize(N);
+    rep(i, N) cin >> p[i] >> B[i];
+
+    vector<pair<P, int>> E; int ans = 0, c = 0;
+    rep(i, N) rep(j, N) if (B[j] > B[i])
     {
-        cin >> x >> y >> b;
-        stars.pb({x, y, b});
+        P v = p[j] - p[i];
+        E.emplace_back(v.rot(), 0); E.emplace_back(v.tor(), 1);
+        if (v.tor() < v.rot()) c++;
     }
 
-    vector<pair<double, int>> sweep;
-    int c = 0;
-    int n_ = 0;
+    sort(E.begin(), E.end());
 
-    rep(i, n) repx(j, i, n)
+    for (auto &e : E)
     {
-        if (stars[i].b == stars[j].b)
-            continue;
-
-        n_++;
-
-        Point<ll> aux;
-        if (stars[i].b > stars[j].b)
-            aux = stars[j] - stars[i];
-        else
-            aux = stars[i] - stars[j];
-
-        double left = aux.angle() + PI / 2;
-        double right = aux.angle() - PI / 2;
-        if (left >= 2 * PI)
-            left -= 2 * PI;
-        if (right < 0)
-            right += 2 * PI;
-
-        if (left < right)
-            c++;
-
-        sweep.pb({left, 1});
-        sweep.pb({right, 0});
+        if (e.second == 0) c++;
+        if (e.second == 1) c--;
+        ans = max(ans, c);
     }
 
-    sort(sweep.begin(), sweep.end());
-
-    if (!n_)
-    {
-        cout << "Y\n";
-        return 0;
-    }
-
-    for (auto e : sweep)
-    {
-        if (c >= n_)
-        {
-            cout << "Y\n";
-            return 0;
-        }
-        if (e.second) c--;
-        else c++;
-    }
-
-    cout << "N\n";
+    cout << (ans >= (int)E.size() / 2 ? "Y\n" : "N\n");
 }
