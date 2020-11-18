@@ -44,16 +44,15 @@ struct STL
     }
     void update(int a, int b, int v, int u, int i, int j)
     {
+        if (st[u].lz) push(u, i, j, st[u].lzv);
         if (j < a || b < i) return;
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        if (st[u].lz) push(u, i, j, st[u].lzv);
         if (a <= i && j <= b) { push(u, i, j, v); return; }
-        update(a, b, v, l, i, m);
-        update(a, b, v, r, m + 1, j);
+        update(a, b, v, l, i, m); update(a, b, v, r, m + 1, j);
         st[u] = node(st[l], st[r]);
     }
 
-    STL(vector<node> &v) : n(v.size()), st(n * 4 + 5) { build(0, 0, n - 1, v); }
+    STL(vector<node> &v, int N) : n(N), st(N * 4 + 5) { build(0, 0, n - 1, v); }
     node query(int a, int b) { return query(a, b, 0, 0, n - 1); }
     void update(int a, int b, int v) { update(a, b, v, 0, 0, n - 1); }
 };
