@@ -21,7 +21,7 @@ struct ST
         for (int i = n - 1; i > 0; --i)
             t[i] = node(t[i << 1], t[i << 1 | 1]);
     }
-    void set_point(int p, const node &value)
+    void set(int p, const node &value)
     {
         for (t[p += n] = value; p >>= 1; )
             t[p] = node(t[p << 1], t[p << 1 | 1]);
