@@ -8,6 +8,7 @@ struct RH
 {
     int B = 1777771, M[2] = {999727999, 1070777777}, P[2] = {325255434, 10018302};
     vector<int> H[2], I[2];
+    RH() {}
     RH(string &s)
     {
         int N = s.size(); rep(k, 2)
@@ -22,7 +23,7 @@ struct RH
             }
         }
     }
-    ll get(int l, int r)  // inclusive - exclusive
+    ll get(int l, int r)
     {
         ll h0 = (H[0][r] - H[0][l] + M[0]) % M[0];
         h0 = (1LL * h0 * I[0][l]) % M[0];
@@ -31,3 +32,37 @@ struct RH
         return (h0 << 32) | h1;
     }
 };
+
+int T, N;
+string s; RH h;
+
+struct Pos
+{
+    int i; Pos(int i) : i(i) {}
+    bool operator>(const Pos &p) const
+    {
+        int l = 0, r = N;
+        while (l < r)
+        {
+            int m = (l + r) / 2;
+            if (h.get(i, i + m + 1) != h.get(p.i, p.i + m + 1)) r = m;
+            else l = m + 1;
+        }
+        return l < N ? s[i + l] > s[p.i + l] : i > p.i;
+    }
+};
+
+int main()
+{
+    cin >> T;
+    while (T--)
+    {
+        cin >> s; N = s.size();
+        s += s; h = RH(s);
+        
+        Pos p(0);
+        rep(i, N) if (p > Pos(i)) p = Pos(i);
+
+        cout << p.i + 1 << '\n';
+    }
+}

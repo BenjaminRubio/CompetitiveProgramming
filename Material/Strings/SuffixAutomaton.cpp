@@ -36,6 +36,30 @@ struct SA
     }
 };
 
+// 101 vector implementation
+struct SA
+{
+    int sz, l; vector<int> L, Lk;
+    vector<vector<int>> N, Ilk;
+
+    SA(string s, int n) : L(2 * n), Lk(2 * n), N(2 * n, vector<int>(26, -1))
+    {
+        l = L[0] = 0, Lk[0] = -1, sz = 1; int p;
+        for (char c : s) p = extend(c - 'A');
+    }
+    int extend(char c)
+    {
+        int cur = sz++, p = l; L[cur] = L[l] + 1;
+        while (p != -1 && N[p][c] == -1) N[p][c] = cur, p = Lk[p];
+        if (p == -1) { Lk[cur] = 0, l = cur; return cur; }
+        int q = N[p][c];
+        if (L[p] + 1 == L[q]) { Lk[cur] = q, l = cur; return cur; }
+        int w = sz++; L[w] = L[p] + 1, Lk[w] = Lk[q], N[w] = N[q];
+        while (p != -1 && N[p][c] == q) N[p][c] = w, p = Lk[p];
+        Lk[q] = Lk[cur] = w, l = cur; return cur;
+    }
+};
+
 // 101 map implementation
 struct SA
 {
