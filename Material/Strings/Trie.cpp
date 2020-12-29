@@ -1,16 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
-
 struct Trie
 {
-    int N[10000000][26] = {0}, S[10000000] = {0}, c = 0;
-    Trie() {}
-    void add(string x, int a = 1)
+    static const int MAX = 1e6;
+    int N[MAX][26] = {0}, S[MAX] = {0}, c = 0;
+    void add(string s, int a = 1)
     {
         int p = 0; S[p] += a;
-        for (char l : x)
+        for (char l : s)
         {
             int t = l - 'a';
             if (!N[p][t]) N[p][t] = ++c;
@@ -19,10 +17,12 @@ struct Trie
     }
 };
 
+#define rep(i, n) for (int i = 0; i < (int)n; i++)
+
 struct TrieXOR
 {
-    int N[10000000][2] = {0}, S[10000000] = {0}, c = 0;
-    TrieXOR() {}
+    static const int MAX = 1e6;
+    int N[MAX][2] = {0}, S[MAX] = {0}, c = 0;
     void add(int x, int a = 1)
     {
         int p = 0; S[p] += a;
