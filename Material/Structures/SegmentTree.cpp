@@ -15,7 +15,7 @@ struct ST
 {
     vector<node> t; int n;
 
-    ST(vector<node> &arr) : n(arr.size()), t(n * 2)
+    ST(vector<node> &arr, int N) : n(N), t(N * 2)
     {
         copy(arr.begin(), arr.end(), t.begin() + n);
         for (int i = n - 1; i > 0; --i)
