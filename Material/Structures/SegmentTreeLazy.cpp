@@ -3,7 +3,7 @@ using namespace std;
 
 struct Node
 {
-    int v, v_ = 0;
+    int v, lzv = 0;
     bool lz = false;
     Node() : v(0) {}
     Node(int x) : v(x) {}
