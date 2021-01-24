@@ -15,8 +15,7 @@ void fft(vector<C> &a)
     static vector<C> rt(2, 1);
     for (static int k = 2; k < n; k *= 2)
     {
-        R.resize(n);
-        rt.resize(n);
+        R.resize(n); rt.resize(n);
         auto x = polar(1.0L, M_PIl / k);
         repx(i, k, 2 * k) rt[i] = R[i] = i & 1 ? R[i / 2] * x : R[i / 2];
     }
@@ -27,8 +26,7 @@ void fft(vector<C> &a)
     {
         auto x = (double *)&rt[j + k], y = (double *)&a[i + j + k];
         C z(x[0] * y[0] - x[1] * y[1], x[0] * y[1] + x[1] * y[0]);
-        a[i + j + k] = a[i + j] - z;
-        a[i + j] += z;
+        a[i + j + k] = a[i + j] - z, a[i + j] += z;
     }
 }
 
@@ -40,11 +38,9 @@ vd conv(const vd &a, const vd &b)
     vector<C> in(n), out(n);
     copy(a.begin(), a.end(), in.begin());
     rep(i, b.size()) in[i].imag(b[i]);
-    fft(in);
-    for (auto &x : in) x *= x;
+    fft(in); for (auto &x : in) x *= x;
     rep(i, n) out[i] = in[-i & (n - 1)] - conj(in[i]);
-    fft(out);
-    rep(i, res.size()) res[i] = imag(out[i]) / (4 * n);
+    fft(out); rep(i, res.size()) res[i] = imag(out[i]) / (4 * n);
     return res;
 }
 

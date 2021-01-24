@@ -18,12 +18,11 @@ struct ST
     ST(vector<node> &arr, int N) : n(N), t(N * 2)
     {
         copy(arr.begin(), arr.end(), t.begin() + n);
-        for (int i = n - 1; i > 0; --i)
-            t[i] = node(t[i << 1], t[i << 1 | 1]);
+        for (int i = n - 1; i > 0; --i) t[i] = node(t[i << 1], t[i << 1 | 1]);
     }
     void set(int p, const node &value)
     {
-        for (t[p += n] = value; p >>= 1; )
+        for (t[p += n] = value; p >>= 1;)
             t[p] = node(t[p << 1], t[p << 1 | 1]);
     }
     node query(int l, int r)
