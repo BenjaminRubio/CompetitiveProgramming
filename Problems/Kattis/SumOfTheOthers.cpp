@@ -7,8 +7,7 @@ int main()
 {
     while (getline(cin, line))
     {
-        stringstream ss;
-        ss << line;
+        stringstream ss(line);
 
         int sum = 0, aux;
         while (ss >> aux) sum += aux;
