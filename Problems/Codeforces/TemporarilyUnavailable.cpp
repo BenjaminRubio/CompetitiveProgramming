@@ -12,20 +12,11 @@ int main()
     {
         cin >> a >> b >> c >> r;
 
-        if (a > b)
-            swap(a, b);
+        if (a > b) swap(a, b);
 
-        int ans;
-        if (a > c + r)
-            ans = b - a;
-        else if (b < c - r)
-            ans = b - a;
-        else
-        {
-            int in = min(b, c + r) - max(a, c - r);
-            ans = b - a - in;
-        }
-
-        cout << ans << '\n';
+        if (c + r < a || c - r > b)
+            cout << b - a << '\n';
+        else 
+            cout << max(0, (c - r) - a) + max(0, b - (c + r)) << '\n';
     }
 }

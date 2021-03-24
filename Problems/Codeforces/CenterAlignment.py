@@ -38,4 +38,3 @@ for line in m:
         i += 1
 
 print("*" * (size + 2))
-
