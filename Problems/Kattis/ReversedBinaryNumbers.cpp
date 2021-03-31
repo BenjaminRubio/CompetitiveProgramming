@@ -9,13 +9,13 @@ int main()
 {
     cin >> N;
 
-    vector<int> binary;
-    while (N) binary.push_back(N & 1), N >>= 1;
-
-    reverse(binary.begin(), binary.end());
-
     int ans = 0;
-    rep(i, binary.size()) if (binary[i]) ans += (1 << i);
+    while (N)
+    {
+        ans <<= 1;
+        if (N & 1) ans++;
+        N >>= 1;
+    }
 
     cout << ans << '\n';
 }
