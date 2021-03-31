@@ -6,29 +6,23 @@ for _ in range(T):
 
     N = int(input())
 
-    S1 = defaultdict(int); S2 = defaultdict(int)
+    S1 = defaultdict(list); S2 = defaultdict(list)
     for i in range(N):
         name = input()
 
         line = input().strip().split()
         for name in line[1:]:
-            S1[name] |= (1 << i)
+            S1[name].append(i)
 
         line = input().strip().split()
         for name in line[1:]:
-            S2[name] |= (1 << i)
-
-    M1 = defaultdict(list); M2 = defaultdict(list)
-    for e in S1.items():
-        M1[e[1]].append(e[0])
-    for e in S2.items():
-        M2[e[1]].append(e[0])
+            S2[name].append(i)
 
     ans = []
-    for e in M1.items():
-        for name1 in e[1]:
-            for name2 in M2[e[0]]:
-                ans.append((name1, name2))
+    for e1 in S1.items():
+        for e2 in S2.items():
+            if e1[1] == e2[1]:
+                ans.append((e1[0], e2[0]))
 
     ans.sort()
 

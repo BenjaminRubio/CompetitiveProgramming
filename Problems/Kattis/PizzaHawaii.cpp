@@ -4,15 +4,14 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
 int T, N, M; string s;
-map<string, int> S1, S2;
-map<int, vector<string>> M1, M2;
+map<string, vector<int>> S1, S2;
 
 int main()
 {
     cin >> T;
     while (T--)
     {
-        S1.clear(), S2.clear(), M1.clear(), M2.clear();
+        S1.clear(), S2.clear();
 
         cin >> N;
 
@@ -21,17 +20,14 @@ int main()
             cin >> s;
             
             cin >> M;
-            rep(j, M) { cin >> s; S1[s] |= (1 << i); }
+            rep(j, M) { cin >> s; S1[s].push_back(i); }
             cin >> M;
-            rep(j, M) { cin >> s; S2[s] |= (1 << i); }
+            rep(j, M) { cin >> s; S2[s].push_back(i); }
         }
 
-        for (auto &e : S1) M1[e.second].push_back(e.first);
-        for (auto &e : S2) M2[e.second].push_back(e.first);
-
         vector<pair<string, string>> ans;
-        for (auto &e : M1) for (string s1 : e.second) for (string s2 : M2[e.first])
-            ans.emplace_back(s1, s2);
+        for (auto &e1 : S1) for (auto &e2 : S2) if (e1.second == e2.second)
+            ans.emplace_back(e1.first, e2.first);
 
         sort(ans.begin(), ans.end());
 
