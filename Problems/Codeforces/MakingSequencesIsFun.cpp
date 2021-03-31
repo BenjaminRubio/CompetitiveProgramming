@@ -11,23 +11,11 @@ int main()
     cin >> w >> m >> k;
 
     ll ans = 0, c = 0; int n = log10(m) + 1;
-    if ((pow(10, n) - m) * n * k >= w)
-    {
-        cout << w / (n * k) << '\n';
-        return 0;
-    }
-    else
+    while (c + (pow(10, n) - m) * n * k <= w)
     {
         c += (pow(10, n) - m) * n * k;
         ans += pow(10, n) - m;
-        n++;
-    }
-
-    while (c + (pow(10, n - 1) * 9) * n * k <= w)
-    {
-        c += pow(10, n - 1) * 9 * n * k;
-        ans += pow(10, n - 1) * 9;
-        n++;
+        m = pow(10, n), n++;
     }
     ans += (w - c) / (n * k);
 
