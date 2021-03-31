@@ -2,61 +2,31 @@
 using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 
-int n, k;
-char type;
-map<char, long long> m = {{'S', 0LL}, {'E', 1LL}, {'T', 2LL}};
-vector<long long> bits;
-map<long long, long long> c;
+int N, K;
+vector<string> C;
 
 int main()
 {
-    cin >> n >> k;
+    cin >> N >> K;
 
-    bits.resize(n);
-    rep(i, n)
-    {
-        long long b = 0;
-        rep(j, k)
-        {
-            cin >> type;
-            b |= (m[type] << (2 * j));
-        }
-        if (c.find(b) != c.end())
-            c[b]++;
-        else
-            c[b] = 1;
-        bits[i] = b;
-    }
+    C.resize(N); set<string> S;
+    rep(i, N) { cin >> C[i]; S.insert(C[i]); }
 
-    long long ans = 0;
-    rep(i, n) repx(j, i + 1, n)
+    int ans = 0;
+    rep(i, N) for (int j = i + 1; j < N; j++)
     {
-        long long b = 0;
-        rep(t, k)
+        string aux;
+        rep(k, K)
         {
-            if ((3LL & (bits[i] >> (2 * t))) == (3LL & (bits[j] >> (2 * t))))
-                b |= ((3LL & (bits[i] >> (2 * t))) << (2 * t));
-            else if ((3LL & (bits[i] >> (2 * t))) == 0LL && (3LL & (bits[j] >> (2 * t))) == 1LL)
-                b |= (2LL << (2 * t));
-            else if ((3LL & (bits[i] >> (2 * t))) == 0LL && (3LL & (bits[j] >> (2 * t))) == 2LL)
-                b |= (1LL << (2 * t));
-            else if ((3LL & (bits[i] >> (2 * t))) == 1LL && (3LL & (bits[j] >> (2 * t))) == 2LL)
-                b |= (0LL << (2 * t));
-            else if ((3LL & (bits[i] >> (2 * t))) == 1LL && (3LL & (bits[j] >> (2 * t))) == 0LL)
-                b |= (2LL << (2 * t));
-            else if ((3LL & (bits[i] >> (2 * t))) == 2LL && (3LL & (bits[j] >> (2 * t))) == 1LL)
-                b |= (0LL << (2 * t));
-            else if ((3LL & (bits[i] >> (2 * t))) == 2LL && (3LL & (bits[j] >> (2 * t))) == 0LL)
-                b |= (1LL << (2 * t));
+            if (C[i][k] == C[j][k]) aux += C[i][k];
+            if ((C[i][k] == 'S' && C[j][k] == 'E') || (C[i][k] == 'E' && C[j][k] == 'S')) aux += 'T';
+            if ((C[i][k] == 'S' && C[j][k] == 'T') || (C[i][k] == 'T' && C[j][k] == 'S')) aux += 'E';
+            if ((C[i][k] == 'T' && C[j][k] == 'E') || (C[i][k] == 'E' && C[j][k] == 'T')) aux += 'S';
         }
 
-        if (bits[i] == b)
-            ans += c[b] - 2LL;
-        else
-            ans += c[b];
+        if (S.count(aux)) ans++;
     }
 
-    cout << ans / 3LL << '\n';
+    cout << ans / 3 << '\n';
 }
