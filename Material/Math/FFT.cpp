@@ -4,7 +4,7 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 
-#define M_PIl acos(-1.0L)
+#define PI acos(-1.0L)
 
 typedef complex<double> C;
 typedef vector<double> vd;
@@ -16,7 +16,7 @@ void fft(vector<C> &a)
     for (static int k = 2; k < n; k *= 2)
     {
         R.resize(n); rt.resize(n);
-        auto x = polar(1.0L, M_PIl / k);
+        auto x = polar(1.0L, PI / k);
         repx(i, k, 2 * k) rt[i] = R[i] = i & 1 ? R[i / 2] * x : R[i / 2];
     }
     vector<int> rev(n);
