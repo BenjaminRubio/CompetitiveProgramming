@@ -4,32 +4,29 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
 int N, Q, q;
-vector<int> a;
+vector<int> A;
 
 int main()
 {
     cin >> N >> Q;
 
-    a.resize(N);
-    rep(i, N) cin >> a[i];
+    A.resize(N);
+    rep(i, N) cin >> A[i];
 
-    rep(i, Q)
+    while (Q--)
     {
         cin >> q;
 
-        int l = 0;
-        int r = N; 
+        int l = 0, r = N;
         while (l < r)
         {
             int m = (l + r) / 2;
-            if (a[m] >= q)
-                r = m;
-            else
-                l = m + 1;
+
+            if (A[m] >= q) r = m;
+            else l = m + 1;
         }
-        if (a[l] == q)
-            cout << l << '\n';
-        else
-            cout << -1 << '\n';
+
+        if (l == N || A[l] != q) cout << -1 << '\n';
+        else cout << l << '\n';
     }
 }
