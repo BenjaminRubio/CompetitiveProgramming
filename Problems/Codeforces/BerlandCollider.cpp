@@ -1,4 +1,3 @@
-#pragma GCC optimize("Ofast")
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,13 +7,14 @@ typedef long long ll;
 int n;
 vector<ll> p, v;
 
-bool check(double t){
+bool check(double t)
+{
     double prev = -1e9;
     bool flag = false;
     rep(i, n)
     {
         double pos = p[i] + v[i] * t;
-        if (v[i] > 0) { prev = max(prev, pos); flag = true; }
+        if (v[i] > 0) prev = max(prev, pos), flag = true;
         else if (pos < prev && flag) return true;
     }
     return false;
@@ -35,7 +35,7 @@ int main()
     rep(_, 60)
     {
         m = (l + r) * .5;
-        if (check(m)) { r = m; collision = true; }
+        if (check(m)) r = m, collision = true;
         else l = m;
     }
 

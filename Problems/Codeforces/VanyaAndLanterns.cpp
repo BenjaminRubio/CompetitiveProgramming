@@ -3,8 +3,7 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-int N;
-double L;
+int N; double L;
 vector<int> a;
 
 int main()
