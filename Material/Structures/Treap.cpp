@@ -11,7 +11,7 @@ struct Node
 {
     int p, sz = 0, v, acc, l = -1, r = -1, lzv = 0;
     bool lz = false, f = false;
-    Node() : p(gen()), v(0), acc(0) {}
+    Node() : v(0), acc(0) {}
     Node(int x): p(gen()), sz(1), v(x), acc(x) {}
     void recalc(const Node &a, const Node &b)
     {
@@ -79,6 +79,7 @@ struct Treap
     void print(int u)
     {
         if (u == -1) return;
+        push(u); flip(u);
         print(t[u].l);
         cout << t[u].v << ' ';
         print(t[u].r);
