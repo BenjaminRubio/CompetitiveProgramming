@@ -27,7 +27,7 @@ struct Treap
     vector<node> t; int n, r = -1;
 
     node get(int u) { return u != -1 ? t[u] : node(); }
-    void recalc(int u) { t[u].recalc(get(l), get(r)); }
+    void recalc(int u) { t[u].recalc(get(t[u].l), get(t[u].r)); }
     int merge(int l, int r)
     {
         if (min(l, r) == -1) return l != -1 ? l : r;
@@ -59,7 +59,7 @@ struct Treap
 
 struct Node
 {
-    int p, sz = 0, v, acc, l = -1, r = -1, lzv = 0;
+    int p, sz = 0, v, acc, l = -1, r = -1, par = -1, lzv = 0;
     bool lz = false, f = false;
     Node() : v(0), acc(0) {}
     Node(int x): p(gen()), sz(1), v(x), acc(x) {}
@@ -108,6 +108,8 @@ struct Treap
         int ans = (t[l].p < t[r].p) ? l : r;
         if (ans == l) t[l].r = merge(t[l].r, r), recalc(l);
         if (ans == r) t[r].l = merge(l, t[r].l), recalc(r);
+        if (t[ans].l != -1) t[t[ans].l].par = ans;  // optional only if parent needed
+        if (t[ans].r != -1) t[t[ans].r].par = ans;  // optional only if parent needed
         return ans;
     }
     ii split(int u, int id)
@@ -118,10 +120,14 @@ struct Treap
         if (szl >= id)
         {
             ii ans = split(t[u].l, id);
+            if (ans.ss != -1) t[ans.ss].par = u;   // optional only if parent needed
+            if (ans.ff != -1) t[ans.ff].par = -1;  // optional only if parent needed
             t[u].l = ans.ss; recalc(u);
             return {ans.ff, u};
         }
         ii ans = split(t[u].r, id - szl - 1);
+        if (ans.ff != -1) t[ans.ff].par = u;   // optional only if parent needed
+        if (ans.ss != -1) t[ans.ss].par = -1;  // optional only if parent needed
         t[u].r = ans.ff; recalc(u);
         return {u, ans.ss};
     }
