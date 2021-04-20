@@ -1,41 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
 typedef long long ll;
+#define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-int n, m;
-vector<ll> a, b;
+int N, M;
+vector<ll> A, B;
 
-ll calc(ll mid)
+ll calc(ll m)
 {
     ll ans = 0;
-    rep(i, n) ans += max(0ll, mid - a[i]);
-    rep(i, m) ans += max(0ll, b[i] - mid);
+    rep(i, N) ans += max(0ll, m - A[i]);
+    rep(i, M) ans += max(0ll, B[i] - m);
     return ans;
 }
 
 int main()
 {
-    cin >> n >> m;
+    cin >> N >> M;
 
-    a.resize(n);
-    rep(i, n) cin >> a[i];
-
-    b.resize(m);
-    rep(i, m) cin >> b[i];
+    A.resize(N); rep(i, N) cin >> A[i];
+    B.resize(M); rep(i, M) cin >> B[i];
 
     ll l = 0, r = 1e9;
-    while (r - l > 2)
+    while (l < r)
     {
-        ll m1 = (2ll * l + r) / 3ll;
-        ll m2 = (l + 2ll * r) / 3ll;
+        ll m = (l + r) / 2;
 
-        if (calc(m1) > calc(m2)) l = m1;
-        else if (calc(m2) > calc(m1)) r = m2;
-        else l = m1, r = m2;
+        if (calc(m) <= calc(m + 1)) r = m;
+        else l = m + 1;
     }
-    ll ans = LLONG_MAX;
-    for (ll i = l; i <= r; i++) ans = min(ans, calc(i));
-    cout << ans << '\n';
+    
+    cout << calc(l) << '\n';
 }
