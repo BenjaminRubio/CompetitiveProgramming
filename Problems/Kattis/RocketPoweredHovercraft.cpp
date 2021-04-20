@@ -3,19 +3,13 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-const double PI = 3.14159265358979323846;
+const double PI = acos(-1.0L);
 
 struct Point
 {
     double x, y;
-    Point operator-(const Point &p) const
-    {
-        return {x - p.x, y - p.y};
-    }
-    double norm()
-    {
-        return sqrt(x * x + y * y);
-    }
+    Point operator-(const Point &p) const { return {x - p.x, y - p.y}; }
+    double norm() { return sqrt(x * x + y * y); }
     double ang()
     {
         double a = atan2(y, x);
@@ -60,9 +54,8 @@ int main()
     {
         double t = (r - l) / 3.;
         double cl = calc(ang(l + t)), cr = calc(ang(r - t));
-        if (cr < cl) l = l + t;
-        else if (cl < cr) r = r - t;
-        else l = l + t;
+        if (cr <= cl) l = l + t;
+        if (cl < cr) r = r - t;
     }
 
     cout.precision(12);
