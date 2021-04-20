@@ -3,96 +3,69 @@ using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-struct Point
+typedef double T; struct P
 {
-    double x, y;
-    Point operator-(const Point &p) const
-    {
-        return {x - p.x, y - p.y};
-    }
-    Point operator+(const Point &p) const
-    {
-        return {x + p.x, y + p.y};
-    }
-    Point operator*(double c) const
-    {
-        return {x * c, y * c};
-    }
-    Point unit() const
-    {
-        return {x / norm(), y / norm()};
-    }
-    double norm() const
-    {
-        return sqrt(x * x + y * y);
-    }
+    T x, y;
+    P() {} P(T x, T y) : x(x), y(y) {}
+
+    P operator+(const P &p) const { return P(x + p.x, y + p.y); }
+    P operator-(const P &p) const { return P(x - p.x, y - p.y); }
+    P operator*(const double &c) const { return P(x * c, y * c); }
+    P operator/(const double &c) const { return P(x / c, y / c); }
+
+    T norm2() const { return x * x + y * y; }
+    double norm() const { return sqrt(norm2()); }
+    P unit() { return (*this) / norm(); }
 };
+istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
 
-int n, m;
-double x, y;
-vector<Point> w1, w2;
+const double EPS = 1e-10;
 
-double ternary_search(double l, double r, Point &p1, Point &p2, Point &d1, Point &d2)
+int N, M;
+vector<P> U, V;
+
+double f(P A, P B, P C, P D, double t)
 {
-    rep(t, 100)
-    {
-        double m1 = l + (r - l) / 3;
-        double m2 = r - (r - l) / 3;
-        double f1 = -1.0 * ((p2 + (d2 * m1)) - (p1 + (d1 * m1))).norm();
-        double f2 = -1.0 * ((p2 + (d2 * m2)) - (p1 + (d1 * m2))).norm();
-        if (f1 < f2)
-            l = m1;
-        else
-            r = m2;
-    }
-    return ((p2 + (d2 * l)) - (p1 + (d1 * l))).norm();
+    P p1 = A * (1 - t) + B * t;
+    P p2 = C * (1 - t) + D * t;
+    return (p2 - p1).norm();
 }
 
 int main()
 {
-    cin >> n;
-    w1.resize(n);
-    rep(i, n)
-    {
-        cin >> x >> y;
-        w1[i] = {x, y};
-    }
+    cout.setf(ios::fixed);
+    cout.precision(10);
 
-    cin >> m;
-    w2.resize(m);
-    rep(i, m)
-    {
-        cin >> x >> y;
-        w2[i] = {x, y};
-    }
+    cin >> N;
+    U.resize(N); rep(i, N) cin >> U[i];
+    cin >> M;
+    V.resize(M); rep(i, M) cin >> V[i];
 
-    int i = 1;
-    int j = 1;
-    Point p1 = w1[0];
-    Point p2 = w2[0];
     double ans = DBL_MAX;
-    while (i < n && j < m)
+    int i = 0, j = 0;
+    while (i < (N - 1) && j < (M - 1))
     {
-        double n1 = (w1[i] - p1).norm();
-        double n2 = (w2[j] - p2).norm();
-        Point d1 = (w1[i] - p1).unit();
-        Point d2 = (w2[j] - p2).unit();
-        ans = min(ans, ternary_search(0, min(n1, n2), p1, p2, d1, d2));
-        if (n1 > n2)
+        P A = U[i], B = U[i + 1], C = V[j], D = V[j + 1];
+
+        double M = min((B - A).norm(), (D - C).norm());
+        B = A + (B - A).unit() * M;
+        D = C + (D - C).unit() * M;
+
+        double l = 0, r = 1;
+        rep(_, 100)
         {
-            p2 = w2[j++];
-            p1 = (p1 + (d1 * n2));
+            double t = (r - l) / 3, m1 = l + t, m2 = r - t;
+            double f1 = f(A, B, C, D, m1), f2 = f(A, B, C, D, m2);
+
+            if (f1 <= f2) r = m2;
+            if (f1 >= f2) l = m1;
         }
-        else if (n2 > n1)
-        {
-            p1 = w1[i++];
-            p2 = (p2 + (d2 * n1));
-        }
-        else
-        {
-            p1 = w1[i++];
-            p2 = w2[j++];
-        }
+
+        ans = min(ans, f(A, B, C, D, (l + r) / 2));
+
+        i++, j++;
+        if ((U[i] - B).norm() > EPS) U[--i] = B;
+        if ((V[j] - D).norm() > EPS) V[--j] = D;
     }
 
     cout << ans << '\n';
