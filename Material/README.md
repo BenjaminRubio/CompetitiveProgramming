@@ -18,6 +18,7 @@ Diverse structures and algorithms for competitive programming problems.
 
 - Mathemathics
     - Fast Fourier Transform: From these [notes](https://github.com/kth-competitive-programming/kactl/blob/master/content/numerical/FastFourierTransform.h)
+    - Sieve: From these [notes](https://github.com/bqi343/USACO/blob/master/Implementations/content/number-theory%20(11.1)/Primality/Sieve.h)
 
 - Strings
     - Manacher: From [cp-algorithms](https://cp-algorithms.com/string/manacher.html)
