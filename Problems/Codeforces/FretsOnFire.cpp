@@ -2,12 +2,10 @@
 using namespace std;
 
 typedef long long ll;
-#define rep(i, n) for (ll i = 0; i < (ll)n; i++)
-#define ff first
-#define ss second
+#define rep(i, n) for (int i = 0; i < (int)n; i++)
 
-ll N, Q, l, r;
-vector<ll> S;
+int N, Q; ll l, r;
+vector<ll> S, D, acc;
 
 int main()
 {
@@ -17,29 +15,23 @@ int main()
 
     sort(S.begin(), S.end());
 
-    vector<ll> D;
-    rep(i, N - 1) D.push_back(S[i + 1] - S[i]);
+    D.resize(N - 1);
+    rep(i, N - 1) D[i] = S[i + 1] - S[i];
 
     sort(D.begin(), D.end());
 
+    acc = D;
+    rep(i, N - 2) acc[i + 1] = acc[i + 1] + acc[i];
+
     cin >> Q;
-    vector<pair<ll, ll>> E;
-    rep(i, Q)
+    while (Q--)
     {
         cin >> l >> r; r = r - l + 1;
-        E.emplace_back(r, i);
+        
+        int p = lower_bound(D.begin(), D.end(), r) - D.begin();
+
+        ll ans = r * (N - p) + (p ? acc[p - 1] : 0);
+        cout << ans << ' ';
     }
-
-    sort(E.begin(), E.end());
-
-    vector<ll> ans(Q);
-    ll active = N, offset = 0, i = 0;
-    for (auto &e : E)
-    {
-        while (i < N - 1 && D[i] < e.ff) offset += D[i++], active--;
-        ans[e.ss] = active * e.ff + offset;
-    }
-
-    rep(i, Q) cout << ans[i] << ' ';
     cout << '\n';
 }
