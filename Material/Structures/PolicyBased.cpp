@@ -1,9 +1,7 @@
-#include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
  
 using namespace __gnu_pbds;
-using namespace std;
  
 template <typename T, typename Comparator = less<T>>
 using super_set = tree<T, null_type, Comparator, rb_tree_tag,

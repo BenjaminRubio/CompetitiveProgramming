@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 
 int binexp(int b, int p, int M)
 {

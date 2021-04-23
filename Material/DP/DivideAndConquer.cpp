@@ -1,10 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-typedef long long ll;
-#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
-#define ff first
-#define ss second
 
 ll cost(int i, int j) { return ; }
 

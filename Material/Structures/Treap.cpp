@@ -1,11 +1,6 @@
-#include <bits/stdc++.h>
-using namespace std;
 
 mt19937 gen(chrono::high_resolution_clock::now().time_since_epoch().count());
-
 typedef pair<int, int> ii;
-#define ff first
-#define ss second
 
 //  101 Treap  //
 

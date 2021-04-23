@@ -1,22 +1,18 @@
-#include <bits/stdc++.h>
-using namespace std;
 
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
-
-const double PI = acos(-1.0L);
-const double EPS = 1e-12;
+const db PI = acos(-1.0L);
+const db EPS = 1e-12;
 
 // POINT 2D
 
-typedef double T; struct P
+typedef db T; struct P
 {
     T x, y;
     P() {} P(T x, T y) : x(x), y(y) {}
 
     P operator+(const P &p) const { return P(x + p.x, y + p.y); }
     P operator-(const P &p) const { return P(x - p.x, y - p.y); }
-    P operator*(const double &c) const { return P(x * c, y * c); }
-    P operator/(const double &c) const { return P(x / c, y / c); }
+    P operator*(const db &c) const { return P(x * c, y * c); }
+    P operator/(const db &c) const { return P(x / c, y / c); }
     T operator^(const P &p) const { return x * p.y - y * p.x; }
     T operator*(const P &p) const { return x * p.x + y * p.y; }
     bool operator==(const P &p) const
@@ -29,26 +25,26 @@ typedef double T; struct P
     }
 
     T norm2() const { return x * x + y * y; }
-    double norm() const { return sqrt(norm2()); }
-    double ang()
+    db norm() const { return sqrt(norm2()); }
+    db ang()
     {
-        double a = atan2(y, x);
+        db a = atan2(y, x);
         if (a < 0) a += 2. * PI;
         return a;
     }
     P unit() { return (*this) / norm(); }
     P perp() { return P(-y, x); }
     P rot(P r) { return P((*this) ^ r, (*this) * r); }
-    P rot(double a){ return rot(P(sin(a), cos(a))); }
+    P rot(db a){ return rot(P(sin(a), cos(a))); }
 };
-P polar(double r, double a) { return P(r * cos(a), r * sin(a)); }
+P polar(db r, db a) { return P(r * cos(a), r * sin(a)); }
 istream &operator>>(istream &s, P &p) { return s >> p.x >> p.y; }
 ostream &operator<<(ostream &s, const P &p)
 {
     return s << '(' << p.x << ", " << p.y << ')';
 }
 
-double ang(double a)
+db ang(db a)
 {
     while (a >= 2. * PI) a -= 2. * PI;
     while (a < 0) a += 2. * PI;
@@ -92,8 +88,8 @@ struct L
     L(P p, P q) : v(q - p), c(v ^ p) {}
 
     T side(P p) { return (v ^ p) - c; }
-    double dist(P p) { return abs(side(p) / v.norm()); }
-    double dist2(P p) { return side(p) * side(p) / (double)v.norm2(); }
+    db dist(P p) { return abs(side(p) / v.norm()); }
+    db dist2(P p) { return side(p) * side(p) / (db)v.norm2(); }
     L perp(P p) { return L(p, p + v.perp()); }
     L translate(P t) { return L(v, c + (v ^ t)); }
     P proj(P p) { return p - v.perp() * side(p) / v.norm2(); }
@@ -107,12 +103,11 @@ P inter(L l1, L l2) { return (l2.v * l1.c - l1.v * l2.c) / (l1.v ^ l2.v); }
 
 L bisector(L l1, L l2, bool in)
 {
-    double sign = in ? 1 : -1;
+    db sign = in ? 1 : -1;
     return L(l2.v / l2.v.norm() + l1.v / l1.v.norm() * sign,
              l2.c / l2.v.norm() + l1.c / l1.v.norm() * sign);
 }
 
-typedef long long ll;
 struct HASH // Hashing for integer coordinates lines
 {
     ll a, b, c;
@@ -159,14 +154,14 @@ set<P> inter(P &a, P &b, P &c, P &d)
     return ans;
 }
 
-double segPoint(P &a, P &b, P &p)
+db segPoint(P &a, P &b, P &p)
 {
     if ((p - a) * (b - a) >= 0 && (p - b) * (a - b) >= 0)
         return abs(((b - a) ^ (p - a)) / (b - a).norm());
     return min((p - a).norm(), (b - a).norm());
 }
 
-double segSeg(P &a, P &b, P &c, P &d)
+db segSeg(P &a, P &b, P &c, P &d)
 {
     P aux;
     if (properInter(a, b, c, d, aux)) return 0;
@@ -176,14 +171,14 @@ double segSeg(P &a, P &b, P &c, P &d)
 
 // POLYGONS
 
-double areaTriangle(P &a, P &b, P &c)
+db areaTriangle(P &a, P &b, P &c)
 {
     return abs((b - a) ^ (c - a)) / 2.;
 }
 
-double areaPolygon(vector<P> &p)
+db areaPolygon(vector<P> &p)
 {
-    double ans = 0; int n = p.size();
+    db ans = 0; int n = p.size();
     rep(i, n) ans += p[i] ^ p[(i + 1) % n];
     return abs(ans) / 2.;
 }
@@ -207,24 +202,22 @@ bool inPolygon(vector<P> &p, P &a, bool strict = true)
     return c & 1;
 }
 
-#define ff first
-#define ss second
-double areaPolygonUnion(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
+db areaPolygonUnion(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
 {
-    double area = 0;
+    db area = 0;
     rep(i, pol.size()) rep(j, pol[i].size())
     {
         int m = pol[i].size();
         P p1 = pol[i][j], p2 = pol[i][(j + 1) % m];
 
-        vector<pair<double, int>> s; s.emplace_back(1., 0);
+        vector<pair<db, int>> s; s.emplace_back(1., 0);
 
         rep(ii, pol.size()) if (ii != i) rep(jj, pol[ii].size())
         {
             int mm = pol[ii].size();
             P p3 = pol[ii][jj], p4 = pol[ii][(jj + 1) % mm];
 
-            double t1 = turn(p1, p2, p3), t2 = turn(p1, p2, p4),
+            db t1 = turn(p1, p2, p3), t2 = turn(p1, p2, p4),
                    t3 = turn(p3, p4, p1), t4 = turn(p3, p4, p2);
             if (!t1 && !t2 && (p2 - p1) * (p4 - p3) > 0 && i > ii)
             {
@@ -238,10 +231,10 @@ double areaPolygonUnion(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
         sort(s.begin(), s.end());
 
         int c = 0;
-        double last = 0, f = 0;
+        db last = 0, f = 0;
         for (auto e : s)
         {
-            double now = min(1., max(0., e.ff));
+            db now = min(1., max(0., e.ff));
             if (c == 0) f += now - last;
             c += e.ss, last = now;
         }
@@ -274,21 +267,21 @@ vector<P> convexHull(vector<P> &p)
 
 // Smallest Enclosing cicle
 
-P bary(P &A, P &B, P &C, double a, double b, double c)
+P bary(P &A, P &B, P &C, db a, db b, db c)
 {
     return (A * a + B * b + C * c) / (a + b + c);
 }
 
 P circum(P &A, P &B, P &C)
 {
-    double a = (B - C).norm2(), b = (C - A).norm2(), c = (A - B).norm2();
+    db a = (B - C).norm2(), b = (C - A).norm2(), c = (A - B).norm2();
     return bary(A, B, C, a * (b + c - a), b * (c + a - b), c * (a + b - c));
 }
 
-pair<P, double> smallestEnclosingCircle(vector<P> &p)
+pair<P, db> smallestEnclosingCircle(vector<P> &p)
 {
     random_shuffle(p.begin(), p.end());
-    P c = p[0]; double r = 0; int N = p.size();
+    P c = p[0]; db r = 0; int N = p.size();
     rep(i, N) if (i && (p[i] - c).norm() > r + EPS)
     {
         c = p[i]; r = 0;
@@ -309,7 +302,6 @@ pair<P, double> smallestEnclosingCircle(vector<P> &p)
 
 // Closest pair of points from array "a" (mindist: squared mindist)
 
-#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 const int MAXN = 1000010;
 
 int n; T mindist;

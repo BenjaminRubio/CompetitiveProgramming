@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 
 // 0 - indexed / inclusive - inclusive
 template <class T>

@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 
 // 1 - indexed / inclusive - inclusive
 struct FT

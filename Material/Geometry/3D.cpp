@@ -1,29 +1,27 @@
-#include <bits/stdc++.h>
-using namespace std;
 
-const double PI = acos(-1.0L);
-const double EPS = 1e-12;
+const db PI = acos(-1.0L);
+const db EPS = 1e-12;
 
 // POINT 3D
 
 struct P
 {
-    double x, y, z;
+    db x, y, z;
     P() {}
-    P(double x, double y, double z) : x(x), y(y), z(z) {}
+    P(db x, db y, db z) : x(x), y(y), z(z) {}
 
     P operator+(const P &p) const { return P(x + p.x, y + p.y, z + p.z); }
     P operator-(const P &p) const { return P(x - p.x, y - p.y, z - p.z); }
-    P operator*(const double &c) const { return P(x * c, y * c, z * c); }
-    P operator/(const double &c) const { return P(x / c, y / c, z / c); }
+    P operator*(const db &c) const { return P(x * c, y * c, z * c); }
+    P operator/(const db &c) const { return P(x / c, y / c, z / c); }
     P operator^(const P &p) const
     {
         return P(y * p.z - z * p.y, 
                  z * p.x - x * p.z,
                  x * p.y - y * p.x);
     }
-    double operator*(const P &p) const { return x * p.x + y * p.y + z * p.z; }
-    double operator%(const P &p) const
+    db operator*(const P &p) const { return x * p.x + y * p.y + z * p.z; }
+    db operator%(const P &p) const
     {
         return acos((*this) * p) / (norm() * p.norm());
     }
@@ -32,11 +30,11 @@ struct P
         return abs(x - p.x) + abs(y - p.y) + abs(z - p.z) < EPS;
     }
 
-    double norm() const { return sqrt(norm2()); }
-    double norm2() const { return x * x + y * y + z * z; }
+    db norm() const { return sqrt(norm2()); }
+    db norm2() const { return x * x + y * y + z * z; }
     P unit() { return (*this) / norm(); }
 };
-P polar(double r, double a, double b)
+P polar(db r, db a, db b)
 {
     return P(r * cos(a) * cos(b), r * cos(a) * sin(b), r * sin(a));
 }
@@ -50,13 +48,13 @@ ostream &operator<<(ostream &s, const P &p)
 
 bool in_arc(P &a, P &b, P &n, P &p)
 {
-    double ab = a % b;
-    double ap = a % p;
+    db ab = a % b;
+    db ap = a % p;
     P c = (a * cos(ap) + (n ^ a) * sin(ap));
     return ab > ap && p == c;
 }
 
-bool find_intersection(P &a1, P &b1, P &a2, P &b2, double &angle)
+bool find_intersection(P &a1, P &b1, P &a2, P &b2, db &angle)
 {
     P n1 = (a1 ^ b1).unit(), n2 = (a2 ^ b2).unit(), i = (n1 ^ n2);
     if (i.norm() < EPS) return false;

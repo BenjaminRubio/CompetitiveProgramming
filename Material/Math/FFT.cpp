@@ -1,8 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 
 #define PI acos(-1.0L)
 
@@ -44,7 +39,6 @@ vd conv(const vd &a, const vd &b)
     return res;
 }
 
-typedef long long ll;
 typedef vector<ll> vl;
 vl convMod(const vl &a, const vl &b, int M)
 {

@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 
 struct Trie
 {
@@ -16,8 +14,6 @@ struct Trie
         }
     }
 };
-
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
 
 struct TrieXOR
 {

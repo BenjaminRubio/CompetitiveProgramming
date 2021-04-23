@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 
 vector<vector<int>> G;
 vector<int> D, L;

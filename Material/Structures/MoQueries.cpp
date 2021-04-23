@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 
 int S; // Size of buckets (generally sqrt(N))
 
