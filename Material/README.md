@@ -2,6 +2,8 @@
 
 Diverse structures and algorithms for competitive programming problems.
 
+ICPC Notebook (WIP) generated using [Notebook Generator](https://github.com/pin3da/notebook-generator)
+
 # Credit
 
 - Geometry
