@@ -1,7 +1,7 @@
 
 ll cost(int i, int j) { return ; }
 
-vector<ll> last, now;
+vl last, now;
 
 void compute(int l, int r, int optl, int optr)
 {

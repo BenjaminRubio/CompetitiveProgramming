@@ -8,13 +8,7 @@ class FT2D
 
 public:
     FT2D() {}
-
-    FT2D(int n, int m)
-    {
-        t.assign(n, vector<T>(m, 0));
-        this->n = n;
-        this->m = m;
-    }
+    FT2D(int n, int m) : n(n), m(m) { t.assign(n, vector<T>(m, 0)); }
 
     void add(int r, int c, T value)
     {

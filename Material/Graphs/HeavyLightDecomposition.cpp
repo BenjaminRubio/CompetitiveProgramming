@@ -3,9 +3,9 @@ template <class ST, class node>
 class HLD
 {
     ST st;
-    vector<int> A, H, D, R, P;
+    vi A, H, D, R, P;
 
-    int dfs(vector<vector<int>> &G, int u)
+    int dfs(vector<vi> &G, int u)
     {
         int ans = 1, M = 0, s;
         for (int v : G[u]) if (v != A[u])
@@ -30,7 +30,7 @@ class HLD
     }
 
 public:
-    HLD(vector<vector<int>> &G, int n) : A(n), st(n), D(n), R(n), P(n)
+    HLD(vector<vi> &G, int n) : A(n), st(n), D(n), R(n), P(n)
     {
         H.assign(n, -1); A[0] = -1, D[0] = 0; dfs(G, 0); int p = 0;
         rep(i, n) if (A[i] == -1 || H[A[i]] != i)
@@ -60,9 +60,9 @@ template <class ST, class node>
 class HLD
 {
     ST st;
-    vector<int> A, H, D, R, P;
+    vi A, H, D, R, P;
 
-    int dfs(vector<vector<int>> &G, int u)
+    int dfs(vector<vi> &G, int u)
     {
         int ans = 1, M = 0, s;
         for (int v : G[u]) if (v != A[u])
@@ -89,7 +89,7 @@ public:
         else ans2 = node(st.query(P[u], P[v] + 1), ans2);
         ans1.sw(); return node(ans1, ans2);
     }
-    HLD(vector<vector<int>> &G, int n) : A(n), st(n), D(n), R(n), P(n)
+    HLD(vector<vi> &G, int n) : A(n), st(n), D(n), R(n), P(n)
     {
         H.assign(n, -1); A[0] = -1, D[0] = 0; dfs(G, 0); int p = 0;
         rep(i, n) if (A[i] == -1 || H[A[i]] != i)

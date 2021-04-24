@@ -2,7 +2,7 @@
 struct RH
 {
     int B = 1777771, M[2] = {999727999, 1070777777}, P[2] = {325255434, 10018302};
-    vector<int> H[2], I[2];
+    vi H[2], I[2];
     RH(string &s)
     {
         int N = s.size(); rep(k, 2)

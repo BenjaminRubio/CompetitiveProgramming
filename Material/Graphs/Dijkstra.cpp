@@ -13,7 +13,7 @@ vector<vector<Edge>> G;
 
 int dijkstra(int s, int t)
 {
-    vector<int> C(n, INF); C[s] = 0;  // CHECK FOR OVERFLOW
+    vi C(n, INF); C[s] = 0;  // CHECK FOR OVERFLOW
     priority_queue<Edge> q; q.emplace(s, 0);
     while (!q.empty())
     {

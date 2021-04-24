@@ -1,6 +1,6 @@
 
-vector<vector<int>> G;
-vector<int> D, L;
+vector<vi> G;
+vi D, L;
 
 void dfs(int u, int p, int d)
 {
@@ -33,7 +33,7 @@ void dfs(int u, int p, int d)
     }
 }
 
-stack<pair<int, int>> S;
+stack<pi> S;
 void dfs(int u, int p, int d)
 {
     D[u] = L[u] = d;
@@ -44,7 +44,7 @@ void dfs(int u, int p, int d)
             S.emplace(u, v); dfs(v, u, d + 1);
             if (p == -1 or L[v] >= d) while (1) // BCC found
             {
-                pair<int, int> e = S.top(); S.pop();
+                pi e = S.top(); S.pop();
                 if (e == make_pair(u, v)) break;
             }
             L[u] = min(L[u], L[v]); 

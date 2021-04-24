@@ -10,8 +10,8 @@ class MCMF
         Edge(int v, T c, T w) : v(v), c(c), w(w) {}
     };
 
-    int n; vector<vector<int>> E;
-    vector<Edge> L; vector<int> F; vector<T> D, P; vector<bool> V;
+    int n; vector<vi> E;
+    vector<Edge> L; vi F; vector<T> D, P; vector<bool> V;
 
     bool dij(int s, int t)
     {
@@ -60,7 +60,7 @@ public:
     }
     void addEdge(int u, int v, T c, T w)
     {
-        E[u].push_back(L.size()); L.emplace_back(v, c, w);
-        E[v].push_back(L.size()); L.emplace_back(u, 0, -w);
+        E[u].pb(L.size()); L.eb(v, c, w);
+        E[v].pb(L.size()); L.eb(u, 0, -w);
     }
 };

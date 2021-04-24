@@ -3,7 +3,7 @@ class Dinic
 {
     struct Edge { int to, rev; ll f, c; };
     int n, t_; vector<vector<Edge>> G;
-    vector<ll> D; vector<int> q, W;
+    vl D; vi q, W;
 
     bool bfs(int s, int t)
     {

@@ -2,7 +2,7 @@
 // 1 - indexed / inclusive - inclusive
 struct FT
 {
-    vector<int> t;
+    vi t;
     FT(int N) { t.resize(N + 1, 0); }
     int query(int i)
     {

@@ -1,19 +1,18 @@
 
 class WT
 {
-    typedef vector<int>::iterator iter;
-    vector<vector<int>> r0;
-    vector<int> arrCopy;
+    typedef vi::iterator iter;
+    vector<vi> r0;
+    vi arrCopy;
     int n, s;
 
     void build(iter b, iter e, int l, int r, int u)
     {
         if (l == r) return;
         int m = (l + r) / 2;
-        r0[u].reserve(e - b + 1);
-        r0[u].push_back(0);
+        r0[u].reserve(e - b + 1); r0[u].pb(0);
         for (iter it = b; it != e; ++it)
-            r0[u].push_back(r0[u].back() + (*it <= m));
+            r0[u].pb(r0[u].back() + (*it <= m));
         iter p = stable_partition(b, e, [=](int i) { return i <= m; });
         build(b, p, l, m, u * 2); build(p, e, m + 1, r, u * 2 + 1);
     }
@@ -22,7 +21,7 @@ class WT
     int range(int a, int b, int l, int r, int u)
     {
         if (r < q or w < l) return 0;
-        if (q <= l and r <= w) return b - a;
+        if (q <= l && r <= w) return b - a;
         int m = (l + r) / 2, za = r0[u][a], zb = r0[u][b];
         return range(za, zb, l, m, u * 2) +
                range(a - za, b - zb, m + 1, r, u * 2 + 1);
@@ -30,11 +29,11 @@ class WT
 
 public:
     // arr[i] in [0,sigma)
-    WT(vector<int> arr, int sigma)
+    WT(vi arr, int sigma)
     {
         n = arr.size(); s = sigma; r0.resize(s * 2);
         arrCopy = arr;
-        build(arr.begin(), arr.end(), 0, s - 1, 1);
+        build(all(arr), 0, s - 1, 1);
     }
 
     // k in [1,n], [a,b) is 0-indexed, -1 if error
@@ -76,7 +75,7 @@ public:
     }
 
     // x in [0,sigma)
-    void push_back(int x)
+    void pb(int x)
     {
         int l = 0, r = s - 1, u = 1, m, p;
         ++n;
@@ -84,7 +83,7 @@ public:
         {
             m = (l + r) / 2;
             p = (x <= m);
-            r0[u].push_back(r0[u].back() + p);
+            r0[u].pb(r0[u].back() + p);
             u *= 2;
             if (p) r = m;
             else l = m + 1, ++u;

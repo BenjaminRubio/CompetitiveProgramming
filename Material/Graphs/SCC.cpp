@@ -1,7 +1,7 @@
 
 int N, id;
-vector<vector<int>> G;  // Directed Graph
-vector<int> D, L, I; stack<int> S;
+vector<vi> G;  // Directed Graph
+vi D, L, I; stack<int> S;
 
 void dfs(int u)
 {

@@ -3,10 +3,10 @@ template <class t>
 class ST
 {
     int n;
-    vector<int> memo, *arr;
+    vi memo, *arr;
 
 public:
-    ST(vector<int> &_arr)
+    ST(vi &_arr)
     {
         arr = &_arr; n = arr->size();
         int maxlog = 31 - __builtin_clz(n);

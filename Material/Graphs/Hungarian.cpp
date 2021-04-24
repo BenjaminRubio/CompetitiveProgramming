@@ -5,8 +5,8 @@ class Hungarian
     T inf = numeric_limits<T>::max() / 2;
     bool maxi, swapped = false;
     vector<vector<T>> cost;
-    vector<int> p, way;
     vector<T> u, v;
+    vi p, way;
     int l, r;
 
 public:

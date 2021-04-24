@@ -1,11 +1,10 @@
 
 struct LCA
 {
-    int N, LOG;
-    vector<int> A, D;
-    vector<vector<int>> G;
+    vector<vi> G;
+    int N, LOG; vi A, D;
     int &anc(int u, int l) { return A[l * N + u]; }
-    LCA(vector<vector<int>> &G, int N, int root) : G(G), N(N)
+    LCA(vector<vi> &G, int N, int root) : G(G), N(N)
     {
         D.assign(N, -1); A.resize(N * (LOG + 1));
         dfs(root, -1, 0), LOG = 31 - __builtin_clz(N);
@@ -42,7 +41,7 @@ struct LCA
     }
     int add_child(int p, int u)
     {
-        G[p].push_back(u);
+        G[p].pb(u);
         D[u] = D[p] + 1, anc(u, 0) = p;
         rep(l, LOG) if (l)
         {

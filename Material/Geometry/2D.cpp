@@ -280,7 +280,7 @@ P circum(P &A, P &B, P &C)
 
 pair<P, db> smallestEnclosingCircle(vector<P> &p)
 {
-    random_shuffle(p.begin(), p.end());
+    random_shuffle(all(p));
     P c = p[0]; db r = 0; int N = p.size();
     rep(i, N) if (i && (p[i] - c).norm() > r + EPS)
     {

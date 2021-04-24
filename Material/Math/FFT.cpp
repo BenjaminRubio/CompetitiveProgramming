@@ -2,7 +2,6 @@
 #define PI acos(-1.0L)
 
 typedef complex<double> C;
-typedef vector<double> vd;
 void fft(vector<C> &a)
 {
     int n = a.size(), L = 31 - __builtin_clz(n);
@@ -39,7 +38,6 @@ vd conv(const vd &a, const vd &b)
     return res;
 }
 
-typedef vector<ll> vl;
 vl convMod(const vl &a, const vl &b, int M)
 {
     if (a.empty() || b.empty()) return {};

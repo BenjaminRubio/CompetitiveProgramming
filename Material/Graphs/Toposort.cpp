@@ -1,13 +1,12 @@
 
-int N;
-vector<vector<int>> G;
-vector<int> V, S;
+int N; vi V, S;
+vector<vi> G;
 
 void dfs(int u)
 {
     V[u] = 1;
     for (int v : G[u]) if (!V[v]) dfs(v);
-    S.push_back(u);
+    S.pb(u);
 }
 
 void topo_sort()

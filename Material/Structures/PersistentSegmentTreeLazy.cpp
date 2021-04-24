@@ -15,7 +15,7 @@ template <class node>
 struct PSTL
 {
     int cnt = 0, n, rc = 0;
-    vector<node> st; vector<int> rt;
+    vector<node> st; vi rt;
 
     void push(int u, int v, int i, int j)
     {
@@ -76,7 +76,7 @@ template <class node>
 struct PSTL
 {
     int cnt = 0, n, rc = 0;
-    vector<node> st; vector<int> rt;
+    vector<node> st; vi rt;
     
     node query(int u, int a, int b, int i, int j, ll acc)
     {

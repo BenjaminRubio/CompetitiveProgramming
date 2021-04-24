@@ -1,8 +1,8 @@
 
 class Hopcroft
 {
-    vector<vector<int>> g;
-    vector<int> U, dist;
+    vi U, dist;
+    vector<vi> g;
     int inf = 1e9;
 
     bool bfs() {
@@ -35,11 +35,11 @@ class Hopcroft
     }
 
 public:
-    vector<int> match;
+    vi match;
     int nil, isPerfect, matchSize = 0;
 
     // gg is a bidirectional graph, UU has the nodes in the left partition
-    Hopcroft(vector<vector<int>> &gg, vector<int> &UU) 
+    Hopcroft(vector<vi> &gg, vi &UU) 
     {
         g = gg; U = UU; nil = g.size();
         match.assign(g.size() + 1, nil);

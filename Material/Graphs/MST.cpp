@@ -26,8 +26,8 @@ int find_mst(vector<vector<Edge>> &g, vector<vector<Edge>> &T)
 
         int u = e.u, v = e.v, w = e.w;
         V[v] = true, ans += w;
-        T[u].emplace_back(u, v, w);
-        T[v].emplace_back(v, u, w);
+        T[u].eb(u, v, w);
+        T[v].eb(v, u, w);
 
         if (++c == n) break;
 

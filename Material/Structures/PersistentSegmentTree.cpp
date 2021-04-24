@@ -13,7 +13,7 @@ template <class node>
 struct PST
 {
     int cnt = 0, n, rc = 0;
-    vector<node> st; vector<int> rt;
+    vector<node> st; vi rt;
 
     node query(int u, int a, int b, int i, int j)
     {
@@ -51,7 +51,7 @@ template <class node>
 struct PST
 {
     int cnt = 1, n, rc = 1;
-    vector<node> st; vector<int> rt;
+    vector<node> st; vi rt;
 
     node query(int u, int a, int b, int i, int j)
     {

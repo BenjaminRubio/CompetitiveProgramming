@@ -1,18 +1,18 @@
 
-vector<int> P;
+vi P;
 
-vector<int> factor(int x)
+vi factor(int x)
 {
-    vector<int> ans;
+    vi ans;
     for (int d : P)
     {
         if (d * d > x) break;
         while (x % d == 0)
         {
-            ans.push_back(d);
+            ans.pb(d);
             if ((x /= d) == 1) return ans;
         }
     }
-    if (x > 1) ans.push_back(x);
+    if (x > 1) ans.pb(x);
     return ans;
 }
