@@ -20,7 +20,7 @@ vi factor(int x)
 
 // Pollard Rho ( O(n^{1/4}) )
 
-#include <MillerRabin.cpp>
+#include <Primality.cpp>
 
 ul pollard(ul n) // return some nontrivial factor of n
 {
