@@ -2,8 +2,7 @@
 template <class t>
 class ST
 {
-    int n;
-    vi memo, *arr;
+    int n; vi memo, *arr;
 
 public:
     ST(vi &_arr)

@@ -77,8 +77,7 @@ public:
     // x in [0,sigma)
     void pb(int x)
     {
-        int l = 0, r = s - 1, u = 1, m, p;
-        ++n;
+        int l = 0, r = s - 1, u = 1, m, p; ++n;
         while (l != r)
         {
             m = (l + r) / 2;
@@ -93,8 +92,7 @@ public:
     // doesn't check if empty
     void pop_back()
     {
-        int l = 0, r = s - 1, u = 1, m, p, k;
-        --n;
+        int l = 0, r = s - 1, u = 1, m, p, k; --n;
         while (l != r)
         {
             m = (l + r) / 2;

@@ -49,4 +49,3 @@ public:
         isPerfect = (matchSize == U.size() and g.size() == U.size() * 2);
     }
 };
-

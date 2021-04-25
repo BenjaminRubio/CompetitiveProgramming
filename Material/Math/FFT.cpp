@@ -13,7 +13,7 @@ void fft(vector<C> &a)
         auto x = polar(1.0L, PI / k);
         repx(i, k, 2 * k) rt[i] = R[i] = i & 1 ? R[i / 2] * x : R[i / 2];
     }
-    vector<int> rev(n);
+    vi rev(n);
     rep(i, n) rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
     rep(i, n) if (i < rev[i]) swap(a[i], a[rev[i]]);
     for (int k = 1; k < n; k *= 2) for (int i = 0; i < n; i += 2 * k) rep(j, k)

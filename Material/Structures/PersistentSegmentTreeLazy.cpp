@@ -24,7 +24,7 @@ struct PSTL
         st[cnt] = st[st[u].l]; int l = cnt++;
         st[cnt] = st[st[u].r]; int r = cnt++;
         st[u].l = l, st[l].lz = 1, st[l].lzv += v;
-		st[u].r = r, st[r].lz = 1, st[r].lzv += v;
+        st[u].r = r, st[r].lz = 1, st[r].lzv += v;
     }
     node query(int u, int a, int b, int i, int j)
     {
