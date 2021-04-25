@@ -8,7 +8,7 @@ pl euclid(ll A, ll B)
 }
 
 // find x in [0, M) such that Ax = 1 mod M
-ll mulinv(ll A, ll M)
+ll minv(ll A, ll M)
 {
 	pl p = euclid(A, M);
     assert(p.ff * A + p.ss * M == 1);
