@@ -22,9 +22,15 @@ using vd = vector<db>;
 #define ff first
 #define ss second
 
+int T, N, M, K;
+
 int main()
 {
-    ios::sync_with_stdio(0); cin.tie(0);
-
-    
+    cin >> T;
+    while (T--)
+    {
+        cin >> N >> M >> K;
+        if (K == (N * M - 1)) cout << "YES\n";
+        else cout << "NO\n";
+    }
 }

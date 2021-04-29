@@ -22,9 +22,17 @@ using vd = vector<db>;
 #define ff first
 #define ss second
 
+ll T, R, B, D;
+
 int main()
 {
-    ios::sync_with_stdio(0); cin.tie(0);
+    cin >> T;
+    while (T--)
+    {
+        cin >> R >> B >> D;
+        if (R > B) swap(R, B);
 
-    
+        if (B <= (R * (D + 1ll))) cout << "YES\n";
+        else cout << "NO\n";
+    }
 }
