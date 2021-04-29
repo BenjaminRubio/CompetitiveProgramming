@@ -5,9 +5,9 @@ using ul = unsigned long long;
 using ll = long long;
 using db = double;
 
-using pi = pair<int, int>;
-using pl = pair<ll, ll>;
-using pd = pair<db, db>;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+using pdd = pair<db, db>;
 
 using vi = vector<int>;
 using vl = vector<ll>;
