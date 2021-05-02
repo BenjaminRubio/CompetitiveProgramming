@@ -9,6 +9,7 @@ using pii = pair<int, int>;
 using pll = pair<ll, ll>;
 using pdd = pair<db, db>;
 
+using vp = vector<pii>;
 using vi = vector<int>;
 using vl = vector<ll>;
 using vd = vector<db>;
