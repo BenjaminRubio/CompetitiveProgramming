@@ -1,6 +1,6 @@
 #include <Euclid.cpp>
 
-pl CRT(pl a, pl b)
+pll CRT(pll a, pll b)
 {
     if (a.ss < b.ss) swap(a, b);
     ll x, y; tie(x, y) = euclid(a.ss, b.ss); 
@@ -10,9 +10,9 @@ pl CRT(pl a, pl b)
     return {x + (x < 0) * l, l};
 }
 
-pl CRT(vector<pl> &v)
+pll CRT(vector<pll> &v)
 {
-    int N = v.size(); pl ans = v[0];
+    int N = v.size(); pll ans = v[0];
     rep(i, N) if (i) ans = CRT(ans, v[i]);
     return ans;
 }
