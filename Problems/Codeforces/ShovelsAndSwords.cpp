@@ -12,12 +12,6 @@ int main()
     while (T--)
     {
         cin >> a >> b;
-
-        if (a > b) swap(a, b);
-        if (b > 2 * a) { cout << a << '\n'; continue; }
-        ll ans = (b - a);
-        a -= ans;
-        ans += (2 * (a / 3) + (a % 3 > 1));
-        cout << ans << '\n';
+        cout << min({a, b, (a + b) / 3}) << '\n';
     }
 }
