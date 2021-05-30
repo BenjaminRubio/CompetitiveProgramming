@@ -17,7 +17,7 @@ int dp(int i, int s)
     if (dp(i + 1, s + A[i]) || dp(i + 1, s)) return 1;
     return DP[i][s] = 0;
 }
-    
+
 int main()
 {
     cin >> N;
