@@ -1,5 +1,9 @@
 
 // 1 - indexed / inclusive - inclusive
+
+// Queries puntuales y Updates por rango
+// xor
+// Queries por rango y Updates puntuales
 struct FT
 {
     vi t;
@@ -16,8 +20,5 @@ struct FT
         int s = query(i, i); // Sets
         for (; i < t.size(); i += i & (-i)) t[i] += v - s;
     }
-    void update(int i, int j, int v)
-    {
-        update(i, v); update(j + 1, -v);
-    }
+    void update(int i, int j, int v) { update(i, v); update(j + 1, -v); }
 };

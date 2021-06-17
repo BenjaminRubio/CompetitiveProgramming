@@ -1,9 +1,11 @@
 
 struct AC
 {
-    static const int MAX = 1e4, ASZ = 26;
-    int N[MAX][ASZ] = {0}, L[MAX] = {0}, E[MAX] = {0}, c = 0;
-    void add(string s)
+    int c = 0, ec = 0, M, A;
+    vector<vi> N, G; vi L, E;
+
+    AC (int M, int A) : M(M), A(A), N(M, vi(A, 0)), E(M, 0), L(M, 0) {}
+    int add(string s)
     {
         int p = 0;
         for (char l : s)
@@ -11,7 +13,7 @@ struct AC
             int t = l - 'a';
             if (!N[p][t]) N[p][t] = ++c;
             p = N[p][t];
-        } E[p] = 1;
+        } E[p]++; return p;
     }
     void init()
     {
@@ -19,12 +21,13 @@ struct AC
         while (!q.empty())
         {
             int p = q.front(); q.pop();
-            rep(c, ASZ)
+            rep(c, A)
             {
                 int u = N[p][c]; if (!u) continue;
                 L[u] = L[p] == -1 ? 0 : N[L[p]][c], q.push(u);
+                G[L[u]].pb(u);
             }
-            if (p) rep(c, ASZ) if (!N[p][c]) N[p][c] = N[L[p]][c];
+            if (p) rep(c, A) if (!N[p][c]) N[p][c] = N[L[p]][c];
         }
     }
 };
