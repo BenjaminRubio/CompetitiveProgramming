@@ -17,6 +17,7 @@ struct AC
     }
     void init()
     {
+        G.assign(M, {});
         queue<int> q; q.push(0); L[0] = -1;
         while (!q.empty())
         {
