@@ -1,9 +1,14 @@
 
 ## Ignora inputs, outputs y binarios
 
+A
+B
 *.txt
 in
+int
 out
+out1
+out2
 *.out
 .*
 test.*
@@ -11,3 +16,4 @@ generate.py
 Extras
 Contest
 ProjectEuler
+*.sh
