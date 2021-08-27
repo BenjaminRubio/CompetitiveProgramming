@@ -5,6 +5,21 @@ using namespace std;
 #define ff first
 #define ss second
 
+struct Persona
+{
+    int id, s, h;
+    Persona(int id_, int s_, int h_)
+    {
+        id = id_;
+        s = s_;
+        h = h_;
+    }
+    bool operator<(const Persona &p) const
+    {
+        return s < p.s;
+    }
+};
+
 int T, N, Q, id, s, h;
 
 int main()
@@ -14,20 +29,20 @@ int main()
     {
         cin >> N >> Q;
 
-        vector<pair<int, pair<int, int>>> data;
+        vector<Persona> data;
         rep(i, N)
         {
             cin >> id >> s >> h;
-            data.emplace_back(s, make_pair(h, id));
+            data.emplace_back(id, s, h);
         }
 
         sort(data.begin(), data.end());
 
         map<int, int> boss, count;
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
-        for (auto e : data)
+        for (Persona p : data)
         {
-            h = e.ss.ff, id = e.ss.ss;
+            h = p.h, id = p.id;
 
             while (!q.empty() && q.top().ff <= h)
             {
