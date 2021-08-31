@@ -1,20 +1,22 @@
 
 H, V = 0, 0
-p = set()
-s = set()
 
+S = []
 for _ in range(4):
     x, y, x_, y_ = list(map(int, input().split()))
+    S.append(((x, y), (x_, y_)))
     if x == x_:
         V += 1
     if y == y_:
         H += 1
 
-    p.add((x, y)); p.add((x_, y_))
-    s.add(((x, y), (x_, y_)))
-    s.add(((x_, y_), (x, y)))
+ans = True
+for s in S:
+    cnt1 = 0; cnt2 = 0
+    for s_ in S:
+        cnt1 += (s[0] in s_)
+        cnt2 += (s[1] in s_)
+    if cnt1 != 2 or cnt2 != 2:
+        ans = False
 
-if len(s) != 8 or len(p) != 4 or H != 2 or V != 2:
-    print("NO")
-else:
-    print("YES")
+print("YES" if (ans and H == 2 and V == 2) else "NO")
