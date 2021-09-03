@@ -4,7 +4,7 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 
 int T, N, K, u, v;
-vector<set<int>> G;
+vector<vector<int>> G;
 vector<int> D, L;
 
 int main()
@@ -18,7 +18,7 @@ int main()
         rep(_, N - 1)
         {
             cin >> u >> v; u--, v--;
-            G[u].insert(v), G[v].insert(u);
+            G[u].push_back(v), G[v].push_back(u);
             D[u]++, D[v]++;
         }
 
