@@ -40,8 +40,7 @@ int main()
         plant[i] = {X, Y};
     }
 
-    double rmin = 0;
-    double rmax = 1e10;
+    double rmin = 0, rmax = 1e10;
     rep(k, 500)
     {
         double m = (rmin + rmax) * 0.5;
@@ -63,19 +62,15 @@ int main()
             double a1 = a - da;
             double a2 = a + da;
 
-            if (a1 < 0)
-                a1 += 2.0 * PI;
-            while (a1 >= 0.5 * PI)
-                a1 -= 0.5 * PI;
-            while (a2 >= 0.5 * PI)
-                a2 -= 0.5 * PI;
+            if (a1 < 0) a1 += 2.0 * PI;
+            while (a1 >= 0.5 * PI) a1 -= 0.5 * PI;
+            while (a2 >= 0.5 * PI) a2 -= 0.5 * PI;
 
             events.insert({a1, 0});
             events.insert({a2, 1});
             n++;
 
-            if (a2 < a1)
-                c++;
+            if (a2 < a1) c++;
         }
 
         if (c == n)
@@ -83,22 +78,16 @@ int main()
         
         for (auto e : events)
         {
-            if (able)
-                break;
-            if (e.second == 0)
-                c++;
-            if (e.second == 1)
-                c--;
-            if (c == n)
-                able = true;
+            if (able) break;
+            if (e.second == 0) c++;
+            if (e.second == 1) c--;
+            if (c == n) able = true;
         }
 
     not_able:
 
-        if (able)
-            rmin = m;
-        else
-            rmax = m;
+        if (able) rmin = m;
+        else rmax = m;
     }
 
     cout << (8.0 * rmin) << '\n';
