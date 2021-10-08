@@ -6,8 +6,10 @@ struct LCA
     int &anc(int u, int l) { return A[l * N + u]; }
     LCA(vector<vi> &G, int N, int root) : G(G), N(N)
     {
+        LOG = 31 - __builtin_clz(N);
         D.assign(N, -1); A.resize(N * (LOG + 1));
-        dfs(root, -1, 0), LOG = 31 - __builtin_clz(N);
+        
+        dfs(root, -1, 0);
         rep(l, LOG + 1) if (l) rep(u, N)
         {
             int a = anc(u, l - 1);
