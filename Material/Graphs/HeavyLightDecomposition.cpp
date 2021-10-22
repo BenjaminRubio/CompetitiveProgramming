@@ -42,7 +42,7 @@ public:
     //     if (D[u] > D[v]) swap(u, v);
     //     st.set(P[v], x);
     // }
-    void update(int u, int v, const node& x)                  // OPTIONAL FOR RANGE UPDATES
+    void update(int u, int v, const node &x)                  // OPTIONAL FOR RANGE UPDATES
     { path(u, v, [this, &x](int l, int r) { st.update(l, r, x); }); }
     node query(int u, int v)
     {
