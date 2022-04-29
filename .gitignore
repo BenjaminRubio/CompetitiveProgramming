@@ -12,6 +12,7 @@ out2
 *.out
 .*
 test.*
+total.*
 generate.py
 Extras
 Contest
