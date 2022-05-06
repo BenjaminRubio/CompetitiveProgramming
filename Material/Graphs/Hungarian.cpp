@@ -34,11 +34,11 @@ public:
         {
             vector<bool> used(r+1, false);
             vector<T> minv(r+1, inf);
-            int j0 = 0, p[0] = i;
+            int j0 = 0; p[0] = i;
 
             while (p[j0])
             {
-                int j1, i0 = p[j0], used[j0] = true;
+                int j1, i0 = p[j0]; used[j0] = true;
                 T delta = inf;
                 repx(j, 1, r + 1) if (not used[j])
                 {
