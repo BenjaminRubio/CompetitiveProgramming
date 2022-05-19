@@ -5,12 +5,12 @@ using namespace std;
 #define ff first
 #define ss second
 
-int N, DP[1 << 25];;
-pair<int, int> P[25], D[1 << 25];;
+int N, DP[1 << 25];
+pair<int, int> P[25], D[1 << 25];
 
 int dist(int i, int j)
 {
-    int dx = abs(P[i].ff - P[j].ff), dy = abs(P[i].ss - P[j].ss);
+    int dx = P[i].ff - P[j].ff, dy = P[i].ss - P[j].ss;
     return dx * dx + dy * dy;
 }
 
