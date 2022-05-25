@@ -1,6 +1,7 @@
+#include "../Template.cpp"
 
 int N; vi A;
-vector<vi> DP, OPT;
+vvi DP, OPT;
 
 int main()
 {

@@ -1,4 +1,5 @@
-#include <Euclid.cpp>
+#include "../Template.cpp"
+#include "Euclid.cpp"
 
 pll CRT(pll a, pll b)
 {

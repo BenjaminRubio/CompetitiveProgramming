@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 class Dinic
 {

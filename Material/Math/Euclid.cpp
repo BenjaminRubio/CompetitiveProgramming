@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 // find (x, y) such that Ax + By = gcd(A, B), and |Ax|, |By| <= AB/gcd(A, B)
 pll euclid(ll A, ll B)

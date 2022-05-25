@@ -1,4 +1,5 @@
-#include <Modular.cpp>
+#include "../Template.cpp"
+#include "Modular.cpp"
 
 bool prime(ul n)
 {

@@ -1,6 +1,6 @@
+#include "../Template.cpp"
 
 mt19937 gen(chrono::high_resolution_clock::now().time_since_epoch().count());
-typedef pair<int, int> ii;
 
 //  101 Treap  //
 
@@ -31,22 +31,22 @@ struct Treap
         if (ans == r) t[r].l = merge(l, t[r].l), recalc(r);
         return ans;
     }
-    ii split(int u, int id)
+    pii split(int u, int id)
     {
         if (u == -1) return {-1, -1};
         int szl = get(t[u].l).sz;
         if (szl >= id)
         {
-            ii ans = split(t[u].l, id);
+            pii ans = split(t[u].l, id);
             t[u].l = ans.ss; recalc(u);
             return {ans.ff, u};
         }
-        ii ans = split(t[u].r, id - szl - 1);
+        pii ans = split(t[u].r, id - szl - 1);
         t[u].r = ans.ff; recalc(u);
         return {u, ans.ss};
     }
 
-    Treap(vector<int> &v) : n(v.size())
+    Treap(vi &v) : n(v.size())
     { for (int i = 0; i < n; i++) t.eb(v[i]), r = merge(r, i); }
 };
 
@@ -107,20 +107,20 @@ struct Treap
         if (t[ans].r != -1) t[t[ans].r].par = ans;  // only if parent needed
         return ans;
     }
-    ii split(int u, int id)
+    pii split(int u, int id)
     {
         if (u == -1) return {-1, -1};
         push(u); flip(u);
         int szl = get(t[u].l).sz;
         if (szl >= id)
         {
-            ii ans = split(t[u].l, id);
+            pii ans = split(t[u].l, id);
             if (ans.ss != -1) t[ans.ss].par = u;   // only if parent needed
             if (ans.ff != -1) t[ans.ff].par = -1;  // only if parent needed
             t[u].l = ans.ss; recalc(u);
             return {ans.ff, u};
         }
-        ii ans = split(t[u].r, id - szl - 1);
+        pii ans = split(t[u].r, id - szl - 1);
         if (ans.ff != -1) t[ans.ff].par = u;   // only if parent needed
         if (ans.ss != -1) t[ans.ss].par = -1;  // only if parent needed
         t[u].r = ans.ff; recalc(u);
@@ -128,7 +128,7 @@ struct Treap
     }
     int update(int u, int l, int r, int v)
     {
-        ii a = split(u, l), b = split(a.ss, r - l + 1);
+        pii a = split(u, l), b = split(a.ss, r - l + 1);
         t[b.ff].upd_lazy(v);
         return merge(a.ff, merge(b.ff, b.ss));
     }
@@ -141,6 +141,6 @@ struct Treap
         print(t[u].r);
     }
 
-    Treap(vector<int> &v) : n(v.size())
+    Treap(vi &v) : n(v.size())
     { for (int i = 0; i < n; i++) t.eb(v[i]), r = merge(r, i); }
 };

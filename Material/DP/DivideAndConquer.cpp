@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 ll cost(int i, int j) { return ; }
 

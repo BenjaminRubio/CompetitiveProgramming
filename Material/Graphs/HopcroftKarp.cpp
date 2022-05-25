@@ -1,8 +1,9 @@
+#include "../Template.cpp"
 
 class Hopcroft
 {
     vi U, dist;
-    vector<vi> g;
+    vvi g;
     int inf = 1e9;
 
     bool bfs() {

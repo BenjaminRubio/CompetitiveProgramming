@@ -1,6 +1,7 @@
+#include "../Template.cpp"
 
 int N, id;
-vector<vi> G;  // Directed Graph
+vvi G;  // Directed Graph
 vi D, L, I; stack<int> S;
 
 void dfs(int u)

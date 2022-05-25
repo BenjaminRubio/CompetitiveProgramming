@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 template<int SZ> struct Sieve
 { 

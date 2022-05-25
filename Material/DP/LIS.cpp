@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 int LIS(vi &v)
 {

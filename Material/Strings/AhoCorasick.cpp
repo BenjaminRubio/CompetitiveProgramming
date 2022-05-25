@@ -1,8 +1,9 @@
+#include "../Template.cpp"
 
 struct AC
 {
     int c = 0, ec = 0, M, A;
-    vector<vi> N, G; vi L, E;
+    vvi N, G; vi L, E;
 
     AC (int M, int A) : M(M), A(A), N(M, vi(A, 0)), E(M, 0), L(M, 0) {}
     int add(string s)

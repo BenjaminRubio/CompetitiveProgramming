@@ -1,6 +1,7 @@
+#include "../Template.cpp"
 
 int N; vi V, S;
-vector<vi> G;
+vvi G;
 
 void dfs(int u)
 {

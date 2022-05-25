@@ -1,8 +1,9 @@
+#include "../Template.cpp"
 
 const int INF = 1e9;
 
 int n;
-vector<vi> D;
+vvi D;
 
 //D is an adjacency matrix at the beginning
 void floydWarshall ()

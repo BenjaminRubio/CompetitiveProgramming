@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 int n;
 string s;

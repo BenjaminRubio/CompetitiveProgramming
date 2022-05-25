@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 // 0 - indexed / inclusive - inclusive
 template <class T>

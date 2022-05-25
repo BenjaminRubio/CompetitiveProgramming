@@ -1,7 +1,8 @@
+#include "../Template.cpp"
 
 struct LCA
 {
-    vector<vi> G;
+    vvi G;
     int N, LOG; vi A, D;
     int &anc(int u, int l) { return A[l * N + u]; }
     LCA(vector<vi> &G, int N, int root) : G(G), N(N)

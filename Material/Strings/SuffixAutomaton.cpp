@@ -1,9 +1,10 @@
+#include "../Template.cpp"
 
 // vector implementation
 struct SA
 {
     int sz, l; vi L, Lk, S, C, T;
-    vector<vi> N, Ilk;
+    vvi N, Ilk;
 
     SA(string s, int n) : L(2 * n), Lk(2 * n), C(2 * n), N(2 * n, vi(26, -1))
     {
@@ -36,7 +37,7 @@ struct SA
 struct SA
 {
     int sz, l; vi L, Lk;
-    vector<vi> N, Ilk;
+    vvi N, Ilk;
 
     SA(string s, int n) : L(2 * n), Lk(2 * n), N(2 * n, vi(26, -1))
     {

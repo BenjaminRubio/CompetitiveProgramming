@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 int match(string &p, string &t)
 {

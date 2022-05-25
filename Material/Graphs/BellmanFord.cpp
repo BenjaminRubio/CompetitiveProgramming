@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 const int INF = 1e9;
 

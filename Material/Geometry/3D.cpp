@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 const db PI = acos(-1.0L);
 const db EPS = 1e-12;

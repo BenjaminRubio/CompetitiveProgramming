@@ -1,5 +1,6 @@
-#include <Euclid.cpp>
-#include <Modular.cpp>
+#include "../Template.cpp"
+#include "Euclid.cpp"
+#include "Modular.cpp"
 
 const ll MOD = 1e9 + 7;
 const int MAXN = 1000;

@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 template<class T>
 class Hungarian

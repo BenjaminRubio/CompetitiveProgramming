@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 template <class T>
 class MCMF
@@ -10,7 +11,7 @@ class MCMF
         Edge(int v, T c, T w) : v(v), c(c), w(w) {}
     };
 
-    int n; vector<vi> E;
+    int n; vvi E;
     vector<Edge> L; vi F; vector<T> D, P; vector<bool> V;
 
     bool dij(int s, int t)

@@ -1,9 +1,9 @@
+#include "../Template.cpp"
 
 class WT
 {
     typedef vi::iterator iter;
-    vector<vi> r0;
-    vi arrCopy;
+    vvi r0; vi arrCopy;
     int n, s;
 
     void build(iter b, iter e, int l, int r, int u)

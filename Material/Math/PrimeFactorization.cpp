@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 // Naive with precomputed primes
 
@@ -20,7 +21,7 @@ vi factor(int x)
 
 // Pollard Rho ( O(n^{1/4}) )
 
-#include <Primality.cpp>
+#include "Primality.cpp"
 
 ul pollard(ul n) // return some nontrivial factor of n
 {

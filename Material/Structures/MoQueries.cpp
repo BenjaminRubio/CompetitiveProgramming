@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 int S; // Size of buckets (generally sqrt(N))
 

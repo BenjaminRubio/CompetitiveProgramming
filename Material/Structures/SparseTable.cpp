@@ -1,3 +1,4 @@
+#include "../Template.cpp"
 
 struct OP
 {
@@ -23,7 +24,7 @@ public:
     int query_O1(int l, int r)
     {
         int k = 31 - __builtin_clz(r - l + 1);
-        return t::merge(DP[k * N + l], DP[k * N + r - (1 << k) + 1];
+        return t::merge(DP[k * N + l], DP[k * N + r - (1 << k) + 1]);
     }
     int query_Ologn(int l, int r)
     {
