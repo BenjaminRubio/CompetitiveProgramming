@@ -14,7 +14,7 @@ struct DC
             if (r & 1) t[--r].pb(p);
         }
     }
-    void process(int u)  // To process all, call process(1)
+    void process(int u = 1)  // To process all, call process()
     {
         for (auto &e : t[u]) D.unite(e.ff, e.ss);
         if (u >= n)
