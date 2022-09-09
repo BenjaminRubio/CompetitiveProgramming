@@ -19,7 +19,7 @@ public:
         rep(i, N) DP[i] = v[i];
         rep(k, LOG) rep(i, N)
             DP[(k + 1) * N + i] = t::merge(DP[k * N + i], 
-                                           DP(k * N + i + (1 << k)));
+                                           DP[k * N + i + (1 << k))];
     }
     int query_O1(int l, int r)
     {
