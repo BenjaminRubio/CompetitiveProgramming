@@ -20,7 +20,7 @@ int main()
         for (int i = 0; i < N; i++) cin >> A[i];
         
         int ans = 0;
-        for (int i = 0; i < (N / 2 + 1); i++) for (int j = i; j < N - i - 1; j++)
+        for (int i = 0; i < N; i++) for (int j = 0; j < N; j++)
         {
             int x = i, y = j, s = 0, times = 4;
             while (times--)
@@ -31,6 +31,6 @@ int main()
             ans += min(s, 4 - s);
         }
 
-        cout << ans << '\n';
+        cout << ans / 4 << '\n';
     }
 }
