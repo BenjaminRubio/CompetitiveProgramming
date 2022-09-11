@@ -1,26 +1,24 @@
 
-M = {}
-
 N = int(input())
-S = input().strip()
+S = input()
 
-s = set()
-for c in S:
-    s.add(c)
-    M[c] = 0
+total = len({c for c in S})
 
-i = 0; j = -1; aux = 0; ans = 1e10
-while j < N - 1:
-    j += 1
+M = {c : 0 for c in S}
+ans = N; cnt = 0; pos = 0
+for i in range(N):
 
-    M[S[j]] += 1
-    if M[S[j]] == 1:
-        aux += 1
-    while M[S[i]] > 1:
-        M[S[i]] -= 1
-        i += 1
+    while pos < N and cnt < total:
+        M[S[pos]] += 1
+        if M[S[pos]] == 1:
+            cnt += 1
+        pos += 1
 
-    if aux == len(s):
-        ans = min(ans, j - i + 1)
+    if cnt == total:
+        ans = min(ans, pos - i)
+    
+    M[S[i]] -= 1
+    if M[S[i]] == 0:
+        cnt -= 1
 
 print(ans)
