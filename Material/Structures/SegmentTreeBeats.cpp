@@ -9,11 +9,11 @@ struct Node
     {
         // add
         s = a.s + b.s;
-        // max
+        // min
         if (a.mx1 > b.mx1) mx1 = a.mx1, mxc = a.mxc, mx2 = max(b.mx1, a.mx2);
         if (a.mx1 < b.mx1) mx1 = b.mx1, mxc = b.mxc, mx2 = max(a.mx1, b.mx2);
         if (a.mx1 == b.mx1) mx1 = a.mx1, mxc = a.mxc + b.mxc, mx2 = max(a.mx2, b.mx2);
-        // min
+        // max
         if (a.mn1 < b.mn1) mn1 = a.mn1, mnc = a.mnc, mn2 = min(b.mn1, a.mn2);
         if (a.mn1 > b.mn1) mn1 = b.mn1, mnc = b.mnc, mn2 = min(a.mn1, b.mn2);
         if (a.mn1 == b.mn1) mn1 = a.mn1, mnc = a.mnc + b.mnc, mn2 = min(a.mn2, b.mn2);
@@ -68,10 +68,10 @@ struct STB
         push_add(l, i, m, st[u].lz);
         push_add(r, m + 1, j, st[u].lz);
         st[u].lz = 0;
-        // max
+        // min
         push_max(l, st[u].mx1, i == m);
         push_max(r, st[u].mx1, m + 1 == j);
-        // min
+        // max
         push_min(l, st[u].mn1, i == m);
         push_min(r, st[u].mn1, m + 1 == r);
     }
