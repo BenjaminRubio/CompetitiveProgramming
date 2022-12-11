@@ -2,7 +2,7 @@
 
 mt19937 gen(chrono::high_resolution_clock::now().time_since_epoch().count());
 
-//  101 Treap  //
+//  101 Implicit Treap  //
 
 struct Node
 {
@@ -50,7 +50,7 @@ struct Treap
     { for (int i = 0; i < n; i++) t.eb(v[i]), r = merge(r, i); }
 };
 
-//  Complete Treap with Lazy propagation  //
+//  Complete Implicit Treap with Lazy propagation  //
 
 struct Node
 {
