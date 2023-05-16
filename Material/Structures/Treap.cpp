@@ -46,7 +46,7 @@ struct Treap
         return {u, ans.ss};
     }
 
-    Treap(vi &v) : n(v.size())
+    Treap(vi &v) : n(sz(v))
     { for (int i = 0; i < n; i++) t.eb(v[i]), r = merge(r, i); }
 };
 
@@ -141,6 +141,6 @@ struct Treap
         print(t[u].r);
     }
 
-    Treap(vi &v) : n(v.size())
+    Treap(vi &v) : n(sz(v))
     { for (int i = 0; i < n; i++) t.eb(v[i]), r = merge(r, i); }
 };

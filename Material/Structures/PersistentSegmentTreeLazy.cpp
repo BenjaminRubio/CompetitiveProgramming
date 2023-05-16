@@ -55,7 +55,7 @@ struct PSTL
     }
 
     PSTL(vector<node> &arr) : st(1e7), rt(1e5)
-    { n = arr.size(); rt[rc++] = build(arr, 0, n - 1); }
+    { n = sz(arr); rt[rc++] = build(arr, 0, n - 1); }
     void update(int t, int a, int b, int v)
     { rt[rc++] = update(rt[t], a, b, v, 0, n - 1); }
     node query(int t, int a, int b) { return query(rt[t], a, b, 0, n - 1); }
@@ -106,7 +106,7 @@ struct PSTL
     }
 
     PSTL(vector<node> &arr) : st(5e6), rt(2e5)
-    { n = arr.size(); rt[rc++] = build(arr, 0, n - 1); }
+    { n = sz(arr); rt[rc++] = build(arr, 0, n - 1); }
     int update(int t, int a, int b, int v)
     { rt[rc] = update(rt[t], a, b, v, 0, n - 1); return rc++; }
     node query(int t, int a, int b) { return query(rt[t], a, b, 0, n - 1, 0); }

@@ -19,7 +19,7 @@ struct FT
     void update(int i, int v)
     {
         int s = query(i, i); // Sets
-        for (; i < t.size(); i += i & (-i)) t[i] += v - s;
+        for (; i < sz(t); i += i & (-i)) t[i] += v - s;
     }
     void update(int i, int j, int v) { update(i, v); update(j + 1, -v); }
 };

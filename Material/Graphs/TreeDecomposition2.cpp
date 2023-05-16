@@ -12,7 +12,7 @@ bool get_TD2(vvi &G, int N)
     vp P(N);
     vi O(N, -1);
     queue<int> Q;
-    rep(u, N) if (S[u].size() <= 2) Q.push(u);
+    rep(u, N) if (sz(S[u]) <= 2) Q.push(u);
 
     int id = 0, r = -1;
     while (!Q.empty())
@@ -38,9 +38,9 @@ bool get_TD2(vvi &G, int N)
             S[u].erase(w), S[w].erase(u);
             S[v].insert(w), S[w].insert(v);
             P[u].ss = w;
-            if (S[w].size() <= 2) Q.push(w);
+            if (sz(S[w]) <= 2) Q.push(w);
         }
-        if (S[v].size() <= 2) Q.push(v);
+        if (sz(S[v]) <= 2) Q.push(v);
     }
 
     if (id != N) return 0;

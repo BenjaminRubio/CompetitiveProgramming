@@ -39,5 +39,5 @@ struct SA
             lcp[r] = k; if (k) k--;
         }
     }
-    SA(vi &s) { n = s.size(); getSA(s); getLCP(s); }
+    SA(vi &s) { n = sz(s); getSA(s); getLCP(s); }
 };

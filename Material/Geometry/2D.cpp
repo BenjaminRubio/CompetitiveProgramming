@@ -56,7 +56,7 @@ T turn(P &a, P &b, P &c) { return (b - a) ^ (c - a); }
 
 bool isConvex(vector<P> p)
 {
-    int n = p.size();
+    int n = sz(p);
     bool hasPos = false, hasNeg = false, hasCol = false;
     rep(i, n)
     {
@@ -179,7 +179,7 @@ db areaTriangle(P &a, P &b, P &c)
 
 db areaPolygon(vector<P> &p)
 {
-    db ans = 0; int n = p.size();
+    db ans = 0; int n = sz(p);
     rep(i, n) ans += p[i] ^ p[(i + 1) % n];
     return abs(ans) / 2.;
 }
@@ -194,7 +194,7 @@ bool crossesRay(P &a, P &p, P &q)
 // if strict, returns false when a is on the boundary
 bool inPolygon(vector<P> &p, P &a, bool strict = true)
 {
-    int c = 0, n = p.size();
+    int c = 0, n = sz(p);
     rep(i, n)
     {
         if (onSegment(p[i], p[(i + 1) % n], a)) return !strict;
@@ -206,16 +206,16 @@ bool inPolygon(vector<P> &p, P &a, bool strict = true)
 db areaPolygonUnion(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
 {
     db area = 0;
-    rep(i, pol.size()) rep(j, pol[i].size())
+    rep(i, sz(pol)) rep(j, sz(pol[i]))
     {
-        int m = pol[i].size();
+        int m = sz(pol[i]);
         P p1 = pol[i][j], p2 = pol[i][(j + 1) % m];
 
         vector<pair<db, int>> s; s.emplace_back(1., 0);
 
-        rep(ii, pol.size()) if (ii != i) rep(jj, pol[ii].size())
+        rep(ii, sz(pol)) if (ii != i) rep(jj, sz(pol[ii]))
         {
-            int mm = pol[ii].size();
+            int mm = sz(pol[ii]);
             P p3 = pol[ii][jj], p4 = pol[ii][(jj + 1) % mm];
 
             db t1 = turn(p1, p2, p3), t2 = turn(p1, p2, p4),
@@ -248,7 +248,7 @@ db areaPolygonUnion(vector<vector<P>> &pol) // Slow O((NE)^2log(NE))
 
 vector<P> convexHull(vector<P> &p)
 {
-    int n = p.size(), k = 0;
+    int n = sz(p), k = 0;
     vector<P> H(2 * n); sort(p.begin(), p.end());
     rep(i, n)
     {
@@ -282,7 +282,7 @@ P circum(P &A, P &B, P &C)
 pair<P, db> smallestEnclosingCircle(vector<P> &p)
 {
     random_shuffle(all(p));
-    P c = p[0]; db r = 0; int N = p.size();
+    P c = p[0]; db r = 0; int N = sz(p);
     rep(i, N) if (i && (p[i] - c).norm() > r + EPS)
     {
         c = p[i]; r = 0;

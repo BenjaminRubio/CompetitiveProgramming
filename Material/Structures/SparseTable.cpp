@@ -14,7 +14,7 @@ class ST
 public:
     ST(vi &v)
     {
-        N = v.size(); int LOG = 31 - __builtin_clz(n);
+        N = sz(v); int LOG = 31 - __builtin_clz(n);
         DP.assign(N * (LOG + 1), -1);
         rep(i, N) DP[i] = v[i];
         rep(k, LOG) rep(i, N)

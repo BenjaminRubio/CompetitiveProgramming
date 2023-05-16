@@ -6,7 +6,8 @@ class Hopcroft
     vvi g;
     int inf = 1e9;
 
-    bool bfs() {
+    bool bfs()
+    {
         queue<int> q;
         for (int u : U) if (match[u] == nil) dist[u] = 0, q.push(u);
         else dist[u] = inf;
@@ -23,10 +24,10 @@ class Hopcroft
         return (dist[nil] != inf);
     }
 
-    bool dfs(int u) {
-        if (u == nil)
-            return true;
-        for (int v : g[u]) if (dist[match[v]] == dist[u]+1 and dfs(match[v]))
+    bool dfs(int u)
+    {
+        if (u == nil) return true;
+        for (int v : g[u]) if (dist[match[v]] == dist[u] + 1 and dfs(match[v]))
         {
             match[v] = u, match[u] = v;
             return true;
@@ -40,13 +41,13 @@ public:
     int nil, isPerfect, matchSize = 0;
 
     // gg is a bidirectional graph, UU has the nodes in the left partition
-    Hopcroft(vector<vi> &gg, vi &UU) 
+    Hopcroft(vvi &gg, vi &UU) 
     {
-        g = gg; U = UU; nil = g.size();
-        match.assign(g.size() + 1, nil);
-        dist.assign(g.size() + 1, inf);
+        g = gg; U = UU; nil = sz(g);
+        match.assign(nil + 1, nil);
+        dist.assign(nil + 1, inf);
         while (bfs()) for (int u : U) if (match[u] == nil and dfs(u))
             matchSize++;
-        isPerfect = (matchSize == U.size() and g.size() == U.size() * 2);
+        isPerfect = (matchSize == sz(U) and nil == sz(U) * 2);
     }
 };

@@ -31,7 +31,7 @@ public:
     // arr[i] in [0,sigma)
     WT(vi arr, int sigma)
     {
-        n = arr.size(); s = sigma; r0.resize(s * 2);
+        n = sz(arr); s = sigma; r0.resize(s * 2);
         arrCopy = arr;
         build(all(arr), 0, s - 1, 1);
     }
@@ -96,7 +96,7 @@ public:
         while (l != r)
         {
             m = (l + r) / 2;
-            k = r0[u].size(), p = r0[u][k - 1] - r0[u][k - 2];
+            k = sz(r0[u]), p = r0[u][k - 1] - r0[u][k - 2];
             r0[u].pop_back();
             u *= 2;
             if (p) r = m;

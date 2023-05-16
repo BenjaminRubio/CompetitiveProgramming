@@ -5,7 +5,7 @@ struct LCA
     vvi G;
     int N, LOG; vi A, D;
     int &anc(int u, int l) { return A[l * N + u]; }
-    LCA(vector<vi> &G, int N, int root) : G(G), N(N)
+    LCA(vvi &G, int N, int root) : G(G), N(N)
     {
         LOG = 31 - __builtin_clz(N);
         D.assign(N, -1); A.resize(N * (LOG + 1));
@@ -61,13 +61,13 @@ struct LCA
 {
     vi A, H, D, R;
 
-    LCA(vector<vi> &G, int n) : A(n), D(n), R(n)
+    LCA(vvi &G, int n) : A(n), D(n), R(n)
     {
         H.assign(n, -1); A[0] = -1, D[0] = 0; dfs(G, 0); int p = 0;
         rep(i, n) if (A[i] == -1 || H[A[i]] != i)
             for (int j = i; j != -1; j = H[j]) R[j] = i;
     }
-    int dfs(vector<vi> &G, int u)
+    int dfs(vvi &G, int u)
     {
         int ans = 1, M = 0, s;
         for (int v : G[u]) if (v != A[u])

@@ -61,7 +61,7 @@ public:
     }
     void addEdge(int u, int v, T c, T w)
     {
-        E[u].pb(L.size()); L.eb(v, c, w);
-        E[v].pb(L.size()); L.eb(u, 0, -w);
+        E[u].pb(sz(L)); L.eb(v, c, w);
+        E[v].pb(sz(L)); L.eb(u, 0, -w);
     }
 };

@@ -11,7 +11,7 @@ struct Edge
 
 int find_mst(vector<vector<Edge>> &g, vector<vector<Edge>> &T)
 {
-    int n = g.size();
+    int n = sz(g);
     vector<bool> V(n, 0);
     T.assign(n, {});
 
