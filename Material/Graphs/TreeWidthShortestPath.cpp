@@ -4,9 +4,9 @@ int N;
 vvi B, T;
 vvp G;
 
-const int MAXK = 3; // (treewidth) + 1
 const int MAXN = 50010;
 const int MAXL = 16; // Fijarse en valor
+const int MAXK = 3; // (treewidth) + 1
 const ll INF = 1e18;
 
 struct TWSP
