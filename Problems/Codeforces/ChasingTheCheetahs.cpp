@@ -37,6 +37,7 @@ int main()
             if (f1 >= f2) l = m1;
         }
 
+        cout << (l + r) / 2 << '\n';
         cout << f((l + r) / 2) << '\n';
     }
 }

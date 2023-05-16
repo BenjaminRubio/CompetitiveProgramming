@@ -10,7 +10,7 @@ bool D[10];
 bool backtrack(ll i, ll s)
 {
     if (s > K) return false;
-    if (i == 10 && s <= K) return true;
+    if (i == 10 && s == K) return true;
 
     rep(d, 10) if (!D[d])
     {
