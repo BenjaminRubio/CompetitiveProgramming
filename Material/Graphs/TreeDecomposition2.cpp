@@ -1,9 +1,8 @@
 #include "../Template.cpp"
 
-int N, M, u, v;
-vvi G, B, T;
+vvi B, T;
 
-bool get_TD2()
+bool get_TD2(vvi &G, int N)
 {
     B.assign(N, {}), T.assign(N, {});
 

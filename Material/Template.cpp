@@ -22,6 +22,7 @@ using vvd = vector<vd>;
 #define rep(i, n) for (int i = 0; i < (int)n; i++)
 #define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
 #define all(x) begin(x), end(x)
+#define sz(x) ((int)(x).size())
 #define eb emplace_back
 #define pb push_back
 #define mp make_pair
