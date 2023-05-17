@@ -11,7 +11,7 @@ const ll INF = 1e18;
 
 struct TWSP
 {
-	ll UP[MAXL][MAXK][MAXN], DW[MAXL][MAXK][MAXN];
+	ll DW[MAXL][MAXK][MAXN], UP[MAXL][MAXK][MAXN];
 	ll I[MAXN][MAXK][MAXK], X[MAXN][MAXK][MAXK][2];
 	int D[MAXN], P[MAXN], V[MAXN], S[MAXN], M[MAXN];
     int B_[MAXN], R[MAXN][MAXK], C[MAXL][MAXN], PT[MAXN];
@@ -38,7 +38,7 @@ struct TWSP
         memset(D, 0, sizeof D);
 		memset(V, 0, sizeof V);
 		memset(P, -1, sizeof P);
-        rep(i, MAXL) rep(j, MAXK) rep(k, N) UP[i][j][k] = DW[i][j][k] = INF;
+        rep(i, MAXL) rep(j, MAXK) rep(k, N) DW[i][j][k] = UP[i][j][k] = INF;
 
         queue<int> Q; Q.push(0);
 		while (!Q.empty())
@@ -100,8 +100,8 @@ struct TWSP
                 int v = B[p][q];
                 rep(r, sc)
                 {
-                    UP[D[c]][r][v] = min(UP[D[c]][r][v], X[p][r][q][0]);
-                    DW[D[c]][r][v] = min(DW[D[c]][r][v], X[p][r][q][1]);
+                    DW[D[c]][r][v] = min(DW[D[c]][r][v], X[p][r][q][0]);
+                    UP[D[c]][r][v] = min(UP[D[c]][r][v], X[p][r][q][1]);
                 }
 			}
 
@@ -165,7 +165,7 @@ struct TWSP
 		while (C[l][a] != C[l][b]) l--;
 
 		int c = C[l][a]; ll d = INF;
-        rep(i, sz(B[c])) d = min(d, DW[l][i][u] + UP[l][i][v]);
+        rep(i, sz(B[c])) d = min(d, UP[l][i][u] + DW[l][i][v]);
 		return d;
 	}
 };
