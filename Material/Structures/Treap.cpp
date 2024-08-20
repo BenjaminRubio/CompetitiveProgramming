@@ -8,7 +8,7 @@ struct Node
 {
     int p, sz = 0, v, acc, l = -1, r = -1;
     Node() : v(0), acc(0) {}
-    Node(int x): p(gen()), sz(1), v(x), acc(x) {}
+    Node(int x): p(()), sz(1), v(x), acc(x) {}
     void recalc(const Node &a, const Node &b)
     {
         sz = a.sz + b.sz + 1;
@@ -57,7 +57,7 @@ struct Node
     int p, sz = 0, v, acc, l = -1, r = -1, par = -1, lzv = 0;
     bool lz = false, f = false;
     Node() : v(0), acc(0) {}
-    Node(int x): p(gen()), sz(1), v(x), acc(x) {}
+    Node(int x): p(()), sz(1), v(x), acc(x) {}
     void recalc(const Node &a, const Node &b)
     {
         sz = a.sz + b.sz + 1;

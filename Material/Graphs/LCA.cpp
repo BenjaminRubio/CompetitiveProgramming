@@ -80,8 +80,11 @@ struct LCA
     }
     int lca(int u, int v)
     {
-        while (D[R[u]] > D[R[v]]) u = A[R[u]];
-        while (D[R[u]] < D[R[v]]) v = A[R[v]];
+        while (R[u] != R[v])
+        {
+            if (D[R[u]] > D[R[v]]) u = A[R[u]];
+            else v = A[R[v]];
+        }
         return D[u] < D[v] ? u : v;
     }
     int dist(int u, int v) { return D[u] + D[v] - 2 * D[lca(u, v)];  }
